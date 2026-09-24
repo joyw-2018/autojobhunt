@@ -1,0 +1,42 @@
+Joy Wang
+Phone: 617.230.9777 | Email: joy.jiayiwang@gmail.com | Status: US Permanent Resident
+
+EXECUTIVE SUMMARY
+Senior Product Manager with 10+ years of product leadership, including 8+ years architecting enterprise-scale cloud platforms, AI-ready developer infrastructure, and observability data systems at Google Cloud. Proven track record driving 0-to-1 platform standardization, AI-ready observability platforms, and multi-tenant developer ecosystems adopted across 20+ core engineering organizations. Technical acumen across agentic workflow orchestration, agent observability, Model Context Protocol (MCP), and LLM evaluation/task completion diagnostics, combined with enterprise-grade readiness (IAM and SLAs). Expert in managing complex architecture tradeoffs (reasoning, latency, reliability, FinOps) and translating AI capabilities into enterprise adoption that unlocked $100M+ in pipeline.
+
+CORE COMPETENCIES & DOMAIN EXPERTISE
+Al-Ready Observability & AI Infrastructure: Agentic Workflows & Trajectory Tracing, LLM Tool Use & AI-Powered Workflows, Model Context Protocol (MCP), AI-Ready Observability Data Platform (BigQuery Backed).
+Evaluation & System Troubleshooting: Standardized Benchmarks, Task Completion Rate (MTTR) Diagnostics, Runtime Performance SLOs, Log & Trace Analysis.
+Enterprise Readiness & Governance: Enterprise Platform Standardization, Cross-Team System Integration, Identity & Access Management (IAM), Privacy & Feature Parity Alignment, Zero-Downtime Migration Roadmaps, SLA Governance.
+Architecture Tradeoffs & FinOps: Reasoning and Latency Optimization, Granular Spend Attribution & Metering, Workload Unit Economics, Storage Tiering & Capacity Alignment.
+0-to-1 Platform Strategy & Leadership: "Platform-as-a-Product" Operating Model, Self-Service Golden Paths, Cross-Org Alignment (Influence Without Authority), Enterprise Customer & Design Partner Engagement, Technical Blogs & Keynotes.
+
+WORK HISTORY
+Google Cloud Platform, Senior Product Manager, 2018.02 - 2026.09
+● Agentic Telemetry & AI-Ready Data Platform: Spearheaded the integration of AI-ready telemetry, Model Context Protocol (MCP), and agentic workflows into platform logs, traces, and agent trajectories; productized natural-language query analytics and LLM-powered insights and visualization that enabled developers and autonomous agents to diagnose complex distributed infrastructure, unblocking $100M+ in enterprise sales pipeline.
+● AI-Powered Troubleshooting & Task Completion Diagnostics (MTTR): Architected the observability strategy for automated diagnostic workflows; established standardized benchmarks, task completion metrics that reduced diagnostic friction and dramatically accelerated developer Mean Time to Resolution (MTTR).
+● Distributed Runtime Performance & Latency Tradeoffs: Diagnosed an 8x latency bottleneck between API and e2e query layers; led architecture tradeoff discussions with core systems engineering to redesign sampling and caching strategy for effective query execution, cutting zero-state query latency by 70%.
+● 0-to-1 Universal Dashboard Framework (Google Cloud Tech Impact Award): Conceived, built, and scaled the Universal Dashboard Framework (UDF) from 0-to-1 as sole PM, unifying fragmented tools into a reusable, API-first platform component framework; established reusable query components, and reliable data contracts across 20+ GCP infrastructure teams, slashing support tickets by 50% in Month 1.
+● Large-Scale Platform Migration & Governance (Google Feats of Engineering Award): Orchestrated the end-to-end platform migration of legacy Stackdriver infrastructure into Google Cloud Console (Pantheon); led cross-functional alignment across IAM, feature parity, backend replication, and core systems with zero downtime, driving full deprecation while expanding active enterprise users by 20%.
+● FinOps, Spend Attribution & Capacity Alignment: Co-authored and launched the GKE Cost Insights and platform utilization architecture combining Cloud Monitoring and BigQuery; empowered enterprise organizations to model cost-to-serve, forecast multi-tenant compute/AI workload spend, driving multi-million-dollar efficiency gains.
+
+Scotiabank, Product Manager, 2017.02 - 2018.02
+● Financial Infrastructure Modernization: Defined product strategy and API roadmaps for regulated banking workflows across web and mobile channels, partnering with engineering, security, and governance to modernize mission-critical infrastructure; identified a 5x production latency bottleneck and delivered architectural recommendations to restore service resiliency.
+
+NCFG (Fintech Startup), Head of Product, 2016.04 - 2017.02
+● 0-to-1 Financial Data Ecosystem: Led product lifecycle from conception to launch in 5 months, designing high-throughput transaction ledgers, risk evaluation workflows, and merchant APIs handling high-volume real-time transactions.
+● Growth & Adoption: Partnered with leadership on commercial execution, scaling platform adoption to 200,000+ active transacting users within 90 days.
+
+eBay Inc., Product Manager, 2012.10 - 2016.04
+● Data-Driven Discovery & Traffic Scaling: Used search behavior, funnel data, and controlled experiments to reshape discovery experiences, delivering 20%+ year-over-year organic traffic growth for three consecutive years.
+
+Rogers Communications, Product Manager, 2010.05 - 2012.10
+● Search Engine Architecture & NLP Ingestion: Fine-tuned Endeca NLP and indexing pipelines for Canada's largest telecom portal; improved search accuracy by 30% and expanded search keyword coverage by 50%.
+
+KEYNOTES & TECHNICAL THOUGHT LEADERSHIP
+● Industry Conference Speaker: Featured speaker at Google Cloud Next ("How MLB Creates Granular Insight with Observability Analytics", 400+ attendees, 4.7/5 rating) and GrafanaCon (2019) on enterprise observability data strategies.
+● Author & Thought Leader: Authored 15+ official Google Cloud technical whitepapers and blogs on SQL alerting, Log Analytics and AI Observability, GKE cost visibility, and context-aware observability.
+
+EDUCATION
+MBA – Rotman School of Management, University of Toronto
+BS – Computer Science, Fudan University

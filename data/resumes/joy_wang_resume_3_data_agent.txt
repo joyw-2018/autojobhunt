@@ -1,0 +1,45 @@
+Joy Wang
+Email: joy.jiayiwang@gmail.com Cell: 617.230.9777
+
+EXECUTIVE SUMMARY
+High-impact Senior Product Manager (8+ years) combining a strong analytical and data infrastructure background with deep enterprise-scale expertise across Google Cloud, distributed query systems, GenAI workflows, and search/indexing platforms. Proven track record defining product strategy and executing 0-to-1 platform initiatives — spanning enterprise observability infrastructure at Google Cloud, agentic AI workflow integration, and large-scale search & indexing at eBay. Expert in translating complex customer pain points in petabyte/exabyte-scale environments into high-performing, developer-friendly APIs, cost-efficient retrieval architectures, and scalable data planes for AI agents.
+
+CORE COMPETENCIES
+AI Data Platforms & Agent Ecosystem: GenAI Data Plane, Agent Frameworks (ADK, LangChain, MCP), AI Observability Infrastructure, Semantic and Query Graph Integration
+Search & Data Infrastructure: Distributed Query Performance, Indexing Pipelines, Metadata Management, Query Latency Optimization, Multi-Million Catalog Indexing
+Cloud & Enterprise Systems: Cloud Platform Observability, Cost Insights & Price-Performance Optimization, Distributed Systems, IAM & Security Governance
+Product Leadership & Execution: 0-to-1 Product Roadmap to GA, Developer APIs & SDKs, Competitive Benchmarking, Cross-Functional Alignment (Eng, OPM, UX, Legal, GTM)
+
+WORK HISTORY
+Google Cloud, Senior Product Manager, 2018.02 - Present
+● AI-Driven & Agentic Observability Platform Evolution: Spearheaded GenAI telemetry and observability integration across core observability data workflows; built strategy for agentic trajectory integrations (empowering AI driven observability for autonomous agents and developers).
+● Complex Telemetry, Evaluation & Latency Optimization: Architected end-to-end telemetry and monitoring pipelines for high-throughput systems. Diagnosed an 8x performance bottleneck and ran structured A/B experiments achieving a 70% latency reduction, drastically improving real-time evaluation accuracy, system reliability, and query responsiveness.
+● Platform Standardization & Framework Governance (Tech Impact Award): Conceptualized and scaled the Universal Dashboard Framework (UDF) from 0 to 20+ core product teams in 12 months. Defined standardized API/UI workflows and operational guidelines that reduced partner onboarding friction and cut support overhead by 50% in Month 1.
+● Large-Scale Platform Migration & Reliability (Feats of Engineering Award): Directed the migration of legacy infrastructure into the Google Cloud Console (Pantheon), establishing unified high-availability architectures and boosting active user adoption by 20% while upholding rigorous enterprise compliance standards.
+● Cross-Functional Velocity & Data Science Alignment: Partnered with UX, Data Science, and 60+ distributed engineers to ship 10+ core capabilities in 1 year, balancing technical velocity with reliability benchmarks and driving a 30% increase in execution efficiency.
+
+Scotiabank, Product Manager, 2017.02 - 2018.02
+● Banking-as-a-Service (BaaS) & High-Stakes Strategy: Diagnosed systemic infrastructure vulnerabilities causing 5x service latency spikes in highly regulated financial environments; defined the long-term regional BaaS platform vision, aligning security, legal compliance, and API infrastructure.
+
+Net Credit Group (NCF) – Fintech Startup, Head of Product, 2016.04 - 2017.02
+● 0-to-1 Consumer & Fintech Ecosystem Launch: Defined end-to-end product strategy and launched 2 consumer mobile applications, a core ledger system, and partner portals in 5 months, scaling to 200,000+ active users within 90 days.
+● Risk & Regulatory Alignment: Collaborated closely with legal, risk, and operations teams to embed compliance guardrails and transaction verification directly into consumer-facing mobile flows.
+
+eBay Inc., Product Manager - SEO, 2012.10 - 2016.04
+● High-Throughput Search Infrastructure & Experimentation: Drove 20%+ YoY organic traffic growth for 3 consecutive years by optimizing consumer search discovery pipelines and running continuous A/B testing frameworks across millions of user queries.
+● CUJ & Search Quality Optimization: Analyzed complex consumer query funnels and search relevance metrics to minimize query friction and optimize conversion paths, validating improvements through rigorous statistical evaluation.
+
+Rogers Communications, Product Manager - Search, 2010.05 - 2012.10
+● Search Quality & Indexing Pipeline Optimization: Enhanced search accuracy by 30% and expanded query coverage by 50% across Canada’s largest telecom portal by fine-tuning Endeca search indexing pipelines, relevance algorithms, and query workflows.
+
+Google Inc, Senior Account Manager, 2005.12 - 2008.11
+● AdWords Strategy & Vertical Growth: Scaled digital performance campaigns across high-value client portfolios, achieving 40%+ YoY growth for 3 consecutive years through data-led campaign optimization.
+● Operational Leadership: Built and led a 30-person sales operations team and a 20-person acquisition team, increasing new client onboarding by 5x in Year 1.
+
+EDUCATION & RECENT PROJECT EXPERIMENTS
+MBA Rotman School of Management, University of Toronto
+B.S Computer Science, Fudan University
+Side Project: Designed and built interactive learning website for youth financial literacy (invest-in-future.onrender.com)
+
+PUBLICATIONS & TALKS
+15+ Official Google Cloud Technical Publications on Query Telemetry with SQL for AI Observability, GCP Observability and GCP Cost Insights; Public Speaker: Google Cloud Next (MLB Cost Insight with Observability Analytics, 4.7/5 rating), GrafanaCon (2019).

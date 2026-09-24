@@ -1,0 +1,68 @@
+[
+  {
+    "id": "joy_res_01",
+    "filename": "joy_wang_resume_1_ai_observability.txt",
+    "file_type": "TEXT",
+    "file_size": 6181,
+    "uploaded_at": "2026-09-23T15:15:24.197426",
+    "status": "EXTRACTED",
+    "character_count": 6150,
+    "extracted_fact_count": 2,
+    "error_message": null
+  },
+  {
+    "id": "joy_res_02",
+    "filename": "joy_wang_resume_2_platform_devex.txt",
+    "file_type": "TEXT",
+    "file_size": 6084,
+    "uploaded_at": "2026-09-23T15:15:24.197426",
+    "status": "EXTRACTED",
+    "character_count": 6049,
+    "extracted_fact_count": 2,
+    "error_message": null
+  },
+  {
+    "id": "joy_res_03",
+    "filename": "joy_wang_resume_3_data_agent.txt",
+    "file_type": "TEXT",
+    "file_size": 5736,
+    "uploaded_at": "2026-09-23T15:15:24.197426",
+    "status": "EXTRACTED",
+    "character_count": 5703,
+    "extracted_fact_count": 2,
+    "error_message": null
+  },
+  {
+    "id": "joy_res_04",
+    "filename": "joy_wang_resume_4_b2b_cloud_infra.txt",
+    "file_type": "TEXT",
+    "file_size": 5309,
+    "uploaded_at": "2026-09-23T15:15:24.197426",
+    "status": "EXTRACTED",
+    "character_count": 5282,
+    "extracted_fact_count": 2,
+    "error_message": null
+  },
+  {
+    "id": "84a7b38a",
+    "filename": "Joy Wang Resume - YouTube Apps Platform PM.pdf",
+    "file_type": "PDF",
+    "file_size": 92541,
+    "uploaded_at": "2026-09-23T15:42:32.830244",
+    "status": "EXTRACTED",
+    "character_count": 7352,
+    "extracted_fact_count": 2,
+    "error_message": null
+  },
+  {
+    "id": "9f09023a",
+    "filename": "Joy Wang Resume - Observability Data Platforms PM.pdf",
+    "file_type": "PDF",
+    "file_size": 107309,
+    "uploaded_at": "2026-09-23T15:42:38.981997",
+    "status": "EXTRACTED",
+    "character_count": 7056,
+    "extracted_fact_count": 2,
+    "error_message": null
+  }
+]

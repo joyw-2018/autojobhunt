@@ -1,0 +1,42 @@
+Joy Wang
+617.230.9777, joy.jiayiwang@gmail.com, US Permanent Resident
+
+EXECUTIVE SUMMARY
+Senior Product Management Leader with 10+ years of technical product leadership, including 8+ years architecting enterprise cloud infrastructure, developer platforms (DevEx), and AI-ready telemetry infrastructure at Google Cloud. Proven track record shifting internal infrastructure operations to a "Platform-as-a-Product" model—establishing self-service golden paths, API-first developer ecosystems, and standardized runtime workflows across 20+ core engineering teams. Core background in cloud observability infrastructure and FinOps unit economics, combined with practical experience incorporating AI developer tooling (including Model Context Protocol / MCP and agentic workflows) into platform systems. Adept at driving cross-functional alignment across Architecture and engineering communities without direct authority.
+
+CORE COMPETENCIES & DOMAIN EXPERTISE
+AI & Developer Platforms: Model Context Protocol (MCP), LLM APIs, Agentic Workflows, Developer Experience (DevEx), Self-Service Golden Paths, Root-Cause Diagnostics (MTTR)
+Cloud Infrastructure & Governance: Cloud Platform (GCP), Telemetry Architecture, Infrastructure-as-Code (IaC), Secure SDLC Alignment, Deprecation & Migration Roadmaps
+FinOps & Value Modeling: Compute & AI Spend Attribution, Workload Unit Economics, Capacity Planning, Platform SLOs & Reliability
+Leadership & Product Ops: Platform-as-a-Product, Product Intake & Prioritization Forums, Cross-Functional Alignment (Influence Without Authority), Agile Delivery & Mentorship
+
+WORK HISTORY
+Google Cloud Platform, Senior Product Manager, 2018.02 - 2026.09
+● Platform-as-a-Product Strategy & Analytics: Defined and executed the multi-year product strategy for core Cloud Observability, telemetry analytics, and developer capabilities across heterogeneous workloads. Unified fragmented telemetry signal types into an API-first telemetry and data platform, unblocking $100M+ in enterprise adoption and migration pipelines.
+● AI-Ready Telemetry & Agentic Diagnostics: Integrated AI-ready telemetry, Model Context Protocol (MCP), and agentic workflows into developer logs and diagnostic pipelines. Productized natural language query interfaces that enabled internal engineers and autonomous coding agents to evaluate runtime workloads and accelerate root-cause diagnostics (MTTR).
+● Self-Service Builder Platform & "Golden Paths" (Google Cloud Tech Impact Award): Conceived and scaled the Universal Dashboard Framework (UDF) from 0-to-1 as sole PM. Established reusable components, standardized data schemas, and self-service workflows across 20+ GCP product teams, eliminating developer friction and slashing onboarding support tickets by 50% in Month 1.
+● Large-Scale Platform Migration & Governance (Google Feats of Engineering Award): Orchestrated the end-to-end platform migration of legacy Stackdriver infrastructure into Google Cloud Console (Pantheon). Partnered with IAM, security, and core systems teams to guarantee zero-downtime deprecation while expanding active enterprise users by 20%.
+● FinOps, Cost Modeling & Capacity Alignment: Co-authored and launched the GKE Cost Insights and platform utilization architecture combining Cloud Monitoring and BigQuery. Empowered enterprise organizations to align compute capacity with demand, track workload unit economics, and automate storage tiering, driving multi-million-dollar efficiency gains.
+● Runtime Performance & Query Optimization: Diagnosed an 8x latency bottleneck across distributed intake and query layers. Partnered with systems engineering to redesign partition pruning and query execution paths, cutting zero-state query latency by 70% and establishing rigorous platform SLOs.
+● Cross-Functional Governance & Operating Model: Established structured product intake frameworks, user journey (CUJ) mapping, and outcome-driven roadmap governance across disparate engineering groups; coached engineering leads and mentored product teammates on agile delivery and cross-functional alignment.
+
+Scotiabank, Product Manager, 2017.02 - 2018.02
+● Financial Infrastructure Modernization: Defined product strategy and API roadmaps for regulated banking workflows across web and mobile channels, partnering with engineering, security, and governance to modernize mission-critical infrastructure; identified a 5x production latency bottleneck and delivered architectural recommendations to restore service resiliency.
+
+NCFG (Fintech Startup), Head of Product, 2016.04 - 2017.02
+● 0-to-1 Financial Data Ecosystem: Led product lifecycle from conception to launch in 5 months, designing high-throughput transaction ledgers, risk evaluation workflows, and merchant APIs handling high-volume real-time transactions.
+● Growth & Adoption: Partnered with leadership on commercial execution, scaling platform adoption to 200,000+ active transacting users within 90 days.
+
+eBay Inc., Product Manager, 2012.10 - 2016.04
+● Data-Driven Discovery & Traffic Scaling: Used search behavior, funnel data, and controlled experiments to reshape discovery experiences, delivering 20%+ year-over-year organic traffic growth for three consecutive years.
+
+Rogers Communications, Product Manager, 2010.05 - 2012.10
+● Search Engine Architecture & NLP Ingestion: Fine-tuned Endeca NLP and indexing pipelines for Canada's largest telecom portal; improved search accuracy by 30% and expanded search keyword coverage by 50%.
+
+KEYNOTES & TECHNICAL THOUGHT LEADERSHIP
+● Industry Conference Speaker: Featured speaker at Google Cloud Next ("How MLB Creates Granular Insight with Observability Analytics", 400+ attendees, 4.7/5 rating) and GrafanaCon (2019) on enterprise observability data strategies.
+● Author & Thought Leader: Authored 15+ official Google Cloud technical whitepapers and blogs on SQL alerting, Log Analytics and AI Observability, GKE cost visibility, and context-aware observability.
+
+EDUCATION
+MBA – Rotman School of Management, University of Toronto
+BS – Computer Science, Fudan University

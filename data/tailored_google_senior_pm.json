@@ -1,0 +1,175 @@
+{
+  "candidate_name": "Joy Wang",
+  "contact_info": "Phone: 617.230.9777 | Email: joy.jiayiwang@gmail.com | Status: US Permanent Resident",
+  "target_company": "Google",
+  "target_job_title": "Senior Product Manager, AI Enablement and Infrastructure",
+  "tailored_summary": "Senior Product Management Leader with 10+ years of product leadership, including 8+ years architecting enterprise-scale cloud platforms and agentic workflow orchestration, Model Context Protocol (MCP), and AI observability infrastructure at Google Cloud. Proven track record driving 0-to-1 platform standardization (Google Cloud Tech Impact Award), zero-downtime platform migrations (Google Feats of Engineering Award), and high-throughput query performance (cutting zero-state latency by 70%). Passionate about leveraging deep enterprise telemetry and systems architecture acumen to accelerate product innovation and developer velocity for Google's Senior Product Manager, AI Enablement and Infrastructure role.",
+  "skills_categories": [
+    {
+      "category": "AI & Agent Platforms",
+      "skills": "Model Context Protocol (MCP), Agentic Workflows & Trajectories, LLM APIs, AI Observability, BigQuery Data Plane"
+    },
+    {
+      "category": "Cloud Infrastructure & Platforms",
+      "skills": "Google Cloud Platform (Pantheon Console), Distributed Query Systems, Caching & Sampling, Platform-as-a-Product, Golden Paths"
+    },
+    {
+      "category": "Governance, FinOps & Performance",
+      "skills": "GKE Cost Insights, Workload Unit Economics, IAM Governance, Zero-Downtime Migration, Latency Optimization (SLOs)"
+    },
+    {
+      "category": "Product Leadership & Strategy",
+      "skills": "0-to-1 Platform Standardization, Product Intake Frameworks, CUJ Mapping, Influence Without Authority, Cross-Functional Alignment"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "Google Cloud Platform",
+      "role": "Senior Product Manager",
+      "date_range": "2018.02 - Present",
+      "bullets": [
+        {
+          "fact_id": "fact_jw_01",
+          "chosen_text": "Unblocked $100M+ in enterprise sales pipeline and adoption by productizing AI-ready telemetry, natural-language query analytics, and Model Context Protocol (MCP) integrations across core cloud infrastructure.",
+          "variant_type": "metric_focused",
+          "match_reason": "High relevance score (40) for target requirements."
+        },
+        {
+          "fact_id": "fact_jw_02",
+          "chosen_text": "Dramatically accelerated developer Mean Time to Resolution (MTTR) by architecting automated diagnostic workflows, root-cause evaluation frameworks, and standardized task completion benchmarks.",
+          "variant_type": "metric_focused",
+          "match_reason": "High relevance score (40) for target requirements."
+        },
+        {
+          "fact_id": "fact_jw_04",
+          "chosen_text": "Slashed partner onboarding support tickets by 50% in Month 1 and scaled to 20+ core GCP engineering organizations within 12 months, earning the Google Cloud Tech Impact Award.",
+          "variant_type": "metric_focused",
+          "match_reason": "High relevance score (35) for target requirements."
+        },
+        {
+          "fact_id": "fact_jw_03",
+          "chosen_text": "Slashed zero-state query latency by 70% across distributed platform services by diagnosing an 8x bottleneck and executing structured A/B performance experiments.",
+          "variant_type": "metric_focused",
+          "match_reason": "High relevance score (30) for target requirements."
+        }
+      ]
+    },
+    {
+      "company": "eBay Inc.",
+      "role": "Product Manager",
+      "date_range": "2012.10 - 2016.04",
+      "bullets": [
+        {
+          "fact_id": "fact_jw_10",
+          "chosen_text": "Delivered 20%+ YoY organic traffic growth for 3 consecutive years by optimizing query conversion paths and running continuous A/B testing across millions of consumer queries.",
+          "variant_type": "metric_focused",
+          "match_reason": "High relevance score (30) for target requirements."
+        }
+      ]
+    },
+    {
+      "company": "Rogers Communications",
+      "role": "Product Manager",
+      "date_range": "2010.05 - 2012.10",
+      "bullets": [
+        {
+          "fact_id": "fact_jw_11",
+          "chosen_text": "Improved search retrieval accuracy by 30% and expanded search keyword coverage by 50% across Canada's largest telecom portal.",
+          "variant_type": "metric_focused",
+          "match_reason": "High relevance score (30) for target requirements."
+        }
+      ]
+    },
+    {
+      "company": "Scotiabank",
+      "role": "Product Manager",
+      "date_range": "2017.02 - 2018.02",
+      "bullets": [
+        {
+          "fact_id": "fact_jw_08",
+          "chosen_text": "Resolved 5x production latency bottleneck in highly regulated financial environments and established strategic API roadmaps for regional banking integrations.",
+          "variant_type": "metric_focused",
+          "match_reason": "High relevance score (10) for target requirements."
+        }
+      ]
+    },
+    {
+      "company": "Net Credit Group (NCF - Fintech Startup)",
+      "role": "Head of Product",
+      "date_range": "2016.04 - 2017.02",
+      "bullets": [
+        {
+          "fact_id": "fact_jw_09",
+          "chosen_text": "Scaled platform adoption to 200,000+ active transacting users within 90 days of launching an end-to-end financial ecosystem in 5 months.",
+          "variant_type": "metric_focused",
+          "match_reason": "High relevance score (10) for target requirements."
+        }
+      ]
+    },
+    {
+      "company": "Google Inc",
+      "role": "Senior Account Manager",
+      "date_range": "2005.12 - 2008.11",
+      "bullets": [
+        {
+          "fact_id": "fact_jw_12",
+          "chosen_text": "Achieved 40%+ YoY growth for 3 consecutive years and accelerated new client onboarding by 5x in Year 1 through data-led campaign optimization and operational scaling.",
+          "variant_type": "metric_focused",
+          "match_reason": "High relevance score (10) for target requirements."
+        }
+      ]
+    },
+    {
+      "company": "Industry & Google Cloud",
+      "role": "Author & Keynote Speaker",
+      "date_range": "2018 - Present",
+      "bullets": [
+        {
+          "fact_id": "fact_jw_13",
+          "chosen_text": "Authored 15+ official Google Cloud technical whitepapers and spoke at Google Cloud Next (400+ attendees, 4.7/5 rating) and GrafanaCon on observability data strategies.",
+          "variant_type": "metric_focused",
+          "match_reason": "High relevance score (10) for target requirements."
+        }
+      ]
+    },
+    {
+      "company": "Personal Side Project",
+      "role": "Creator & Fullstack Builder",
+      "date_range": "Recent",
+      "bullets": [
+        {
+          "fact_id": "fact_jw_14",
+          "chosen_text": "Designed and built interactive learning website for youth financial literacy (invest-in-future.onrender.com), delivering engaging digital financial education experiences.",
+          "variant_type": "metric_focused",
+          "match_reason": "High relevance score (10) for target requirements."
+        }
+      ]
+    },
+    {
+      "company": "Google",
+      "role": "Senior Product Manager",
+      "date_range": "2018.02 - 2026.09",
+      "bullets": [
+        {
+          "fact_id": "7ff95353",
+          "chosen_text": "Uncovered an 8x query-to-API performance bottleneck and delivered a 70% latency reduction via A/B experiment, drastically improving platform reliability, query responsiveness, and evaluation accuracy.\n",
+          "variant_type": "metric_focused",
+          "match_reason": "High relevance score (10) for target requirements."
+        }
+      ]
+    }
+  ],
+  "education": "MBA – Rotman School of Management, University of Toronto | BS – Computer Science, Fudan University",
+  "keynotes_talks": "Featured Speaker at Google Cloud Next (MLB Observability Analytics, 4.7/5 rating) & GrafanaCon (2019); Authored 15+ official Google Cloud technical whitepapers and blogs on Query Telemetry with SQL for AI Observability.",
+  "match_report": {
+    "ats_score": 80.0,
+    "matched_keywords": [
+      "Cloud Infrastructure",
+      "Distributed Systems",
+      "0-to-1 Platform",
+      "Telemetry",
+      "APIs"
+    ],
+    "strategy_rationale": "Prioritized Joy Wang's core achievements matching Google's requirements: highlighting cloud platform standardization and systems optimization."
+  }
+}

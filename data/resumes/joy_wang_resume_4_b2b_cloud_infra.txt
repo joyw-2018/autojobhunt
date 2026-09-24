@@ -1,0 +1,44 @@
+Joy Wang
+Email: joy.jiayiwang@gmail.com Cell: 617.230.9777
+
+EXECUTIVE SUMMARY
+Senior Product Manager specializing in enterprise-grade B2B cloud infrastructure, platform observability, and developer tooling. Proven track record within Google Cloud driving complex technical platforms from conception to launch (0-to-1 and large-scale migrations), optimizing platform telemetry, and establishing unified Google Cloud Console (Pantheon) workflows. Adept at translating complex distributed systems and enterprise governance requirements into intuitive, reliable customer experiences. Highly skilled at leading without authority across Core Engineering, UX, and GTM teams to deliver impactful cloud platform roadmaps.
+
+CORE COMPETENCIES
+Cloud Platform & Infrastructure Strategy: End-to-End Product Lifecycle (0-to-1 to Scale), Strategic Roadmapping, Cloud Architecture & Governance
+Observability, Diagnostics, Security Telemetry: System Telemetry, Latency/Performance Optimization, Query Retrieval Infrastructure, Policy & Audit Dashboards
+Developer Experience (DevEx) & Cloud Console: GCP Console (Pantheon) Architecture, API/UI Workflow Standardization, Customer Journey (CUJ) Optimization
+Cross-Functional Leadership: Technical & Design Direction, Stakeholder Management without Authority, Executive & Leadership Communications, Customer Advocacy
+
+WORK HISTORY
+Google Cloud, Senior Product Manager, 2018.02 - Present
+● Enterprise Platform Dashboarding & Standardization (Tech Impact Award): Conceptualized and drove end-to-end execution of the Universal Dashboard Framework (UDF) from 0 to 20+ core product teams. Standardized GCP Console UI workflows, observability telemetry, and operational configurations for internal and partner teams, slashing support overhead by 50% in Month 1.
+● Enterprise Infrastructure Migration & Console Adoption (Feats of Engineering Award): Spearheaded the end-to-end migration of mission-critical enterprise platform infrastructure into the Google Cloud Console (Pantheon). Partnered closely with UX and Core Engineering to deliver standardized, intuitive developer-facing workflows, driving a 20% increase in active user adoption across enterprise accounts.
+● Telemetry, Diagnostics & Latency Optimization: Architected comprehensive logging, telemetry, and diagnostic query workflows for cloud platform services. Identified an 8x query-to-API latency bottleneck across platform services and directed core engineering execution to achieve a 70% latency reduction, institutionalizing robust performance and evaluation metrics.
+● Next-Gen AI & Automated Insights Platform: Drove product vision to evolve platform telemetry into an AI-ready queryable infrastructure. Integrated LLM & SQL-driven telemetry workflows that enable developers and enterprise operators to query and troubleshoot complex infrastructure state via natural language.
+● Thought Leadership & Cross-Functional Alignment: Acted as primary voice of the product internally (regular executive updates) and externally; delivered keynote/breakout session at Google Cloud Next 2024 ("How MLB Creates Granular Insight with Observability Analytics", 400+ attendees, 4.7/5 rating).
+
+Scotiabank, Product Manager, 2017.02 - 2018.02
+● Banking-as-a-Service (BaaS) Platform Strategy: Identified enterprise infrastructure bottlenecks generating 5x service latency spikes; defined the strategic API and security-first architecture roadmap for regional enterprise banking integrations.
+
+Net Credit Group (NCF) – Fintech Startup, Head of Product, 2016.04 - 2017.02
+● 0-to-1 Ecosystem Launch: Defined end-to-end product vision and delivered an enterprise-grade financial ecosystem in 5 months (2 mobile apps, ledger infrastructure, and secure partner management portals).
+● GTM & Growth Execution: Collaborated with marketing and sales leadership to execute GTM strategies, onboarding 200,000+ active users within 90 days.
+
+eBay Inc., Product Manager, 2012.10 - 2016.04
+● High-Throughput Search Infrastructure: Delivered 20%+ YoY organic traffic growth for 3 consecutive years by architecting multi-channel query infrastructure and executing large-scale experimental evaluation.
+● Customer Journey (CUJ) Optimization: Streamlined conversion funnels and user access flows through data-driven telemetry and experimental iteration.
+
+Rogers Communications, Product Manager, 2010.05 - 2012.10
+● Optimized indexing and query retrieval pipelines for Canada's largest telecom portal, improving retrieval relevance by 30% and expanding platform coverage by 50%.
+
+Google Inc, Senior Account Manager, 2005.12 - 2008.11
+● Operational Leadership: Built and led a 30-person sales operations team and a 20-person acquisition team, increasing new client onboarding by 5x in Year 1.
+
+EDUCATION & RECENT PROJECT EXPERIMENTS
+MBA Rotman School of Management, University of Toronto
+BS Computer Science, Fudan University
+Side Project: Designed and built interactive learning website for youth financial literacy (invest-in-future.onrender.com)
+
+PUBLICATIONS & TALKS
+15+ Official Google Cloud Technical Publications on Query Telemetry with SQL for AI Observability, GCP Observability and GCP Cost Insights; Public Speaker: Google Cloud Next 2024 (MLB Cost Insight with Observability Analytics, 4.7/5 rating), GrafanaCon (2019).

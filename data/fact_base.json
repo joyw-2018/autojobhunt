@@ -1,0 +1,787 @@
+[
+  {
+    "id": "fact_jw_01",
+    "company": "Google Cloud Platform",
+    "role": "Senior Product Manager",
+    "date_range": "2018.02 - Present",
+    "project_context": "Agentic Telemetry & AI Observability Data Platform",
+    "category": "AI / Developer Platforms",
+    "sub_category": "Agent Ecosystem & Observability",
+    "refined_text": "Spearheaded the integration of AI-ready telemetry, Model Context Protocol (MCP), and agentic workflows into platform logs, traces, and agent trajectories; productized natural-language query analytics and LLM-powered insights enabling autonomous agents and developers to diagnose complex distributed infrastructure, unblocking $100M+ in enterprise sales pipeline.",
+    "variants": {
+      "standard": "Spearheaded the integration of AI-ready telemetry, Model Context Protocol (MCP), and agentic workflows into platform logs, traces, and agent trajectories; productized natural-language query analytics and LLM-powered insights enabling autonomous agents and developers to diagnose complex distributed infrastructure, unblocking $100M+ in enterprise sales pipeline.",
+      "metric_focused": "Unblocked $100M+ in enterprise sales pipeline and adoption by productizing AI-ready telemetry, natural-language query analytics, and Model Context Protocol (MCP) integrations across core cloud infrastructure.",
+      "architecture_focused": "Integrated Model Context Protocol (MCP), trajectory tracing, and LLM-powered diagnostic workflows into distributed platform logs and traces, backed by BigQuery data plane for autonomous agent troubleshooting.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Model Context Protocol (MCP)",
+      "Agentic Workflows",
+      "LLM APIs",
+      "BigQuery",
+      "Telemetry Architecture",
+      "Autonomous Agents"
+    ],
+    "metrics": [
+      "$100M+ enterprise pipeline unblocked"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Key differentiator for AI Infrastructure and Developer Platform roles.",
+    "source_resume_ids": [
+      "joy_res_01",
+      "joy_res_02",
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Spearheaded the integration of AI-ready telemetry, Model Context Protocol (MCP), and agentic workflows into platform logs, traces, and agent trajectories; productized natural-language query analytics... unblocking $100M+ in enterprise sales pipeline."
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "fact_jw_02",
+    "company": "Google Cloud Platform",
+    "role": "Senior Product Manager",
+    "date_range": "2018.02 - Present",
+    "project_context": "AI-Powered Troubleshooting & Task Completion Diagnostics",
+    "category": "AI / Developer Platforms",
+    "sub_category": "System Troubleshooting & Diagnostics",
+    "refined_text": "Architected the observability strategy for automated diagnostic workflows; established standardized benchmarks and task completion metrics (MTTR) that eliminated diagnostic friction and dramatically accelerated root-cause resolution for developers and autonomous coding agents.",
+    "variants": {
+      "standard": "Architected the observability strategy for automated diagnostic workflows; established standardized benchmarks and task completion metrics (MTTR) that eliminated diagnostic friction and dramatically accelerated root-cause resolution for developers and autonomous coding agents.",
+      "metric_focused": "Dramatically accelerated developer Mean Time to Resolution (MTTR) by architecting automated diagnostic workflows, root-cause evaluation frameworks, and standardized task completion benchmarks.",
+      "architecture_focused": "Designed runtime diagnostics pipelines combining log & trace analysis with LLM evaluation benchmarks to automate root-cause detection and reduce developer diagnostic friction.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "MTTR Diagnostics",
+      "Root-Cause Diagnostics",
+      "Log & Trace Analysis",
+      "Standardized Benchmarks",
+      "Runtime Performance SLOs"
+    ],
+    "metrics": [
+      "Accelerated developer MTTR",
+      "Standardized diagnostic benchmarks"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Great bullet for SRE, Observability, and Developer Tooling roles.",
+    "source_resume_ids": [
+      "joy_res_01",
+      "joy_res_02"
+    ],
+    "raw_source_snippets": [
+      "Architected the observability strategy for automated diagnostic workflows; established standardized benchmarks, task completion metrics that reduced diagnostic friction and dramatically accelerated developer Mean Time to Resolution (MTTR)."
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "fact_jw_03",
+    "company": "Google Cloud Platform",
+    "role": "Senior Product Manager",
+    "date_range": "2018.02 - Present",
+    "project_context": "Distributed Runtime Performance & Latency Optimization",
+    "category": "Backend / Architecture",
+    "sub_category": "Performance Optimization & SLOs",
+    "refined_text": "Diagnosed an 8x latency bottleneck across distributed API and e2e query layers; led architecture tradeoff discussions with core systems engineering to redesign sampling, partition pruning, and caching strategies, slashing zero-state query latency by 70% and establishing rigorous platform SLOs.",
+    "variants": {
+      "standard": "Diagnosed an 8x latency bottleneck across distributed API and e2e query layers; led architecture tradeoff discussions with core systems engineering to redesign sampling, partition pruning, and caching strategies, slashing zero-state query latency by 70% and establishing rigorous platform SLOs.",
+      "metric_focused": "Slashed zero-state query latency by 70% across distributed platform services by diagnosing an 8x bottleneck and executing structured A/B performance experiments.",
+      "architecture_focused": "Partnered with systems engineering to redesign partition pruning, query execution paths, and caching/sampling strategies across distributed intake and query layers, establishing rigorous platform SLOs.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Distributed Query Systems",
+      "Caching & Sampling",
+      "Partition Pruning",
+      "Latency Optimization",
+      "Platform SLOs",
+      "A/B Testing"
+    ],
+    "metrics": [
+      "8x latency bottleneck diagnosed",
+      "70% zero-state query latency reduction"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Highlights deep technical acumen and systems engineering partnership.",
+    "source_resume_ids": [
+      "joy_res_01",
+      "joy_res_02",
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Diagnosed an 8x latency bottleneck between API and e2e query layers; led architecture tradeoff discussions with core systems engineering to redesign sampling and caching strategy for effective query execution, cutting zero-state query latency by 70%."
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "fact_jw_04",
+    "company": "Google Cloud Platform",
+    "role": "Senior Product Manager",
+    "date_range": "2018.02 - Present",
+    "project_context": "Universal Dashboard Framework (UDF) - Tech Impact Award",
+    "category": "Product & Platform Strategy",
+    "sub_category": "0-to-1 Platform-as-a-Product",
+    "refined_text": "Conceived, built, and scaled the Universal Dashboard Framework (UDF) from 0-to-1 as sole PM, unifying fragmented tools into a reusable, API-first platform component framework across 20+ GCP infrastructure teams, slashing partner onboarding support tickets by 50% in Month 1 (Awarded Google Cloud Tech Impact Award).",
+    "variants": {
+      "standard": "Conceived, built, and scaled the Universal Dashboard Framework (UDF) from 0-to-1 as sole PM, unifying fragmented tools into a reusable, API-first platform component framework across 20+ GCP infrastructure teams, slashing partner onboarding support tickets by 50% in Month 1 (Awarded Google Cloud Tech Impact Award).",
+      "metric_focused": "Slashed partner onboarding support tickets by 50% in Month 1 and scaled to 20+ core GCP engineering organizations within 12 months, earning the Google Cloud Tech Impact Award.",
+      "architecture_focused": "Built a unified, API-first platform component framework with standardized data contracts, reusable query components, and self-service golden paths across heterogeneous Google Cloud Console (Pantheon) workflows.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Platform-as-a-Product",
+      "API-first Architecture",
+      "Design Systems",
+      "GCP Console (Pantheon)",
+      "Data Contracts",
+      "Golden Paths"
+    ],
+    "metrics": [
+      "0-to-1 as sole PM",
+      "Adopted by 20+ core GCP teams in 12 months",
+      "50% support tickets slashed in Month 1",
+      "Google Cloud Tech Impact Award"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Flagship 0-to-1 platform achievement with company-level award recognition.",
+    "source_resume_ids": [
+      "joy_res_01",
+      "joy_res_02",
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Conceived, built, and scaled the Universal Dashboard Framework (UDF) from 0-to-1 as sole PM, unifying fragmented tools into a reusable, API-first platform component framework... slashing support tickets by 50% in Month 1."
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "fact_jw_05",
+    "company": "Google Cloud Platform",
+    "role": "Senior Product Manager",
+    "date_range": "2018.02 - Present",
+    "project_context": "Stackdriver to Cloud Console Migration - Feats of Engineering Award",
+    "category": "Cloud & Enterprise Systems",
+    "sub_category": "Migration & Governance",
+    "refined_text": "Orchestrated the end-to-end platform migration of legacy Stackdriver infrastructure into Google Cloud Console (Pantheon); led cross-functional alignment across IAM, feature parity, backend replication, and core systems with zero downtime, driving full deprecation while expanding active enterprise users by 20% (Awarded Google Feats of Engineering Award).",
+    "variants": {
+      "standard": "Orchestrated the end-to-end platform migration of legacy Stackdriver infrastructure into Google Cloud Console (Pantheon); led cross-functional alignment across IAM, feature parity, backend replication, and core systems with zero downtime, driving full deprecation while expanding active enterprise users by 20% (Awarded Google Feats of Engineering Award).",
+      "metric_focused": "Expanded active enterprise user adoption by 20% while achieving 100% zero-downtime deprecation of legacy Stackdriver infrastructure, winning the Google Feats of Engineering Award.",
+      "architecture_focused": "Directed zero-downtime migration architecture into Pantheon, aligning IAM, backend replication, security governance, and enterprise compliance standards across core infrastructure.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Google Cloud Console (Pantheon)",
+      "Stackdriver",
+      "IAM Governance",
+      "Zero-Downtime Migration",
+      "Backend Replication",
+      "Enterprise SLA"
+    ],
+    "metrics": [
+      "Zero downtime",
+      "20% enterprise user adoption growth",
+      "100% full deprecation",
+      "Google Feats of Engineering Award"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Shows massive enterprise migration scale, zero-downtime delivery, and governance.",
+    "source_resume_ids": [
+      "joy_res_01",
+      "joy_res_02",
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Orchestrated the end-to-end platform migration of legacy Stackdriver infrastructure into Google Cloud Console (Pantheon)... with zero downtime, driving full deprecation while expanding active enterprise users by 20%."
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "fact_jw_06",
+    "company": "Google Cloud Platform",
+    "role": "Senior Product Manager",
+    "date_range": "2018.02 - Present",
+    "project_context": "GKE Cost Insights & FinOps Platform Architecture",
+    "category": "Cloud & Enterprise Systems",
+    "sub_category": "FinOps & Cost Optimization",
+    "refined_text": "Co-authored and launched GKE Cost Insights and platform utilization architecture combining Cloud Monitoring and BigQuery; empowered enterprise organizations to model cost-to-serve, forecast multi-tenant compute/AI workload spend, and automate storage tiering, driving multi-million-dollar efficiency gains.",
+    "variants": {
+      "standard": "Co-authored and launched GKE Cost Insights and platform utilization architecture combining Cloud Monitoring and BigQuery; empowered enterprise organizations to model cost-to-serve, forecast multi-tenant compute/AI workload spend, and automate storage tiering, driving multi-million-dollar efficiency gains.",
+      "metric_focused": "Drove multi-million-dollar efficiency gains for enterprise customers by launching GKE Cost Insights, enabling granular AI and compute spend attribution, capacity alignment, and automated storage tiering.",
+      "architecture_focused": "Architected multi-tenant compute and AI workload cost-modeling pipeline integrating Google Kubernetes Engine (GKE), Cloud Monitoring, and BigQuery data warehousing.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Google Kubernetes Engine (GKE)",
+      "BigQuery",
+      "Cloud Monitoring",
+      "FinOps",
+      "Workload Unit Economics",
+      "Storage Tiering"
+    ],
+    "metrics": [
+      "Multi-million-dollar efficiency gains",
+      "Granular spend attribution"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Highly relevant for FinOps, Cloud Infrastructure, and Platform Economics.",
+    "source_resume_ids": [
+      "joy_res_01",
+      "joy_res_02",
+      "joy_res_03"
+    ],
+    "raw_source_snippets": [
+      "Co-authored and launched the GKE Cost Insights and platform utilization architecture combining Cloud Monitoring and BigQuery... driving multi-million-dollar efficiency gains."
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "fact_jw_07",
+    "company": "Google Cloud Platform",
+    "role": "Senior Product Manager",
+    "date_range": "2018.02 - Present",
+    "project_context": "Cross-Functional Governance & Delivery Velocity",
+    "category": "Engineering Leadership",
+    "sub_category": "Cross-Functional Alignment & Operating Model",
+    "refined_text": "Partnered with UX, Data Science, and 60+ distributed engineers to ship 10+ core capabilities in 1 year; established structured product intake frameworks and outcome-driven roadmap governance, balancing technical velocity with reliability benchmarks and driving a 30% increase in execution efficiency.",
+    "variants": {
+      "standard": "Partnered with UX, Data Science, and 60+ distributed engineers to ship 10+ core capabilities in 1 year; established structured product intake frameworks and outcome-driven roadmap governance, balancing technical velocity with reliability benchmarks and driving a 30% increase in execution efficiency.",
+      "metric_focused": "Increased engineering execution efficiency by 30% and shipped 10+ core platform capabilities in 1 year by establishing structured product intake frameworks and CUJ mapping.",
+      "architecture_focused": null,
+      "leadership_focused": "Coached engineering leads and mentored product teammates on agile delivery and cross-functional alignment across disparate engineering groups without direct authority."
+    },
+    "tech_stack": [
+      "Product Intake Frameworks",
+      "Customer Journey (CUJ) Mapping",
+      "Agile Delivery",
+      "Cross-Functional Leadership"
+    ],
+    "metrics": [
+      "60+ distributed engineers",
+      "10+ core capabilities in 1 year",
+      "30% execution efficiency boost"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Strong leadership proof: influence without authority across large teams.",
+    "source_resume_ids": [
+      "joy_res_02",
+      "joy_res_03"
+    ],
+    "raw_source_snippets": [
+      "Partnered with UX, Data Science, and 60+ distributed engineers to ship 10+ core capabilities in 1 year... driving a 30% increase in execution efficiency."
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "fact_jw_08",
+    "company": "Scotiabank",
+    "role": "Product Manager",
+    "date_range": "2017.02 - 2018.02",
+    "project_context": "Financial Infrastructure Modernization & BaaS Strategy",
+    "category": "Fintech & Financial Infrastructure",
+    "sub_category": "Modernization & Resiliency",
+    "refined_text": "Defined product strategy and API roadmaps for regulated banking workflows across web and mobile channels; diagnosed systemic infrastructure vulnerabilities causing 5x service latency spikes, delivering architectural recommendations to restore service resiliency and establish regional Banking-as-a-Service (BaaS) platform vision.",
+    "variants": {
+      "standard": "Defined product strategy and API roadmaps for regulated banking workflows across web and mobile channels; diagnosed systemic infrastructure vulnerabilities causing 5x service latency spikes, delivering architectural recommendations to restore service resiliency and establish regional Banking-as-a-Service (BaaS) platform vision.",
+      "metric_focused": "Resolved 5x production latency bottleneck in highly regulated financial environments and established strategic API roadmaps for regional banking integrations.",
+      "architecture_focused": "Formulated regional Banking-as-a-Service (BaaS) architecture roadmap aligning security, legal compliance, and resilient API infrastructure for web and mobile channels.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Banking-as-a-Service (BaaS)",
+      "API Roadmaps",
+      "Financial Infrastructure",
+      "Latency Diagnostics",
+      "Regulatory Compliance"
+    ],
+    "metrics": [
+      "5x production latency bottleneck resolved",
+      "Regional BaaS roadmap"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Solid experience in tier-1 regulated banking and resilient API architecture.",
+    "source_resume_ids": [
+      "joy_res_01",
+      "joy_res_02",
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Defined product strategy and API roadmaps for regulated banking workflows across web and mobile channels... identified a 5x production latency bottleneck and delivered architectural recommendations to restore service resiliency."
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "fact_jw_09",
+    "company": "Net Credit Group (NCF - Fintech Startup)",
+    "role": "Head of Product",
+    "date_range": "2016.04 - 2017.02",
+    "project_context": "0-to-1 Consumer Fintech Ecosystem & High-Throughput Ledger Launch",
+    "category": "Fintech & Financial Infrastructure",
+    "sub_category": "0-to-1 Product Launch & Growth",
+    "refined_text": "Led product lifecycle from conception to launch in 5 months as Head of Product, designing high-throughput transaction ledgers, risk evaluation workflows, and merchant APIs; launched 2 consumer mobile applications and partner portals, scaling platform adoption to 200,000+ active users within 90 days.",
+    "variants": {
+      "standard": "Led product lifecycle from conception to launch in 5 months as Head of Product, designing high-throughput transaction ledgers, risk evaluation workflows, and merchant APIs; launched 2 consumer mobile applications and partner portals, scaling platform adoption to 200,000+ active users within 90 days.",
+      "metric_focused": "Scaled platform adoption to 200,000+ active transacting users within 90 days of launching an end-to-end financial ecosystem in 5 months.",
+      "architecture_focused": "Designed high-throughput real-time transaction ledgers, automated risk evaluation workflows, and merchant APIs embedded with compliance and verification guardrails.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Transaction Ledgers",
+      "Real-Time Merchant APIs",
+      "Risk Evaluation Engine",
+      "Consumer Mobile Apps (iOS/Android)",
+      "Partner Portals"
+    ],
+    "metrics": [
+      "200,000+ active transacting users in 90 days",
+      "Conception to launch in 5 months",
+      "2 mobile applications launched"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Startup Head of Product speed, 0-to-1 execution, and massive growth proof.",
+    "source_resume_ids": [
+      "joy_res_01",
+      "joy_res_02",
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Led product lifecycle from conception to launch in 5 months, designing high-throughput transaction ledgers, risk evaluation workflows, and merchant APIs handling high-volume real-time transactions... scaling platform adoption to 200,000+ active transacting users within 90 days."
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "fact_jw_10",
+    "company": "eBay Inc.",
+    "role": "Product Manager",
+    "date_range": "2012.10 - 2016.04",
+    "project_context": "High-Throughput Search Infrastructure, Traffic Scaling & Experimentation",
+    "category": "Search & Data Infrastructure",
+    "sub_category": "Experimentation & Traffic Scaling",
+    "refined_text": "Drove 20%+ year-over-year organic traffic growth for 3 consecutive years by optimizing consumer search discovery pipelines and executing continuous large-scale A/B testing frameworks across millions of user queries.",
+    "variants": {
+      "standard": "Drove 20%+ year-over-year organic traffic growth for 3 consecutive years by optimizing consumer search discovery pipelines and executing continuous large-scale A/B testing frameworks across millions of user queries.",
+      "metric_focused": "Delivered 20%+ YoY organic traffic growth for 3 consecutive years by optimizing query conversion paths and running continuous A/B testing across millions of consumer queries.",
+      "architecture_focused": "Streamlined conversion funnels and user access flows through data-driven telemetry, query infrastructure optimization, and rigorous statistical evaluation of search relevance metrics.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Search Discovery Pipelines",
+      "A/B Testing Frameworks",
+      "Query Relevance Analytics",
+      "Conversion Funnel Telemetry",
+      "SEO"
+    ],
+    "metrics": [
+      "20%+ YoY organic traffic growth for 3 consecutive years",
+      "Millions of consumer queries"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Demonstrates large-scale consumer experimentation, search discovery, and algorithmic optimization.",
+    "source_resume_ids": [
+      "joy_res_01",
+      "joy_res_02",
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Used search behavior, funnel data, and controlled experiments to reshape discovery experiences, delivering 20%+ year-over-year organic traffic growth for three consecutive years."
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "fact_jw_11",
+    "company": "Rogers Communications",
+    "role": "Product Manager",
+    "date_range": "2010.05 - 2012.10",
+    "project_context": "Search Engine Architecture & NLP Indexing Pipeline",
+    "category": "Search & Data Infrastructure",
+    "sub_category": "NLP & Search Indexing",
+    "refined_text": "Fine-tuned Endeca NLP and search indexing pipelines for Canada's largest telecom portal, improving search accuracy by 30% and expanding search keyword and query coverage by 50%.",
+    "variants": {
+      "standard": "Fine-tuned Endeca NLP and search indexing pipelines for Canada's largest telecom portal, improving search accuracy by 30% and expanding search keyword and query coverage by 50%.",
+      "metric_focused": "Improved search retrieval accuracy by 30% and expanded search keyword coverage by 50% across Canada's largest telecom portal.",
+      "architecture_focused": "Re-engineered Endeca search indexing pipelines, relevance algorithms, and query workflows to maximize query retrieval accuracy.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Endeca Search Engine",
+      "NLP Indexing Pipelines",
+      "Query Relevance Algorithms",
+      "Enterprise Search"
+    ],
+    "metrics": [
+      "30% search accuracy improvement",
+      "50% keyword query coverage expansion"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Early deep foundation in search and NLP pipelines.",
+    "source_resume_ids": [
+      "joy_res_01",
+      "joy_res_02",
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Fine-tuned Endeca NLP and indexing pipelines for Canada's largest telecom portal; improved search accuracy by 30% and expanded search keyword coverage by 50%."
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "fact_jw_12",
+    "company": "Google Inc",
+    "role": "Senior Account Manager",
+    "date_range": "2005.12 - 2008.11",
+    "project_context": "AdWords Strategy, Vertical Growth & Operations Leadership",
+    "category": "Engineering Leadership",
+    "sub_category": "Commercial GTM & Operational Scaling",
+    "refined_text": "Scaled digital performance campaigns across high-value client portfolios, achieving 40%+ YoY growth for 3 consecutive years; built and led a 30-person sales operations team and a 20-person acquisition team, increasing new client onboarding by 5x in Year 1.",
+    "variants": {
+      "standard": "Scaled digital performance campaigns across high-value client portfolios, achieving 40%+ YoY growth for 3 consecutive years; built and led a 30-person sales operations team and a 20-person acquisition team, increasing new client onboarding by 5x in Year 1.",
+      "metric_focused": "Achieved 40%+ YoY growth for 3 consecutive years and accelerated new client onboarding by 5x in Year 1 through data-led campaign optimization and operational scaling.",
+      "architecture_focused": null,
+      "leadership_focused": "Built and led a 50-person cross-functional organization (30 sales ops + 20 acquisition), scaling enterprise client portfolios."
+    },
+    "tech_stack": [
+      "AdWords Platform",
+      "Data-Led Campaign Optimization",
+      "Sales Operations",
+      "Org Scaling"
+    ],
+    "metrics": [
+      "40%+ YoY growth for 3 consecutive years",
+      "5x client onboarding increase in Year 1",
+      "Led 50-person organization"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Proves commercial acumen, sales engineering leadership, and scaling ability.",
+    "source_resume_ids": [
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Scaled digital performance campaigns across high-value client portfolios, achieving 40%+ YoY growth for 3 consecutive years... Built and led a 30-person sales operations team and a 20-person acquisition team, increasing new client onboarding by 5x in Year 1."
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "fact_jw_13",
+    "company": "Industry & Google Cloud",
+    "role": "Author & Keynote Speaker",
+    "date_range": "2018 - Present",
+    "project_context": "Enterprise Observability & AI Thought Leadership",
+    "category": "Thought Leadership & Industry Impact",
+    "sub_category": "Publications & Keynotes",
+    "refined_text": "Featured speaker at Google Cloud Next (delivered 'How MLB Creates Granular Insight with Observability Analytics', 400+ attendees, 4.7/5 rating) and GrafanaCon (2019); authored 15+ official Google Cloud technical whitepapers and blogs on Query Telemetry with SQL for AI Observability, Log Analytics, GKE cost visibility, and context-aware observability.",
+    "variants": {
+      "standard": "Featured speaker at Google Cloud Next (delivered 'How MLB Creates Granular Insight with Observability Analytics', 400+ attendees, 4.7/5 rating) and GrafanaCon (2019); authored 15+ official Google Cloud technical whitepapers and blogs on Query Telemetry with SQL for AI Observability, Log Analytics, GKE cost visibility, and context-aware observability.",
+      "metric_focused": "Authored 15+ official Google Cloud technical whitepapers and spoke at Google Cloud Next (400+ attendees, 4.7/5 rating) and GrafanaCon on observability data strategies.",
+      "architecture_focused": null,
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Technical Writing (15+ publications)",
+      "Keynotes",
+      "Google Cloud Next",
+      "GrafanaCon",
+      "SQL Alerting",
+      "AI Observability"
+    ],
+    "metrics": [
+      "15+ official Google Cloud technical whitepapers",
+      "400+ attendees at Google Cloud Next (4.7/5 rating)"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Outstanding proof of executive thought leadership and public recognition.",
+    "source_resume_ids": [
+      "joy_res_01",
+      "joy_res_02",
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Featured speaker at Google Cloud Next ('How MLB Creates Granular Insight with Observability Analytics', 400+ attendees, 4.7/5 rating) and GrafanaCon (2019)... Authored 15+ official Google Cloud technical whitepapers."
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "fact_jw_14",
+    "company": "Personal Side Project",
+    "role": "Creator & Fullstack Builder",
+    "date_range": "Recent",
+    "project_context": "Youth Financial Literacy Interactive Learning Website",
+    "category": "Product & Platform Strategy",
+    "sub_category": "Side Projects & Community",
+    "refined_text": "Designed and built interactive learning website for youth financial literacy (invest-in-future.onrender.com), delivering engaging digital financial education experiences.",
+    "variants": {
+      "standard": "Designed and built interactive learning website for youth financial literacy (invest-in-future.onrender.com), delivering engaging digital financial education experiences.",
+      "metric_focused": null,
+      "architecture_focused": null,
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Fullstack Web Development",
+      "Interactive Learning",
+      "Educational Tech",
+      "Render Cloud"
+    ],
+    "metrics": [
+      "Live deployed product"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Highlights hands-on technical passion and community contribution.",
+    "source_resume_ids": [
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Side Project: Designed and built interactive learning website for youth financial literacy (invest-in-future.onrender.com)"
+    ],
+    "created_at": "2026-09-23T15:15:24.197426",
+    "updated_at": "2026-09-23T15:15:24.197426"
+  },
+  {
+    "id": "7ff95353",
+    "company": "Google",
+    "role": "Senior Product Manager",
+    "date_range": "2018.02 - 2026.09",
+    "project_context": "",
+    "category": "Product & Platform Strategy",
+    "sub_category": "Manual Entry",
+    "refined_text": "Uncovered an 8x query-to-API performance bottleneck and delivered a 70% latency reduction via A/B experiment, drastically improving platform reliability, query responsiveness, and evaluation accuracy.\n",
+    "variants": {
+      "standard": "Uncovered an 8x query-to-API performance bottleneck and delivered a 70% latency reduction via A/B experiment, drastically improving platform reliability, query responsiveness, and evaluation accuracy.\n",
+      "metric_focused": null,
+      "architecture_focused": null,
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "A/B Testing",
+      "Multivariate Experiment"
+    ],
+    "metrics": [],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": null,
+    "source_resume_ids": [],
+    "raw_source_snippets": [],
+    "created_at": "2026-09-23T15:58:40.189854",
+    "updated_at": "2026-09-23T15:58:40.189854"
+  },
+  {
+    "id": "fact_jw_08_b",
+    "company": "Scotiabank",
+    "role": "Product Manager",
+    "date_range": "2017.02 - 2018.02",
+    "project_context": "Enterprise Governance & Regulatory Alignment",
+    "category": "Fintech & Financial Infrastructure",
+    "sub_category": "Modernization & Resiliency",
+    "refined_text": "Partnered with security, enterprise architecture, and compliance to modernize mission-critical core banking infrastructure, establishing self-service API access policies across retail and commercial units.",
+    "variants": {
+      "standard": "Partnered with security, enterprise architecture, and compliance to modernize mission-critical core banking infrastructure, establishing self-service API access policies across retail and commercial units.",
+      "metric_focused": "Accelerated internal partner integration timelines by modernizing core banking infrastructure and establishing self-service API access policies.",
+      "architecture_focused": "Defined enterprise architecture compliance and authentication guardrails for multi-channel banking interfaces across web and mobile endpoints.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Core Banking APIs",
+      "Enterprise Architecture",
+      "Regulatory Compliance",
+      "Identity & Security"
+    ],
+    "metrics": [
+      "Retail and commercial units onboarded"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Second bullet from Joy Wang's source resume.",
+    "source_resume_ids": [
+      "joy_res_01",
+      "joy_res_03"
+    ],
+    "raw_source_snippets": [
+      "Partnered with engineering, security, and governance to modernize mission-critical infrastructure."
+    ],
+    "created_at": "2026-09-24T10:15:00.000000",
+    "updated_at": "2026-09-24T10:15:00.000000"
+  },
+  {
+    "id": "fact_jw_09_b",
+    "company": "Net Credit Group (NCF - Fintech Startup)",
+    "role": "Head of Product",
+    "date_range": "2016.04 - 2017.02",
+    "project_context": "Risk & Regulatory Guardrails",
+    "category": "Fintech & Financial Infrastructure",
+    "sub_category": "0-to-1 Product Launch & Growth",
+    "refined_text": "Collaborated closely with legal, risk, and operations teams to embed automated risk evaluation engines and compliance guardrails directly into merchant APIs and consumer mobile transaction flows.",
+    "variants": {
+      "standard": "Collaborated closely with legal, risk, and operations teams to embed automated risk evaluation engines and compliance guardrails directly into merchant APIs and consumer mobile transaction flows.",
+      "metric_focused": "Embedded automated risk evaluation engines and compliance verification directly into high-volume transaction funnels, reducing credit evaluation turnaround to seconds.",
+      "architecture_focused": "Architected automated risk evaluation decision engines directly integrated with merchant partner APIs and transaction verification guardrails.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Risk Engines",
+      "Merchant APIs",
+      "Transaction Guardrails",
+      "Mobile Architecture"
+    ],
+    "metrics": [
+      "Real-time automated credit decisioning"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Second bullet from Joy Wang's source resume.",
+    "source_resume_ids": [
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Collaborated closely with legal, risk, and operations teams to embed compliance guardrails and transaction verification directly into consumer-facing mobile flows."
+    ],
+    "created_at": "2026-09-24T10:15:00.000000",
+    "updated_at": "2026-09-24T10:15:00.000000"
+  },
+  {
+    "id": "fact_jw_10_b",
+    "company": "eBay Inc.",
+    "role": "Product Manager",
+    "date_range": "2012.10 - 2016.04",
+    "project_context": "CUJ & Search Quality Optimization",
+    "category": "Search & Data Infrastructure",
+    "sub_category": "Experimentation & Traffic Scaling",
+    "refined_text": "Analyzed complex consumer query funnels and search relevance metrics to minimize query friction and optimize conversion paths, validating improvements through rigorous statistical evaluation.",
+    "variants": {
+      "standard": "Analyzed complex consumer query funnels and search relevance metrics to minimize query friction and optimize conversion paths, validating improvements through rigorous statistical evaluation.",
+      "metric_focused": "Optimized consumer query funnels and conversion paths through continuous multivariate testing, maximizing search relevance and session retention.",
+      "architecture_focused": "Implemented telemetry tracking across consumer query funnels to measure search friction and guide query relevance ranking updates.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Query Relevance",
+      "Funnel Telemetry",
+      "Statistical Evaluation",
+      "A/B Testing"
+    ],
+    "metrics": [
+      "Minimizing query friction across millions of user sessions"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Second bullet from Joy Wang's source resume.",
+    "source_resume_ids": [
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Analyzed complex consumer query funnels and search relevance metrics to minimize query friction and optimize conversion paths, validating improvements through rigorous statistical evaluation."
+    ],
+    "created_at": "2026-09-24T10:15:00.000000",
+    "updated_at": "2026-09-24T10:15:00.000000"
+  },
+  {
+    "id": "fact_jw_11_b",
+    "company": "Rogers Communications",
+    "role": "Product Manager",
+    "date_range": "2010.05 - 2012.10",
+    "project_context": "Search Taxonomy & Content Integration",
+    "category": "Search & Data Infrastructure",
+    "sub_category": "NLP & Search Indexing",
+    "refined_text": "Standardized telecom product search taxonomy and automated catalog data ingestion pipelines, reducing zero-result search queries by 25% and enhancing customer self-service discoverability.",
+    "variants": {
+      "standard": "Standardized telecom product search taxonomy and automated catalog data ingestion pipelines, reducing zero-result search queries by 25% and enhancing customer self-service discoverability.",
+      "metric_focused": "Reduced zero-result search queries by 25% by standardizing telecom taxonomy and automating catalog data ingestion pipelines.",
+      "architecture_focused": "Engineered automated catalog ingestion pipelines and standardized metadata hierarchies for Canada's primary telecommunications portal.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Search Taxonomy",
+      "Catalog Ingestion",
+      "Zero-Result Reduction",
+      "Self-Service Discovery"
+    ],
+    "metrics": [
+      "25% reduction in zero-result searches"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Second bullet from Joy Wang's source resume.",
+    "source_resume_ids": [
+      "joy_res_01",
+      "joy_res_03"
+    ],
+    "raw_source_snippets": [
+      "Standardized enterprise search taxonomy, automate catalog data ingestion, and reduce zero-result search queries by 25%."
+    ],
+    "created_at": "2026-09-24T10:15:00.000000",
+    "updated_at": "2026-09-24T10:15:00.000000"
+  },
+  {
+    "id": "fact_jw_12_b",
+    "company": "Google Inc",
+    "role": "Senior Account Manager",
+    "date_range": "2005.12 - 2008.11",
+    "project_context": "Sales Engineering & Organization Scaling",
+    "category": "Engineering Leadership",
+    "sub_category": "Commercial GTM & Operational Scaling",
+    "refined_text": "Built structured client acquisition playbooks and cross-functional training programs for a 50-person sales operations and client acquisition organization, reducing new enterprise account ramp-up time by 40%.",
+    "variants": {
+      "standard": "Built structured client acquisition playbooks and cross-functional training programs for a 50-person sales operations and client acquisition organization, reducing new enterprise account ramp-up time by 40%.",
+      "metric_focused": "Reduced enterprise client ramp-up time by 40% across a 50-person organization through data-driven operational playbooks.",
+      "architecture_focused": null,
+      "leadership_focused": "Led structured onboarding playbooks and operational training across 50 team members, scaling enterprise portfolio delivery."
+    },
+    "tech_stack": [
+      "Operations Playbooks",
+      "Enterprise Onboarding",
+      "Team Scaling"
+    ],
+    "metrics": [
+      "40% reduction in account ramp-up time",
+      "50-person organization"
+    ],
+    "is_locked": true,
+    "is_verified": true,
+    "personal_notes": "Second bullet from Joy Wang's source resume.",
+    "source_resume_ids": [
+      "joy_res_03",
+      "joy_res_04"
+    ],
+    "raw_source_snippets": [
+      "Built and led a 30-person sales operations team and a 20-person acquisition team, establishing structured onboarding playbooks."
+    ],
+    "created_at": "2026-09-24T10:15:00.000000",
+    "updated_at": "2026-09-24T10:15:00.000000"
+  }
+]
