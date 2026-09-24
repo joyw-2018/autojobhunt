@@ -1,5 +1,6 @@
 import React from 'react';
-import { Database, FileText, Sparkles, Layers, Sliders, CheckCircle2 } from 'lucide-react';
+import { Database, FileText, Sparkles, Layers, Sliders, CheckCircle2, LogOut, User as UserIcon } from 'lucide-react';
+import { UserProfile } from '../services/authService';
 
 interface NavbarProps {
   activeTab: 'resumes' | 'studio' | 'tailor' | 'template';
@@ -9,9 +10,11 @@ interface NavbarProps {
     locked_facts: number;
     total_resumes: number;
   };
+  user?: UserProfile | null;
+  onLogout?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, stats }) => {
+export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, stats, user, onLogout }) => {
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,16 +102,44 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, stats }
             </button>
           </nav>
 
-          {/* Quick Metrics */}
-          <div className="hidden lg:flex items-center space-x-3 text-xs text-slate-500">
+          {/* User Profile & Actions */}
+          <div className="flex items-center space-x-3 text-xs">
             {stats && (
-              <>
-                <div className="flex items-center space-x-1">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  <span>已锁定真实事实:</span>
-                  <span className="font-semibold text-slate-800">{stats.locked_facts} 条</span>
+              <div className="hidden xl:flex items-center space-x-1 text-slate-500">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                <span>已锁定真实事实:</span>
+                <span className="font-semibold text-slate-800">{stats.locked_facts} 条</span>
+              </div>
+            )}
+
+            {user && (
+              <div className="flex items-center space-x-2 pl-3 border-l border-slate-200">
+                {user.picture ? (
+                  <img
+                    src={user.picture}
+                    alt={user.name}
+                    className="w-8 h-8 rounded-full border border-slate-200 object-cover"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xs border border-indigo-200">
+                    {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                )}
+                <div className="hidden sm:block text-left">
+                  <p className="font-bold text-slate-800 text-xs leading-none">{user.name}</p>
+                  <p className="text-[10px] text-slate-400 leading-tight truncate max-w-[120px]">{user.email}</p>
                 </div>
-              </>
+
+                {onLogout && (
+                  <button
+                    onClick={onLogout}
+                    title="退出登录"
+                    className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-red-600 transition-colors ml-1 cursor-pointer"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
             )}
           </div>
         </div>

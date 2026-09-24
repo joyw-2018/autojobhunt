@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
+import { LoginPage } from './components/LoginPage';
 import { ResumeUpload } from './components/ResumeUpload';
 import { FactStudio } from './components/FactStudio';
 import { ResumeTailorStudio } from './components/ResumeTailorStudio';
 import { TemplateSettingsPreview } from './components/TemplateSettingsPreview';
 import { ResumeMetadata, FactBlock, AppStats } from './types/fact';
 import { api } from './api/client';
+import { authService, UserProfile } from './services/authService';
 
 export function App() {
+  const [user, setUser] = useState<UserProfile | null>(authService.getStoredUser());
   const [activeTab, setActiveTab] = useState<'resumes' | 'studio' | 'tailor' | 'template'>('studio');
   const [resumes, setResumes] = useState<ResumeMetadata[]>([]);
   const [facts, setFacts] = useState<FactBlock[]>([]);
@@ -36,14 +39,26 @@ export function App() {
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (user) {
+      loadData();
+    }
+  }, [user]);
+
+  // If user is not logged in, render Google OAuth Login Gateway
+  if (!user) {
+    return <LoginPage onLoginSuccess={(loggedInUser) => setUser(loggedInUser)} />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        user={user}
+        onLogout={() => {
+          authService.clearUser();
+          setUser(null);
+        }}
         stats={stats ? {
           total_facts: stats.total_facts,
           locked_facts: stats.locked_facts,
