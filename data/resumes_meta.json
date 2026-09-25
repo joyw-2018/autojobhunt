@@ -64,5 +64,27 @@
     "character_count": 7056,
     "extracted_fact_count": 2,
     "error_message": null
+  },
+  {
+    "id": "24cd1c53",
+    "filename": "Joy Wang Resume - Ordering, Entitlements and Obligations, OREO.pdf",
+    "file_type": "PDF",
+    "file_size": 88833,
+    "uploaded_at": "2026-09-24T15:48:49.563282",
+    "status": "EXTRACTED",
+    "character_count": 6948,
+    "extracted_fact_count": 2,
+    "error_message": null
+  },
+  {
+    "id": "731b05a0",
+    "filename": "Joy Wang Resume - Staff PM - Platform.pdf",
+    "file_type": "PDF",
+    "file_size": 124378,
+    "uploaded_at": "2026-09-24T15:50:22.418843",
+    "status": "EXTRACTED",
+    "character_count": 7438,
+    "extracted_fact_count": 2,
+    "error_message": null
   }
 ]

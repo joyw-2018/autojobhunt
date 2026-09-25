@@ -783,5 +783,82 @@
     ],
     "created_at": "2026-09-24T10:15:00.000000",
     "updated_at": "2026-09-24T10:15:00.000000"
+  },
+  {
+    "id": "44ace207",
+    "company": "TechCorp Global",
+    "role": "Senior Backend Engineer",
+    "date_range": "2022.06 - 2025.02",
+    "project_context": "High-Throughput Payment Gateway",
+    "category": "Backend / Architecture",
+    "sub_category": "Performance Optimization",
+    "refined_text": "Architected and deployed a distributed payment processing pipeline in Go and Kafka, cutting p99 transaction latency by 42% across 15M daily operations.",
+    "variants": {
+      "standard": "Architected and deployed a distributed payment processing pipeline in Go and Kafka, cutting p99 transaction latency by 42% across 15M daily operations.",
+      "metric_focused": "Cut p99 payment latency by 42% and saved $140K in annual AWS infrastructure costs across 15M daily transactions.",
+      "architecture_focused": "Designed an idempotent, event-driven payment gateway using Go, Apache Kafka, and Redis cluster with 99.999% SLA.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Go",
+      "Kafka",
+      "Redis",
+      "Kubernetes",
+      "AWS"
+    ],
+    "metrics": [
+      "42% p99 latency cut",
+      "15M daily operations",
+      "$140K cost savings"
+    ],
+    "is_locked": false,
+    "is_verified": false,
+    "personal_notes": null,
+    "source_resume_ids": [
+      "joy_res_01"
+    ],
+    "raw_source_snippets": [
+      "Responsible for payment gateway optimization and microservices development."
+    ],
+    "created_at": "2026-09-24T15:56:30.385790",
+    "updated_at": "2026-09-24T15:56:30.385790"
+  },
+  {
+    "id": "1ddffa93",
+    "company": "DataScale Systems",
+    "role": "Software Engineer II",
+    "date_range": "2020.03 - 2022.05",
+    "project_context": "Real-time Analytics Ingestion Platform",
+    "category": "Data / Machine Learning",
+    "sub_category": "Scalability & Reliability",
+    "refined_text": "Engineered real-time streaming data ingestion pipelines handling 50K events/sec using Apache Flink and ClickHouse, reducing dashboard sync delay from 15 min to sub-second.",
+    "variants": {
+      "standard": "Engineered real-time streaming data ingestion pipelines handling 50K events/sec using Apache Flink and ClickHouse, reducing dashboard sync delay from 15 min to sub-second.",
+      "metric_focused": "Reduced data sync delay from 15 minutes to 800ms while scaling ingestion throughput to 50K events/sec.",
+      "architecture_focused": "Architected stream-table dual processing layer with Apache Flink, ClickHouse, and protobuf serialization.",
+      "leadership_focused": null
+    },
+    "tech_stack": [
+      "Python",
+      "Apache Flink",
+      "ClickHouse",
+      "Docker",
+      "gRPC"
+    ],
+    "metrics": [
+      "50K events/sec",
+      "sub-second dashboard sync (from 15 min)"
+    ],
+    "is_locked": false,
+    "is_verified": false,
+    "personal_notes": null,
+    "source_resume_ids": [
+      "joy_res_01"
+    ],
+    "raw_source_snippets": [
+      "Built data processing pipeline with Flink and ClickHouse for real-time reporting."
+    ],
+    "created_at": "2026-09-24T15:56:30.385790",
+    "updated_at": "2026-09-24T15:56:30.385790"
   }
 ]

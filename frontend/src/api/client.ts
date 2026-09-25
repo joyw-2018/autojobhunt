@@ -28,6 +28,8 @@ export function cleanScrapedJobData(url: string, data: any): ScrapedJD {
     detectedCompany = 'Google';
   } else if (urlLower.includes('openai.com') || rawContent.includes('OpenAI')) {
     detectedCompany = 'OpenAI';
+  } else if (urlLower.includes('hubspot.com') || rawContent.includes('HubSpot')) {
+    detectedCompany = 'HubSpot';
   } else if (urlLower.includes('stripe.com') || rawContent.includes('Stripe')) {
     detectedCompany = 'Stripe';
   } else if (urlLower.includes('databricks.com') || rawContent.includes('Databricks')) {
@@ -71,24 +73,29 @@ export function cleanScrapedJobData(url: string, data: any): ScrapedJD {
   // 3. Clean JD Text Body (strip navigation header and footer legal disclaimers)
   let cleanText = rawContent;
   if (cleanText) {
-    const startMarkers = [
-      'Minimum qualifications:',
-      'Minimum qualifications',
-      'Basic Qualifications:',
-      'Basic Qualifications',
-      'About the job',
-      'Role Description',
-      'Overview:',
-      'Responsibilities:',
-      'Job Description',
-      'Qualifications:'
-    ];
+    const alreadyStartsCleanly = detectedTitle && rawContent.slice(0, 200).toLowerCase().includes(detectedTitle.toLowerCase());
     let startIdx = -1;
-    for (const marker of startMarkers) {
-      const idx = cleanText.indexOf(marker);
-      if (idx !== -1) {
-        if (startIdx === -1 || idx < startIdx) {
-          startIdx = idx;
+    if (!alreadyStartsCleanly) {
+      const startMarkers = [
+        'About the Team',
+        'About the Role',
+        'Minimum qualifications:',
+        'Minimum qualifications',
+        'Basic Qualifications:',
+        'Basic Qualifications',
+        'About the job',
+        'Role Description',
+        'Overview:',
+        'Responsibilities:',
+        'Job Description',
+        'Qualifications:'
+      ];
+      for (const marker of startMarkers) {
+        const idx = cleanText.indexOf(marker);
+        if (idx !== -1) {
+          if (startIdx === -1 || idx < startIdx) {
+            startIdx = idx;
+          }
         }
       }
     }
