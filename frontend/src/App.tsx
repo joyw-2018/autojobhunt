@@ -74,7 +74,7 @@ export function App() {
           </div>
         ) : (
           <>
-            {activeTab === 'resumes' && (
+            <div style={{ display: activeTab === 'resumes' ? 'block' : 'none' }}>
               <ResumeUpload
                 resumes={resumes}
                 onRefresh={loadData}
@@ -83,18 +83,22 @@ export function App() {
                   setActiveTab('studio');
                 }}
               />
-            )}
+            </div>
 
-            {activeTab === 'studio' && (
+            <div style={{ display: activeTab === 'studio' ? 'block' : 'none' }}>
               <FactStudio
                 facts={facts}
                 onRefresh={loadData}
               />
-            )}
+            </div>
 
-            {activeTab === 'tailor' && <ResumeTailorStudio />}
+            <div style={{ display: activeTab === 'tailor' ? 'block' : 'none' }}>
+              <ResumeTailorStudio />
+            </div>
 
-            {activeTab === 'template' && <TemplateSettingsPreview />}
+            <div style={{ display: activeTab === 'template' ? 'block' : 'none' }}>
+              <TemplateSettingsPreview />
+            </div>
           </>
         )}
       </main>

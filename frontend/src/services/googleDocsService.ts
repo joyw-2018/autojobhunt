@@ -117,19 +117,20 @@ export const googleDocsService = {
     const fontStack = `${config.fontFamily}, Calibri, Arial, sans-serif`;
     const paddingPt = Math.round(config.marginInches * 72);
 
-    // Header divider: only present if showHeaderDivider is true (default false - no horizontal line!)
+    // Header divider: only present if showHeaderDivider is true (default true - matches PDF header line)
     const headerBorder = config.showHeaderDivider
-      ? `border-bottom: ${config.dividerThickness}pt solid ${config.dividerColor || '#d1d5db'}; padding-bottom: 6pt;`
+      ? `border-bottom: ${config.dividerThickness || 1.5}pt solid ${config.dividerColor || '#0f172a'}; padding-bottom: 6pt;`
       : 'padding-bottom: 4pt;';
 
     // Section header divider: only present if showSectionDividers is true (default false - no horizontal lines!)
     const sectionBorder = config.showSectionDividers
-      ? `border-bottom: ${config.dividerThickness}pt solid ${config.dividerColor || '#111827'}; padding-bottom: 2pt;`
+      ? `border-bottom: ${config.dividerThickness || 1}pt solid ${config.dividerColor || '#1e3a8a'}; padding-bottom: 2pt;`
       : 'padding-bottom: 1pt;';
 
+    const sectionTitleColor = config.sectionHeaderColor || '#1e3a8a';
     const sectionTitleCase = config.sectionHeaderUppercase ? 'text-transform: uppercase;' : '';
     const sectionFontWeight = config.sectionHeaderBold ? 'font-weight: bold;' : 'font-weight: 600;';
-    const sectionStyle = `font-size: ${config.sectionHeaderSize}pt; ${sectionFontWeight} ${sectionTitleCase} letter-spacing: 0.5pt; color: #111827; ${sectionBorder} margin-top: 10pt; margin-bottom: 4pt;`;
+    const sectionStyle = `font-size: ${config.sectionHeaderSize}pt; ${sectionFontWeight} ${sectionTitleCase} letter-spacing: 0.5pt; color: ${sectionTitleColor}; ${sectionBorder} margin-top: 12pt; margin-bottom: 4pt;`;
 
     const experiencesHtml = data.experiences
       .map(exp => {

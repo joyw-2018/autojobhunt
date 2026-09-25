@@ -21,290 +21,15 @@ import { GoogleDocsExportModal } from './GoogleDocsExportModal';
 import { docFormatService, GoogleDocsFormatConfig } from '../services/docFormatService';
 
 
-interface CanonicalEmployer {
-  company: string;
-  role: string;
-  date_range: string;
-  aliases: string[];
-  page1Bullets: Array<{ fact_id: string; text: string }>;
-  page2Bullets: Array<{ fact_id: string; text: string }>;
-}
-
-const CANONICAL_EMPLOYERS: CanonicalEmployer[] = [
-  {
-    company: 'Google Cloud Platform',
-    role: 'Senior Product Manager',
-    date_range: '2018.02 - Present',
-    aliases: ['google cloud platform', 'google cloud', 'google'],
-    page1Bullets: [
-      {
-        fact_id: 'fact_jw_01',
-        text: 'Spearheaded the integration of AI-ready telemetry, Model Context Protocol (MCP), and agentic workflows into platform logs, traces, and agent trajectories; productized natural-language query analytics and LLM-powered insights enabling autonomous agents and developers to diagnose complex distributed infrastructure, unblocking $100M+ in enterprise sales pipeline.'
-      },
-      {
-        fact_id: 'fact_jw_04',
-        text: 'Conceived, built, and scaled the Universal Dashboard Framework (UDF) from 0-to-1 as sole PM, unifying fragmented tools into a reusable, API-first platform component framework across 20+ GCP infrastructure teams, slashing partner onboarding support tickets by 50% in Month 1 (Awarded Google Cloud Tech Impact Award).'
-      },
-      {
-        fact_id: 'fact_jw_03',
-        text: 'Diagnosed an 8x latency bottleneck across distributed API and e2e query layers; led architecture tradeoff discussions with core systems engineering to redesign sampling, partition pruning, and caching strategies, slashing zero-state query latency by 70% and establishing rigorous platform SLOs.'
-      },
-      {
-        fact_id: 'fact_jw_05',
-        text: 'Orchestrated the end-to-end platform migration of legacy Stackdriver infrastructure into Google Cloud Console (Pantheon); led cross-functional alignment across IAM, feature parity, backend replication, and core systems with zero downtime, driving full deprecation while expanding active enterprise users by 20% (Awarded Google Feats of Engineering Award).'
-      }
-    ],
-    page2Bullets: [
-      {
-        fact_id: 'fact_jw_01',
-        text: 'Spearheaded the integration of AI-ready telemetry, Model Context Protocol (MCP), and agentic workflows into platform logs, traces, and agent trajectories; productized natural-language query analytics and LLM-powered insights enabling autonomous agents and developers to diagnose complex distributed infrastructure, unblocking $100M+ in enterprise sales pipeline.'
-      },
-      {
-        fact_id: 'fact_jw_04',
-        text: 'Conceived, built, and scaled the Universal Dashboard Framework (UDF) from 0-to-1 as sole PM, unifying fragmented tools into a reusable, API-first platform component framework across 20+ GCP infrastructure teams, slashing partner onboarding support tickets by 50% in Month 1 (Awarded Google Cloud Tech Impact Award).'
-      },
-      {
-        fact_id: 'fact_jw_03',
-        text: 'Diagnosed an 8x latency bottleneck across distributed API and e2e query layers; led architecture tradeoff discussions with core systems engineering to redesign sampling, partition pruning, and caching strategies, slashing zero-state query latency by 70% and establishing rigorous platform SLOs.'
-      },
-      {
-        fact_id: 'fact_jw_05',
-        text: 'Orchestrated the end-to-end platform migration of legacy Stackdriver infrastructure into Google Cloud Console (Pantheon); led cross-functional alignment across IAM, feature parity, backend replication, and core systems with zero downtime, driving full deprecation while expanding active enterprise users by 20% (Awarded Google Feats of Engineering Award).'
-      },
-      {
-        fact_id: 'fact_jw_02',
-        text: 'Architected the observability strategy for automated diagnostic workflows; established standardized benchmarks and task completion metrics (MTTR) that eliminated diagnostic friction and dramatically accelerated root-cause resolution for developers and autonomous coding agents.'
-      },
-      {
-        fact_id: 'fact_jw_06',
-        text: 'Co-authored and launched GKE Cost Insights and platform utilization architecture combining Cloud Monitoring and BigQuery; empowered enterprise organizations to model cost-to-serve, forecast multi-tenant compute/AI workload spend, and automate storage tiering, driving multi-million-dollar efficiency gains.'
-      },
-      {
-        fact_id: 'fact_jw_07',
-        text: 'Partnered with UX, Data Science, and 60+ distributed engineers to ship 10+ core capabilities in 1 year; established structured product intake frameworks and outcome-driven roadmap governance, balancing technical velocity with reliability benchmarks and driving a 30% increase in execution efficiency.'
-      }
-    ]
-  },
-  {
-    company: 'Scotiabank',
-    role: 'Product Manager',
-    date_range: '2017.02 - 2018.02',
-    aliases: ['scotiabank', 'scotia'],
-    page1Bullets: [
-      {
-        fact_id: 'fact_jw_08',
-        text: 'Defined product strategy and API roadmaps for regulated banking workflows across web and mobile channels; diagnosed systemic infrastructure vulnerabilities causing 5x service latency spikes, delivering architectural recommendations to restore service resiliency and establish regional Banking-as-a-Service (BaaS) platform vision.'
-      }
-    ],
-    page2Bullets: [
-      {
-        fact_id: 'fact_jw_08',
-        text: 'Defined product strategy and API roadmaps for regulated banking workflows across web and mobile channels; diagnosed systemic infrastructure vulnerabilities causing 5x service latency spikes, delivering architectural recommendations to restore service resiliency and establish regional Banking-as-a-Service (BaaS) platform vision.'
-      },
-      {
-        fact_id: 'fact_jw_08_b',
-        text: 'Partnered with security, enterprise architecture, and compliance to modernize mission-critical core banking infrastructure, establishing self-service API access policies across retail and commercial units.'
-      }
-    ]
-  },
-  {
-    company: 'Net Credit Group (NCF - Fintech Startup)',
-    role: 'Head of Product',
-    date_range: '2016.04 - 2017.02',
-    aliases: ['net credit group', 'ncf', 'ncfg'],
-    page1Bullets: [
-      {
-        fact_id: 'fact_jw_09',
-        text: 'Led product lifecycle from conception to launch in 5 months as Head of Product, designing high-throughput transaction ledgers, risk evaluation workflows, and merchant APIs; launched 2 consumer mobile applications and partner portals, scaling platform adoption to 200,000+ active users within 90 days.'
-      }
-    ],
-    page2Bullets: [
-      {
-        fact_id: 'fact_jw_09',
-        text: 'Led product lifecycle from conception to launch in 5 months as Head of Product, designing high-throughput transaction ledgers, risk evaluation workflows, and merchant APIs; launched 2 consumer mobile applications and partner portals, scaling platform adoption to 200,000+ active users within 90 days.'
-      },
-      {
-        fact_id: 'fact_jw_09_b',
-        text: 'Collaborated closely with legal, risk, and operations teams to embed automated risk evaluation engines and compliance guardrails directly into merchant APIs and consumer mobile transaction flows.'
-      }
-    ]
-  },
-  {
-    company: 'eBay Inc.',
-    role: 'Product Manager',
-    date_range: '2012.10 - 2016.04',
-    aliases: ['ebay', 'ebay inc', 'ebay inc.'],
-    page1Bullets: [
-      {
-        fact_id: 'fact_jw_10',
-        text: 'Drove 20%+ year-over-year organic traffic growth for 3 consecutive years by optimizing consumer search discovery pipelines and executing continuous large-scale A/B testing frameworks across millions of user queries.'
-      }
-    ],
-    page2Bullets: [
-      {
-        fact_id: 'fact_jw_10',
-        text: 'Drove 20%+ year-over-year organic traffic growth for 3 consecutive years by optimizing consumer search discovery pipelines and executing continuous large-scale A/B testing frameworks across millions of user queries.'
-      },
-      {
-        fact_id: 'fact_jw_10_b',
-        text: 'Analyzed complex consumer query funnels and search relevance metrics to minimize query friction and optimize conversion paths, validating improvements through rigorous statistical evaluation.'
-      }
-    ]
-  },
-  {
-    company: 'Rogers Communications',
-    role: 'Product Manager',
-    date_range: '2010.05 - 2012.10',
-    aliases: ['rogers', 'rogers communications'],
-    page1Bullets: [
-      {
-        fact_id: 'fact_jw_11',
-        text: 'Fine-tuned Endeca NLP and search indexing pipelines for Canada\'s largest telecom portal, improving search accuracy by 30% and expanding search keyword and query coverage by 50%.'
-      }
-    ],
-    page2Bullets: [
-      {
-        fact_id: 'fact_jw_11',
-        text: 'Fine-tuned Endeca NLP and search indexing pipelines for Canada\'s largest telecom portal, improving search accuracy by 30% and expanding search keyword and query coverage by 50%.'
-      },
-      {
-        fact_id: 'fact_jw_11_b',
-        text: 'Standardized telecom product search taxonomy and automated catalog data ingestion pipelines, reducing zero-result search queries by 25% and enhancing customer self-service discoverability.'
-      }
-    ]
-  },
-  {
-    company: 'Google Inc',
-    role: 'Senior Account Manager',
-    date_range: '2005.12 - 2008.11',
-    aliases: ['google inc', 'google inc.'],
-    page1Bullets: [
-      {
-        fact_id: 'fact_jw_12',
-        text: 'Scaled digital performance campaigns across high-value client portfolios, achieving 40%+ YoY growth for 3 consecutive years; built and led a 30-person sales operations team and a 20-person acquisition team, increasing new client onboarding by 5x in Year 1.'
-      }
-    ],
-    page2Bullets: [
-      {
-        fact_id: 'fact_jw_12',
-        text: 'Scaled digital performance campaigns across high-value client portfolios, achieving 40%+ YoY growth for 3 consecutive years; built and led a 30-person sales operations team and a 20-person acquisition team, increasing new client onboarding by 5x in Year 1.'
-      },
-      {
-        fact_id: 'fact_jw_12_b',
-        text: 'Built structured client acquisition playbooks and cross-functional training programs for a 50-person sales operations and client acquisition organization, reducing new enterprise account ramp-up time by 40%.'
-      }
-    ]
-  }
-];
-
-function buildAllCanonicalExperiences(
-  rawExperiences: any[] | undefined,
-  matchedFacts: any[] | undefined,
-  targetPageLength: number = 1
-) {
-  const matchedFactMap = new Map<string, any>();
-  if (matchedFacts && Array.isArray(matchedFacts)) {
-    matchedFacts.forEach(mf => {
-      if (mf.fact_id) matchedFactMap.set(mf.fact_id, mf);
-    });
-  }
-
-  const rawBulletsByCompany = new Map<string, Array<{ fact_id: string; chosen_text: string; variant_type?: string }>>();
-  if (rawExperiences && Array.isArray(rawExperiences)) {
-    rawExperiences.forEach(exp => {
-      const compKey = (exp.company || '').toLowerCase();
-      if (!rawBulletsByCompany.has(compKey)) rawBulletsByCompany.set(compKey, []);
-      if (exp.bullets && Array.isArray(exp.bullets)) {
-        rawBulletsByCompany.get(compKey)!.push(...exp.bullets);
-      }
-    });
-  }
-
-  return CANONICAL_EMPLOYERS.map(employer => {
-    const matchedBullets: Array<{ fact_id: string; chosen_text: string; variant_type?: string }> = [];
-    const usedFactIds = new Set<string>();
-
-    // 1. Check raw experiences for this company
-    for (const [key, bullets] of rawBulletsByCompany.entries()) {
-      const isGoogleIncKey = key.includes('google inc');
-      const isThisGoogleInc = employer.company === 'Google Inc';
-      let matches = false;
-      if (isThisGoogleInc) {
-        matches = isGoogleIncKey;
-      } else if (employer.company === 'Google Cloud Platform') {
-        matches = !isGoogleIncKey && employer.aliases.some(alias => key.includes(alias));
-      } else {
-        matches = employer.aliases.some(alias => key.includes(alias));
-      }
-
-      if (matches) {
-        bullets.forEach(b => {
-          if (!usedFactIds.has(b.fact_id)) {
-            usedFactIds.add(b.fact_id);
-            matchedBullets.push(b);
-          }
-        });
-      }
-    }
-
-    // 2. Check matched_facts from backend
-    if (matchedFacts && Array.isArray(matchedFacts)) {
-      matchedFacts.forEach(mf => {
-        const mfComp = (mf.company || '').toLowerCase();
-        const isGoogleInc = mfComp.includes('google inc') || mf.fact_id.startsWith('fact_jw_12');
-        const isThisGoogleInc = employer.company === 'Google Inc';
-        
-        let matches = false;
-        if (isThisGoogleInc) {
-          matches = isGoogleInc;
-        } else if (employer.company === 'Google Cloud Platform') {
-          matches = !isGoogleInc && employer.aliases.some(alias => mfComp.includes(alias));
-        } else {
-          matches = employer.aliases.some(alias => mfComp.includes(alias));
-        }
-
-        if (matches && !usedFactIds.has(mf.fact_id)) {
-          usedFactIds.add(mf.fact_id);
-          matchedBullets.push({
-            fact_id: mf.fact_id,
-            chosen_text: mf.tailored_text || mf.original_text,
-            variant_type: mf.relevance_score ? `匹配度 ${mf.relevance_score}%` : 'standard'
-          });
-        }
-      });
-    }
-
-    // 3. Ensure each company has sufficient verified bullets
-    const minBulletsNeeded = employer.company === 'Google Cloud Platform' 
-      ? (targetPageLength === 2 ? 7 : 4) 
-      : (targetPageLength === 2 ? 2 : 1);
-    
-    const candidateBullets = targetPageLength === 2 ? employer.page2Bullets : employer.page1Bullets;
-
-    for (const defBullet of candidateBullets) {
-      if (matchedBullets.length >= minBulletsNeeded) break;
-      if (!usedFactIds.has(defBullet.fact_id)) {
-        const mf = matchedFactMap.get(defBullet.fact_id);
-        usedFactIds.add(defBullet.fact_id);
-        matchedBullets.push({
-          fact_id: defBullet.fact_id,
-          chosen_text: mf?.tailored_text || mf?.original_text || defBullet.text,
-          variant_type: mf?.relevance_score ? `匹配度 ${mf.relevance_score}%` : 'standard'
-        });
-      }
-    }
-
-    return {
-      company: employer.company,
-      role: employer.role,
-      date_range: employer.date_range,
-      bullets: matchedBullets
-    };
-  });
-}
+import { 
+  tailorResumeService, 
+  buildAllCanonicalExperiences 
+} from '../services/tailorResumeService';
 
 export const ResumeTailorStudio: React.FC = () => {
-  const [url, setUrl] = useState('');
+  const initialTailorState = tailorResumeService.getStoredState();
+
+  const [url, setUrl] = useState(initialTailorState.url || '');
   const [isScraping, setIsScraping] = useState(false);
   const [isTailoring, setIsTailoring] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -313,17 +38,30 @@ export const ResumeTailorStudio: React.FC = () => {
   const [showGoogleDocsModal, setShowGoogleDocsModal] = useState(false);
 
   // Form states
-  const [company, setCompany] = useState('');
-  const [jobTitle, setJobTitle] = useState('');
-  const [jdText, setJdText] = useState('');
-  const [pageLength, setPageLength] = useState<number>(1);
-  const [showManualPaste, setShowManualPaste] = useState(false);
+  const [company, setCompany] = useState(initialTailorState.company || '');
+  const [jobTitle, setJobTitle] = useState(initialTailorState.jobTitle || '');
+  const [jdText, setJdText] = useState(initialTailorState.jdText || '');
+  const [pageLength, setPageLength] = useState<number>(initialTailorState.pageLength || 2);
+  const [showManualPaste, setShowManualPaste] = useState(initialTailorState.showManualPaste || false);
 
   // Raw result from API
-  const [result, setResult] = useState<any | null>(null);
+  const [result, setResult] = useState<any | null>(initialTailorState.result || null);
 
   // Layout format settings from docFormatService
   const [formatConfig, setFormatConfig] = useState<GoogleDocsFormatConfig>(() => docFormatService.getStoredConfig());
+
+  // Automatically persist tailor state so switching tabs or page refresh NEVER loses the tailored resume
+  useEffect(() => {
+    tailorResumeService.saveStoredState({
+      url,
+      company,
+      jobTitle,
+      jdText,
+      pageLength,
+      showManualPaste,
+      result,
+    });
+  }, [url, company, jobTitle, jdText, pageLength, showManualPaste, result]);
 
   useEffect(() => {
     const handleFormatUpdate = (e: any) => {
@@ -580,6 +318,21 @@ export const ResumeTailorStudio: React.FC = () => {
             >
               🧱 Databricks (Platform & DevEx)
             </button>
+            <button
+              onClick={() => {
+                tailorResumeService.clearStoredState();
+                setUrl('');
+                setCompany('');
+                setJobTitle('');
+                setJdText('');
+                setResult(null);
+                setScrapeSuccess(null);
+                setErrorMsg(null);
+              }}
+              className="ml-auto px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-700 text-xs font-medium transition-colors"
+            >
+              清空重置草稿
+            </button>
           </div>
         </div>
 
@@ -794,13 +547,16 @@ export const ResumeTailorStudio: React.FC = () => {
                 <h1 
                   className="tracking-tight text-slate-900"
                   style={{
-                    fontSize: `${formatConfig.candidateNameSize * 1.2}px`,
+                    fontSize: `${formatConfig.candidateNameSize}pt`,
                     fontWeight: formatConfig.candidateNameBold ? 'bold' : '600',
                   }}
                 >
                   {normalized.candidateName}
                 </h1>
-                <p className="text-xs text-slate-600 font-medium">
+                <p 
+                  className="text-slate-600 font-medium"
+                  style={{ fontSize: `${formatConfig.contactInfoSize || 9.5}pt` }}
+                >
                   {normalized.contactInfo}
                 </p>
               </div>
@@ -808,15 +564,19 @@ export const ResumeTailorStudio: React.FC = () => {
               {/* Executive Summary */}
               <div className="space-y-1">
                 <h2 
-                  className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                  className={`font-bold tracking-wider ${sectionDividerClass}`}
                   style={{
-                    fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                    color: formatConfig.sectionHeaderColor || '#1e3a8a',
+                    fontSize: `${formatConfig.sectionHeaderSize}pt`,
                     textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
                   }}
                 >
                   Executive Summary
                 </h2>
-                <p className="text-[12px] text-slate-800 leading-relaxed font-normal">
+                <p 
+                  className="text-slate-800 leading-relaxed font-normal"
+                  style={{ fontSize: `${formatConfig.bodySize}pt`, lineHeight: formatConfig.lineSpacing }}
+                >
                   {normalized.summary}
                 </p>
               </div>
@@ -824,9 +584,10 @@ export const ResumeTailorStudio: React.FC = () => {
               {/* Core Competencies */}
               <div className="space-y-1">
                 <h2 
-                  className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                  className={`font-bold tracking-wider ${sectionDividerClass}`}
                   style={{
-                    fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                    color: formatConfig.sectionHeaderColor || '#1e3a8a',
+                    fontSize: `${formatConfig.sectionHeaderSize}pt`,
                     textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
                   }}
                 >
@@ -834,7 +595,7 @@ export const ResumeTailorStudio: React.FC = () => {
                 </h2>
                 <div className="space-y-0.5 text-xs">
                   {normalized.skillsCategories.map((sc, i) => (
-                    <div key={i} className="flex flex-col sm:flex-row sm:items-baseline gap-1">
+                    <div key={i} className="flex flex-col sm:flex-row sm:items-baseline gap-1" style={{ fontSize: `${formatConfig.bodySize}pt` }}>
                       <span className="font-bold text-slate-900 shrink-0 sm:w-48">{sc.category}:</span>
                       <span className="text-slate-700">{sc.skills}</span>
                     </div>
@@ -845,9 +606,10 @@ export const ResumeTailorStudio: React.FC = () => {
               {/* Work History (All 6 Companies: GCP 4 bullets + other 5 companies 1 bullet each = 9 bullets) */}
               <div className="space-y-3">
                 <h2 
-                  className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                  className={`font-bold tracking-wider ${sectionDividerClass}`}
                   style={{
-                    fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                    color: formatConfig.sectionHeaderColor || '#1e3a8a',
+                    fontSize: `${formatConfig.sectionHeaderSize}pt`,
                     textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
                   }}
                 >
@@ -855,8 +617,8 @@ export const ResumeTailorStudio: React.FC = () => {
                 </h2>
 
                 {normalized.experiences.map((exp, i) => (
-                  <div key={i} className="space-y-1">
-                    <div className="flex justify-between items-baseline text-xs">
+                  <div key={i} className="space-y-1" style={{ marginBottom: `${formatConfig.paragraphSpacing}pt` }}>
+                    <div className="flex justify-between items-baseline" style={{ fontSize: `${formatConfig.roleAndOrgSize}pt` }}>
                       <div>
                         <strong className="text-slate-900 font-bold">{exp.company}</strong>
                         <span className="text-slate-600 font-normal"> — {exp.role}</span>
@@ -864,9 +626,9 @@ export const ResumeTailorStudio: React.FC = () => {
                       <span className="text-slate-500 font-mono text-[11px] shrink-0">{exp.date_range}</span>
                     </div>
 
-                    <ul className="space-y-0.5 list-disc list-outside pl-4 text-[12px] text-slate-800 leading-normal">
+                    <ul className="list-disc list-outside pl-4 text-slate-800" style={{ fontSize: `${formatConfig.bodySize}pt`, lineHeight: formatConfig.lineSpacing }}>
                       {exp.bullets.map((b, bIdx) => (
-                        <li key={bIdx} className="pl-0.5">
+                        <li key={bIdx} className="pl-0.5" style={{ marginBottom: `${formatConfig.paragraphSpacing / 2}pt` }}>
                           <span>{b.chosen_text}</span>
                           {b.variant_type && b.variant_type !== 'standard' && (
                             <span className="ml-2 inline-block px-1.5 py-0.2 rounded text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-200/60 font-sans print:hidden">
@@ -884,15 +646,16 @@ export const ResumeTailorStudio: React.FC = () => {
               {normalized.keynotesTalks && (
                 <div className="space-y-1">
                   <h2 
-                    className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                    className={`font-bold tracking-wider ${sectionDividerClass}`}
                     style={{
-                      fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                      color: formatConfig.sectionHeaderColor || '#1e3a8a',
+                      fontSize: `${formatConfig.sectionHeaderSize}pt`,
                       textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
                     }}
                   >
                     Keynotes & Technical Thought Leadership
                   </h2>
-                  <p className="text-[12px] text-slate-700 leading-normal">
+                  <p className="text-slate-700 leading-normal" style={{ fontSize: `${formatConfig.bodySize}pt`, lineHeight: formatConfig.lineSpacing }}>
                     {normalized.keynotesTalks}
                   </p>
                 </div>
@@ -902,15 +665,16 @@ export const ResumeTailorStudio: React.FC = () => {
               {normalized.education && (
                 <div className="space-y-1">
                   <h2 
-                    className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                    className={`font-bold tracking-wider ${sectionDividerClass}`}
                     style={{
-                      fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                      color: formatConfig.sectionHeaderColor || '#1e3a8a',
+                      fontSize: `${formatConfig.sectionHeaderSize}pt`,
                       textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
                     }}
                   >
                     Education
                   </h2>
-                  <p className="text-[12px] text-slate-700 font-medium">
+                  <p className="text-slate-700 font-medium" style={{ fontSize: `${formatConfig.bodySize}pt` }}>
                     {normalized.education}
                   </p>
                 </div>
@@ -944,13 +708,16 @@ export const ResumeTailorStudio: React.FC = () => {
                   <h1 
                     className="tracking-tight text-slate-900"
                     style={{
-                      fontSize: `${formatConfig.candidateNameSize * 1.2}px`,
+                      fontSize: `${formatConfig.candidateNameSize}pt`,
                       fontWeight: formatConfig.candidateNameBold ? 'bold' : '600',
                     }}
                   >
                     {normalized.candidateName}
                   </h1>
-                  <p className="text-xs text-slate-600 font-medium">
+                  <p 
+                    className="text-slate-600 font-medium"
+                    style={{ fontSize: `${formatConfig.contactInfoSize || 9.5}pt` }}
+                  >
                     {normalized.contactInfo}
                   </p>
                 </div>
@@ -958,15 +725,19 @@ export const ResumeTailorStudio: React.FC = () => {
                 {/* Executive Summary */}
                 <div className="space-y-1">
                   <h2 
-                    className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                    className={`font-bold tracking-wider ${sectionDividerClass}`}
                     style={{
-                      fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                      color: formatConfig.sectionHeaderColor || '#1e3a8a',
+                      fontSize: `${formatConfig.sectionHeaderSize}pt`,
                       textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
                     }}
                   >
                     Executive Summary
                   </h2>
-                  <p className="text-[12.5px] text-slate-800 leading-relaxed font-normal">
+                  <p 
+                    className="text-slate-800 leading-relaxed font-normal"
+                    style={{ fontSize: `${formatConfig.bodySize}pt`, lineHeight: formatConfig.lineSpacing }}
+                  >
                     {normalized.summary}
                   </p>
                 </div>
@@ -974,9 +745,10 @@ export const ResumeTailorStudio: React.FC = () => {
                 {/* Core Competencies */}
                 <div className="space-y-1">
                   <h2 
-                    className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                    className={`font-bold tracking-wider ${sectionDividerClass}`}
                     style={{
-                      fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                      color: formatConfig.sectionHeaderColor || '#1e3a8a',
+                      fontSize: `${formatConfig.sectionHeaderSize}pt`,
                       textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
                     }}
                   >
@@ -984,7 +756,7 @@ export const ResumeTailorStudio: React.FC = () => {
                   </h2>
                   <div className="space-y-1 text-xs">
                     {normalized.skillsCategories.map((sc, i) => (
-                      <div key={i} className="flex flex-col sm:flex-row sm:items-baseline gap-1">
+                      <div key={i} className="flex flex-col sm:flex-row sm:items-baseline gap-1" style={{ fontSize: `${formatConfig.bodySize}pt` }}>
                         <span className="font-bold text-slate-900 shrink-0 sm:w-52">{sc.category}:</span>
                         <span className="text-slate-700">{sc.skills}</span>
                       </div>
@@ -995,9 +767,10 @@ export const ResumeTailorStudio: React.FC = () => {
                 {/* Work History (Part 1 - Google Cloud Platform Expanded to 7 Bullets) */}
                 <div className="space-y-2.5">
                   <h2 
-                    className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass} flex justify-between items-baseline`}
+                    className={`font-bold tracking-wider ${sectionDividerClass} flex justify-between items-baseline`}
                     style={{
-                      fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                      color: formatConfig.sectionHeaderColor || '#1e3a8a',
+                      fontSize: `${formatConfig.sectionHeaderSize}pt`,
                       textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
                     }}
                   >
@@ -1006,18 +779,18 @@ export const ResumeTailorStudio: React.FC = () => {
                   </h2>
 
                   {gcpExperience && (
-                    <div className="space-y-1.5">
-                      <div className="flex justify-between items-baseline text-xs">
+                    <div className="space-y-1.5" style={{ marginBottom: `${formatConfig.paragraphSpacing}pt` }}>
+                      <div className="flex justify-between items-baseline" style={{ fontSize: `${formatConfig.roleAndOrgSize}pt` }}>
                         <div>
-                          <strong className="text-slate-900 font-bold text-sm">{gcpExperience.company}</strong>
+                          <strong className="text-slate-900 font-bold">{gcpExperience.company}</strong>
                           <span className="text-slate-700 font-medium"> — {gcpExperience.role}</span>
                         </div>
                         <span className="text-slate-500 font-mono text-[11px] shrink-0">{gcpExperience.date_range}</span>
                       </div>
 
-                      <ul className="space-y-1 list-disc list-outside pl-4 text-[12px] text-slate-800 leading-normal">
+                      <ul className="list-disc list-outside pl-4 text-slate-800" style={{ fontSize: `${formatConfig.bodySize}pt`, lineHeight: formatConfig.lineSpacing }}>
                         {gcpExperience.bullets.map((b, bIdx) => (
-                          <li key={bIdx} className="pl-0.5">
+                          <li key={bIdx} className="pl-0.5" style={{ marginBottom: `${formatConfig.paragraphSpacing / 2}pt` }}>
                             <span>{b.chosen_text}</span>
                             {b.variant_type && b.variant_type !== 'standard' && (
                               <span className="ml-2 inline-block px-1.5 py-0.2 rounded text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-200/60 font-sans print:hidden">
@@ -1069,9 +842,10 @@ export const ResumeTailorStudio: React.FC = () => {
                 {/* Prior Experiences (5 Employers x 2 Bullets = 10 Bullets) */}
                 <div className="space-y-3">
                   <h2 
-                    className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                    className={`font-bold tracking-wider ${sectionDividerClass}`}
                     style={{
-                      fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                      color: formatConfig.sectionHeaderColor || '#1e3a8a',
+                      fontSize: `${formatConfig.sectionHeaderSize}pt`,
                       textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
                     }}
                   >
@@ -1079,8 +853,8 @@ export const ResumeTailorStudio: React.FC = () => {
                   </h2>
 
                   {priorExperiences.map((exp, i) => (
-                    <div key={i} className="space-y-1">
-                      <div className="flex justify-between items-baseline text-xs">
+                    <div key={i} className="space-y-1" style={{ marginBottom: `${formatConfig.paragraphSpacing}pt` }}>
+                      <div className="flex justify-between items-baseline" style={{ fontSize: `${formatConfig.roleAndOrgSize}pt` }}>
                         <div>
                           <strong className="text-slate-900 font-bold">{exp.company}</strong>
                           <span className="text-slate-600 font-normal"> — {exp.role}</span>
@@ -1088,9 +862,9 @@ export const ResumeTailorStudio: React.FC = () => {
                         <span className="text-slate-500 font-mono text-[11px] shrink-0">{exp.date_range}</span>
                       </div>
 
-                      <ul className="space-y-0.5 list-disc list-outside pl-4 text-[12px] text-slate-800 leading-normal">
+                      <ul className="list-disc list-outside pl-4 text-slate-800" style={{ fontSize: `${formatConfig.bodySize}pt`, lineHeight: formatConfig.lineSpacing }}>
                         {exp.bullets.map((b, bIdx) => (
-                          <li key={bIdx} className="pl-0.5">
+                          <li key={bIdx} className="pl-0.5" style={{ marginBottom: `${formatConfig.paragraphSpacing / 2}pt` }}>
                             <span>{b.chosen_text}</span>
                             {b.variant_type && b.variant_type !== 'standard' && (
                               <span className="ml-2 inline-block px-1.5 py-0.2 rounded text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-200/60 font-sans print:hidden">
@@ -1108,15 +882,16 @@ export const ResumeTailorStudio: React.FC = () => {
                 {normalized.keynotesTalks && (
                   <div className="space-y-1">
                     <h2 
-                      className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                      className={`font-bold tracking-wider ${sectionDividerClass}`}
                       style={{
-                        fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                        color: formatConfig.sectionHeaderColor || '#1e3a8a',
+                        fontSize: `${formatConfig.sectionHeaderSize}pt`,
                         textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
                       }}
                     >
                       Keynotes & Technical Thought Leadership
                     </h2>
-                    <p className="text-[12px] text-slate-700 leading-normal">
+                    <p className="text-slate-700 leading-normal" style={{ fontSize: `${formatConfig.bodySize}pt`, lineHeight: formatConfig.lineSpacing }}>
                       {normalized.keynotesTalks}
                     </p>
                   </div>
@@ -1126,15 +901,16 @@ export const ResumeTailorStudio: React.FC = () => {
                 {normalized.sideProjects && (
                   <div className="space-y-1">
                     <h2 
-                      className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                      className={`font-bold tracking-wider ${sectionDividerClass}`}
                       style={{
-                        fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                        color: formatConfig.sectionHeaderColor || '#1e3a8a',
+                        fontSize: `${formatConfig.sectionHeaderSize}pt`,
                         textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
                       }}
                     >
                       Recent Technical Side Projects
                     </h2>
-                    <p className="text-[12px] text-slate-700 leading-normal">
+                    <p className="text-slate-700 leading-normal" style={{ fontSize: `${formatConfig.bodySize}pt`, lineHeight: formatConfig.lineSpacing }}>
                       {normalized.sideProjects}
                     </p>
                   </div>
@@ -1144,15 +920,16 @@ export const ResumeTailorStudio: React.FC = () => {
                 {normalized.education && (
                   <div className="space-y-1">
                     <h2 
-                      className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                      className={`font-bold tracking-wider ${sectionDividerClass}`}
                       style={{
-                        fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                        color: formatConfig.sectionHeaderColor || '#1e3a8a',
+                        fontSize: `${formatConfig.sectionHeaderSize}pt`,
                         textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
                       }}
                     >
                       Education
                     </h2>
-                    <p className="text-[12px] text-slate-700 font-medium">
+                    <p className="text-slate-700 font-medium" style={{ fontSize: `${formatConfig.bodySize}pt` }}>
                       {normalized.education}
                     </p>
                   </div>
