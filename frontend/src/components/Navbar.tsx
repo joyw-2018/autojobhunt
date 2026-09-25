@@ -91,13 +91,13 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, stats, 
               className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${
                 activeTab === 'template'
                   ? 'bg-white text-indigo-600 shadow-xs'
-                  : 'text-slate-400 hover:text-slate-600'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
               }`}
             >
-              <Sliders className="w-4 h-4" />
+              <Sliders className="w-4 h-4 text-violet-500" />
               <span>Google Docs 排版</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded bg-slate-200 text-slate-700 font-mono">
-                Phase 3
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-violet-100 text-violet-800 font-medium">
+                可自定义
               </span>
             </button>
           </nav>

@@ -14,6 +14,8 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { googleDocsService, ResumeExportData } from '../services/googleDocsService';
+import { docFormatService } from '../services/docFormatService';
+
 
 interface Props {
   isOpen: boolean;
@@ -196,6 +198,26 @@ export const GoogleDocsExportModal: React.FC<Props> = ({ isOpen, onClose, resume
                   </p>
                 </div>
               </div>
+
+              {/* Active Format Badge */}
+              {(() => {
+                const cfg = resumeData.formatConfig || docFormatService.getStoredConfig();
+                return (
+                  <div className="p-3 bg-slate-50 border border-slate-200/80 rounded-2xl flex items-center justify-between text-xs text-slate-700">
+                    <div className="flex items-center space-x-2">
+                      <FileText className="w-4 h-4 text-indigo-600 shrink-0" />
+                      <span className="font-semibold text-slate-900">排版规范:</span>
+                      <span className="bg-white px-2 py-0.5 rounded border border-slate-200 font-mono text-[11px] text-slate-800">{cfg.fontFamily}</span>
+                      <span className="text-slate-300">|</span>
+                      <span className={!cfg.showSectionDividers ? 'text-emerald-700 font-semibold' : 'text-slate-700'}>
+                        {!cfg.showSectionDividers ? '✓ 已去除多余横线' : '含小节横线'}
+                      </span>
+                      <span className="text-slate-300">|</span>
+                      <span>边距 {cfg.marginInches}in</span>
+                    </div>
+                  </div>
+                );
+              })()}
 
               {/* Client ID Configuration Field */}
               <div>

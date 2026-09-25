@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Globe, 
   Sparkles, 
@@ -18,6 +18,8 @@ import {
 } from 'lucide-react';
 import { api } from '../api/client';
 import { GoogleDocsExportModal } from './GoogleDocsExportModal';
+import { docFormatService, GoogleDocsFormatConfig } from '../services/docFormatService';
+
 
 interface CanonicalEmployer {
   company: string;
@@ -319,6 +321,29 @@ export const ResumeTailorStudio: React.FC = () => {
 
   // Raw result from API
   const [result, setResult] = useState<any | null>(null);
+
+  // Layout format settings from docFormatService
+  const [formatConfig, setFormatConfig] = useState<GoogleDocsFormatConfig>(() => docFormatService.getStoredConfig());
+
+  useEffect(() => {
+    const handleFormatUpdate = (e: any) => {
+      if (e.detail) setFormatConfig(e.detail);
+    };
+    window.addEventListener('doc-format-updated', handleFormatUpdate);
+    return () => window.removeEventListener('doc-format-updated', handleFormatUpdate);
+  }, []);
+
+  const sectionDividerClass = formatConfig.showSectionDividers
+    ? "border-b border-slate-900 pb-0.5"
+    : "pb-0.5";
+  const headerDividerClass = formatConfig.showHeaderDivider
+    ? "border-b border-slate-200 pb-2.5"
+    : "pb-1";
+  const sheet2HeaderDividerClass = formatConfig.showHeaderDivider
+    ? "border-b border-slate-200 pb-2"
+    : "pb-1";
+
+
 
   const handleScrape = async () => {
     if (!url.trim()) {
@@ -753,10 +778,26 @@ export const ResumeTailorStudio: React.FC = () => {
           {/* ==================== RESUME RENDERING ==================== */}
           {pageLength === 1 ? (
             /* ================= SINGLE PAGE COMPACT MODE (1-Page) ================= */
-            <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-xl max-w-4xl mx-auto space-y-4 font-sans text-slate-900 print:p-0 print:border-none print:shadow-none print:rounded-none">
+            <div 
+              className="bg-white rounded-3xl border border-slate-200 shadow-xl max-w-4xl mx-auto space-y-4 font-sans text-slate-900 print:p-0 print:border-none print:shadow-none print:rounded-none"
+              style={{
+                fontFamily: `${formatConfig.fontFamily}, Arial, sans-serif`,
+                lineHeight: formatConfig.lineSpacing,
+                padding: `${Math.round(formatConfig.marginInches * 64)}px`,
+              }}
+            >
               {/* Candidate Header */}
-              <div className="text-center border-b border-slate-200 pb-2.5 space-y-1">
-                <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+              <div 
+                className={`space-y-1 ${headerDividerClass}`}
+                style={{ textAlign: formatConfig.candidateNameAlign }}
+              >
+                <h1 
+                  className="tracking-tight text-slate-900"
+                  style={{
+                    fontSize: `${formatConfig.candidateNameSize * 1.2}px`,
+                    fontWeight: formatConfig.candidateNameBold ? 'bold' : '600',
+                  }}
+                >
                   {normalized.candidateName}
                 </h1>
                 <p className="text-xs text-slate-600 font-medium">
@@ -766,7 +807,13 @@ export const ResumeTailorStudio: React.FC = () => {
 
               {/* Executive Summary */}
               <div className="space-y-1">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-900 pb-0.5">
+                <h2 
+                  className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                  style={{
+                    fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                    textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
+                  }}
+                >
                   Executive Summary
                 </h2>
                 <p className="text-[12px] text-slate-800 leading-relaxed font-normal">
@@ -776,7 +823,13 @@ export const ResumeTailorStudio: React.FC = () => {
 
               {/* Core Competencies */}
               <div className="space-y-1">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-900 pb-0.5">
+                <h2 
+                  className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                  style={{
+                    fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                    textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
+                  }}
+                >
                   Core Competencies & Domain Expertise
                 </h2>
                 <div className="space-y-0.5 text-xs">
@@ -791,7 +844,13 @@ export const ResumeTailorStudio: React.FC = () => {
 
               {/* Work History (All 6 Companies: GCP 4 bullets + other 5 companies 1 bullet each = 9 bullets) */}
               <div className="space-y-3">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-900 pb-0.5">
+                <h2 
+                  className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                  style={{
+                    fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                    textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
+                  }}
+                >
                   Professional Experience
                 </h2>
 
@@ -824,7 +883,13 @@ export const ResumeTailorStudio: React.FC = () => {
               {/* Keynotes & Thought Leadership */}
               {normalized.keynotesTalks && (
                 <div className="space-y-1">
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-900 pb-0.5">
+                  <h2 
+                    className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                    style={{
+                      fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                      textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
+                    }}
+                  >
                     Keynotes & Technical Thought Leadership
                   </h2>
                   <p className="text-[12px] text-slate-700 leading-normal">
@@ -836,7 +901,13 @@ export const ResumeTailorStudio: React.FC = () => {
               {/* Education */}
               {normalized.education && (
                 <div className="space-y-1">
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-900 pb-0.5">
+                  <h2 
+                    className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                    style={{
+                      fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                      textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
+                    }}
+                  >
                     Education
                   </h2>
                   <p className="text-[12px] text-slate-700 font-medium">
@@ -856,12 +927,27 @@ export const ResumeTailorStudio: React.FC = () => {
             <div className="space-y-6">
               {/* PAGE 1: SHEET 1 (Header + Summary + Core Competencies + Google Cloud Platform All 7 Flagship Bullets) */}
               <div 
-                className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-xl max-w-4xl mx-auto space-y-4 font-sans text-slate-900 page-break print:p-0 print:border-none print:shadow-none print:rounded-none"
-                style={{ pageBreakAfter: 'always', breakAfter: 'page' }}
+                className="bg-white rounded-3xl border border-slate-200 shadow-xl max-w-4xl mx-auto space-y-4 font-sans text-slate-900 page-break print:p-0 print:border-none print:shadow-none print:rounded-none"
+                style={{
+                  pageBreakAfter: 'always',
+                  breakAfter: 'page',
+                  fontFamily: `${formatConfig.fontFamily}, Arial, sans-serif`,
+                  lineHeight: formatConfig.lineSpacing,
+                  padding: `${Math.round(formatConfig.marginInches * 64)}px`,
+                }}
               >
                 {/* Candidate Header */}
-                <div className="text-center border-b border-slate-200 pb-3 space-y-1">
-                  <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+                <div 
+                  className={`space-y-1 ${headerDividerClass}`}
+                  style={{ textAlign: formatConfig.candidateNameAlign }}
+                >
+                  <h1 
+                    className="tracking-tight text-slate-900"
+                    style={{
+                      fontSize: `${formatConfig.candidateNameSize * 1.2}px`,
+                      fontWeight: formatConfig.candidateNameBold ? 'bold' : '600',
+                    }}
+                  >
                     {normalized.candidateName}
                   </h1>
                   <p className="text-xs text-slate-600 font-medium">
@@ -871,7 +957,13 @@ export const ResumeTailorStudio: React.FC = () => {
 
                 {/* Executive Summary */}
                 <div className="space-y-1">
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-900 pb-0.5">
+                  <h2 
+                    className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                    style={{
+                      fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                      textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
+                    }}
+                  >
                     Executive Summary
                   </h2>
                   <p className="text-[12.5px] text-slate-800 leading-relaxed font-normal">
@@ -881,7 +973,13 @@ export const ResumeTailorStudio: React.FC = () => {
 
                 {/* Core Competencies */}
                 <div className="space-y-1">
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-900 pb-0.5">
+                  <h2 
+                    className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                    style={{
+                      fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                      textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
+                    }}
+                  >
                     Core Competencies & Domain Expertise
                   </h2>
                   <div className="space-y-1 text-xs">
@@ -896,7 +994,13 @@ export const ResumeTailorStudio: React.FC = () => {
 
                 {/* Work History (Part 1 - Google Cloud Platform Expanded to 7 Bullets) */}
                 <div className="space-y-2.5">
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-900 pb-0.5 flex justify-between items-baseline">
+                  <h2 
+                    className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass} flex justify-between items-baseline`}
+                    style={{
+                      fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                      textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
+                    }}
+                  >
                     <span>Professional Experience — Tenured Flagship Leadership</span>
                     <span className="text-[10px] text-slate-500 font-normal normal-case">Sheet 1 of 2</span>
                   </h2>
@@ -945,9 +1049,16 @@ export const ResumeTailorStudio: React.FC = () => {
               </div>
 
               {/* PAGE 2: SHEET 2 (Prior 5 Employers with 2 Bullets each = 10 bullets + Side Projects + Keynotes + Education) */}
-              <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-xl max-w-4xl mx-auto space-y-4 font-sans text-slate-900 print:p-0 print:border-none print:shadow-none print:rounded-none">
+              <div 
+                className="bg-white rounded-3xl border border-slate-200 shadow-xl max-w-4xl mx-auto space-y-4 font-sans text-slate-900 print:p-0 print:border-none print:shadow-none print:rounded-none"
+                style={{
+                  fontFamily: `${formatConfig.fontFamily}, Arial, sans-serif`,
+                  lineHeight: formatConfig.lineSpacing,
+                  padding: `${Math.round(formatConfig.marginInches * 64)}px`,
+                }}
+              >
                 {/* Sheet 2 Header */}
-                <div className="flex justify-between items-baseline border-b border-slate-200 pb-2 text-xs text-slate-600 font-medium">
+                <div className={`flex justify-between items-baseline text-xs text-slate-600 font-medium ${sheet2HeaderDividerClass}`}>
                   <div>
                     <span className="font-bold text-slate-900 text-sm">{normalized.candidateName}</span>
                     <span className="text-slate-400 ml-2">| Prior Professional Experience & Extended Record</span>
@@ -957,7 +1068,13 @@ export const ResumeTailorStudio: React.FC = () => {
 
                 {/* Prior Experiences (5 Employers x 2 Bullets = 10 Bullets) */}
                 <div className="space-y-3">
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-900 pb-0.5">
+                  <h2 
+                    className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                    style={{
+                      fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                      textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
+                    }}
+                  >
                     Professional Experience (Continued)
                   </h2>
 
@@ -990,7 +1107,13 @@ export const ResumeTailorStudio: React.FC = () => {
                 {/* Keynotes & Thought Leadership */}
                 {normalized.keynotesTalks && (
                   <div className="space-y-1">
-                    <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-900 pb-0.5">
+                    <h2 
+                      className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                      style={{
+                        fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                        textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
+                      }}
+                    >
                       Keynotes & Technical Thought Leadership
                     </h2>
                     <p className="text-[12px] text-slate-700 leading-normal">
@@ -1002,7 +1125,13 @@ export const ResumeTailorStudio: React.FC = () => {
                 {/* Recent Technical Side Projects */}
                 {normalized.sideProjects && (
                   <div className="space-y-1">
-                    <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-900 pb-0.5">
+                    <h2 
+                      className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                      style={{
+                        fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                        textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
+                      }}
+                    >
                       Recent Technical Side Projects
                     </h2>
                     <p className="text-[12px] text-slate-700 leading-normal">
@@ -1014,7 +1143,13 @@ export const ResumeTailorStudio: React.FC = () => {
                 {/* Education */}
                 {normalized.education && (
                   <div className="space-y-1">
-                    <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-900 pb-0.5">
+                    <h2 
+                      className={`text-xs font-bold uppercase tracking-wider text-slate-900 ${sectionDividerClass}`}
+                      style={{
+                        fontSize: `${formatConfig.sectionHeaderSize * 1.15}px`,
+                        textTransform: formatConfig.sectionHeaderUppercase ? 'uppercase' : 'none',
+                      }}
+                    >
                       Education
                     </h2>
                     <p className="text-[12px] text-slate-700 font-medium">
@@ -1050,6 +1185,7 @@ export const ResumeTailorStudio: React.FC = () => {
             keynotesTalks: normalized.keynotesTalks,
             education: normalized.education,
             pageLength: pageLength,
+            formatConfig: formatConfig,
           }}
         />
       )}

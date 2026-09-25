@@ -1,6 +1,7 @@
 /**
  * Service for exporting tailored resumes to Google Docs using user's personal Google Account (OAuth 2.0).
  */
+import { GoogleDocsFormatConfig, docFormatService } from './docFormatService';
 
 declare global {
   interface Window {
@@ -27,6 +28,7 @@ export interface ResumeExportData {
   keynotesTalks?: string;
   education?: string;
   pageLength: number;
+  formatConfig?: GoogleDocsFormatConfig;
 }
 
 export const googleDocsService = {
@@ -106,23 +108,42 @@ export const googleDocsService = {
 
   /**
    * Builds an executive-ready HTML document representation for Drive conversion.
+   * Strips extra horizontal lines by default and applies user-customized formatting rules.
    */
-  buildResumeHtml(data: ResumeExportData): string {
+  buildResumeHtml(data: ResumeExportData, customConfig?: GoogleDocsFormatConfig): string {
+    const config = customConfig || data.formatConfig || docFormatService.getStoredConfig();
     const is2Page = data.pageLength === 2;
+
+    const fontStack = `${config.fontFamily}, Calibri, Arial, sans-serif`;
+    const paddingPt = Math.round(config.marginInches * 72);
+
+    // Header divider: only present if showHeaderDivider is true (default false - no horizontal line!)
+    const headerBorder = config.showHeaderDivider
+      ? `border-bottom: ${config.dividerThickness}pt solid ${config.dividerColor || '#d1d5db'}; padding-bottom: 6pt;`
+      : 'padding-bottom: 4pt;';
+
+    // Section header divider: only present if showSectionDividers is true (default false - no horizontal lines!)
+    const sectionBorder = config.showSectionDividers
+      ? `border-bottom: ${config.dividerThickness}pt solid ${config.dividerColor || '#111827'}; padding-bottom: 2pt;`
+      : 'padding-bottom: 1pt;';
+
+    const sectionTitleCase = config.sectionHeaderUppercase ? 'text-transform: uppercase;' : '';
+    const sectionFontWeight = config.sectionHeaderBold ? 'font-weight: bold;' : 'font-weight: 600;';
+    const sectionStyle = `font-size: ${config.sectionHeaderSize}pt; ${sectionFontWeight} ${sectionTitleCase} letter-spacing: 0.5pt; color: #111827; ${sectionBorder} margin-top: 10pt; margin-bottom: 4pt;`;
 
     const experiencesHtml = data.experiences
       .map(exp => {
         const bulletsList = exp.bullets
-          .map(b => `<li style="margin-bottom: 4pt; line-height: 1.35; font-size: 10pt; color: #1f2937;">${b.chosen_text}</li>`)
+          .map(b => `<li style="margin-bottom: ${config.paragraphSpacing}pt; line-height: ${config.lineSpacing}; font-size: ${config.bodySize}pt; color: #1f2937;">${b.chosen_text}</li>`)
           .join('');
 
         return `
-          <div style="margin-top: 8pt; margin-bottom: 6pt;">
-            <div style="display: flex; justify-content: space-between; align-items: baseline; font-size: 10.5pt;">
+          <div style="margin-top: 6pt; margin-bottom: 4pt;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; font-size: ${config.roleAndOrgSize}pt;">
               <span style="font-weight: bold; color: #111827;">${exp.company} <span style="font-weight: normal; color: #4b5563;">— ${exp.role}</span></span>
-              <span style="font-size: 9.5pt; color: #6b7280; font-family: 'Courier New', monospace;">${exp.date_range}</span>
+              <span style="font-size: ${Math.max(8.5, config.bodySize - 0.5)}pt; color: #6b7280; font-family: monospace;">${exp.date_range}</span>
             </div>
-            <ul style="margin-top: 3pt; margin-bottom: 6pt; padding-left: 18pt;">
+            <ul style="margin-top: 2pt; margin-bottom: 4pt; padding-left: 18pt;">
               ${bulletsList}
             </ul>
           </div>
@@ -133,7 +154,7 @@ export const googleDocsService = {
     const skillsHtml = data.skillsCategories
       .map(
         sc => `
-          <div style="margin-bottom: 3pt; font-size: 9.5pt; line-height: 1.35;">
+          <div style="margin-bottom: 2.5pt; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing};">
             <strong style="color: #111827;">${sc.category}:</strong>
             <span style="color: #374151;"> ${sc.skills}</span>
           </div>
@@ -142,37 +163,40 @@ export const googleDocsService = {
       .join('');
 
     const sideProjectsSection = (is2Page && data.sideProjects) ? `
-      <div style="margin-top: 10pt;">
-        <h2 style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5pt; color: #111827; border-bottom: 1pt solid #111827; padding-bottom: 2pt; margin-bottom: 4pt;">
+      <div style="margin-top: 8pt;">
+        <h2 style="${sectionStyle}">
           Recent Technical Side Projects
         </h2>
-        <p style="font-size: 9.5pt; line-height: 1.35; color: #374151; margin-top: 3pt;">
+        <p style="font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin-top: 2pt;">
           ${data.sideProjects}
         </p>
       </div>
     ` : '';
 
     const keynotesSection = data.keynotesTalks ? `
-      <div style="margin-top: 10pt;">
-        <h2 style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5pt; color: #111827; border-bottom: 1pt solid #111827; padding-bottom: 2pt; margin-bottom: 4pt;">
+      <div style="margin-top: 8pt;">
+        <h2 style="${sectionStyle}">
           Keynotes & Technical Thought Leadership
         </h2>
-        <p style="font-size: 9.5pt; line-height: 1.35; color: #374151; margin-top: 3pt;">
+        <p style="font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin-top: 2pt;">
           ${data.keynotesTalks}
         </p>
       </div>
     ` : '';
 
     const educationSection = data.education ? `
-      <div style="margin-top: 10pt;">
-        <h2 style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5pt; color: #111827; border-bottom: 1pt solid #111827; padding-bottom: 2pt; margin-bottom: 4pt;">
+      <div style="margin-top: 8pt;">
+        <h2 style="${sectionStyle}">
           Education
         </h2>
-        <p style="font-size: 9.5pt; line-height: 1.35; color: #374151; margin-top: 3pt;">
+        <p style="font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin-top: 2pt;">
           ${data.education}
         </p>
       </div>
     ` : '';
+
+    const candidateAlign = config.candidateNameAlign || 'center';
+    const candidateBold = config.candidateNameBold ? 'bold' : '600';
 
     return `
       <!DOCTYPE html>
@@ -181,34 +205,34 @@ export const googleDocsService = {
         <meta charset="utf-8">
         <title>${data.candidateName} - Resume - ${data.targetCompany}</title>
       </head>
-      <body style="font-family: Arial, Helvetica, sans-serif; font-size: 10pt; line-height: 1.3; color: #111827; max-width: 780px; margin: 0 auto; padding: 20pt;">
+      <body style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #111827; max-width: 780px; margin: 0 auto; padding: ${paddingPt}pt;">
         <!-- Header -->
-        <div style="text-align: center; border-bottom: 1pt solid #d1d5db; padding-bottom: 6pt; margin-bottom: 8pt;">
-          <h1 style="font-size: 20pt; font-weight: bold; margin: 0 0 4pt 0; color: #111827;">${data.candidateName}</h1>
-          <p style="font-size: 9pt; color: #4b5563; margin: 0;">${data.contactInfo}</p>
+        <div style="text-align: ${candidateAlign}; ${headerBorder} margin-bottom: 6pt;">
+          <h1 style="font-size: ${config.candidateNameSize}pt; font-weight: ${candidateBold}; margin: 0 0 3pt 0; color: #111827;">${data.candidateName}</h1>
+          <p style="font-size: ${Math.max(8.5, config.bodySize - 0.5)}pt; color: #4b5563; margin: 0;">${data.contactInfo}</p>
         </div>
 
         <!-- Executive Summary -->
-        <div style="margin-bottom: 8pt;">
-          <h2 style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5pt; color: #111827; border-bottom: 1pt solid #111827; padding-bottom: 2pt; margin-bottom: 4pt;">
+        <div style="margin-bottom: 6pt;">
+          <h2 style="${sectionStyle}">
             Executive Summary
           </h2>
-          <p style="font-size: 9.5pt; line-height: 1.4; color: #1f2937; margin: 0;">
+          <p style="font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #1f2937; margin: 0;">
             ${data.summary}
           </p>
         </div>
 
         <!-- Core Competencies -->
-        <div style="margin-bottom: 8pt;">
-          <h2 style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5pt; color: #111827; border-bottom: 1pt solid #111827; padding-bottom: 2pt; margin-bottom: 4pt;">
+        <div style="margin-bottom: 6pt;">
+          <h2 style="${sectionStyle}">
             Core Competencies & Domain Expertise
           </h2>
           ${skillsHtml}
         </div>
 
         <!-- Professional Experience -->
-        <div style="margin-bottom: 8pt;">
-          <h2 style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5pt; color: #111827; border-bottom: 1pt solid #111827; padding-bottom: 2pt; margin-bottom: 4pt;">
+        <div style="margin-bottom: 6pt;">
+          <h2 style="${sectionStyle}">
             Professional Experience
           </h2>
           ${experiencesHtml}
