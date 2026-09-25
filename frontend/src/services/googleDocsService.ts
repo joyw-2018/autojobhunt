@@ -107,44 +107,66 @@ export const googleDocsService = {
   },
 
   /**
+  /**
+   * Normalizes font family names for Google Docs API compatibility.
+   */
+  normalizeFontFamily(font: string): string {
+    const f = (font || 'Arial').trim();
+    if (f.toLowerCase() === 'garamond') return 'EB Garamond';
+    return f;
+  },
+
+  /**
    * Builds an executive-ready HTML document representation for Drive conversion.
-   * Strips extra horizontal lines by default and applies user-customized formatting rules.
+   * Strips extra horizontal lines by default, strictly eliminates blank lines between subtitles and text,
+   * and applies user-customized typography rules inline to every element.
    */
   buildResumeHtml(data: ResumeExportData, customConfig?: GoogleDocsFormatConfig): string {
     const config = customConfig || data.formatConfig || docFormatService.getStoredConfig();
     const is2Page = data.pageLength === 2;
-
-    const fontStack = `${config.fontFamily}, Calibri, Arial, sans-serif`;
+    const fontFamily = this.normalizeFontFamily(config.fontFamily);
+    const fontStack = `'${fontFamily}', Arial, sans-serif`;
     const paddingPt = Math.round(config.marginInches * 72);
 
     // Header divider: only present if showHeaderDivider is true (default true - matches PDF header line)
     const headerBorder = config.showHeaderDivider
-      ? `border-bottom: ${config.dividerThickness || 1.5}pt solid ${config.dividerColor || '#0f172a'}; padding-bottom: 6pt;`
-      : 'padding-bottom: 4pt;';
+      ? `border-bottom: ${config.dividerThickness || 1.5}pt solid ${config.dividerColor || '#0f172a'}; padding-bottom: 4pt;`
+      : 'padding-bottom: 2pt;';
 
     // Section header divider: only present if showSectionDividers is true (default false - no horizontal lines!)
     const sectionBorder = config.showSectionDividers
       ? `border-bottom: ${config.dividerThickness || 1}pt solid ${config.dividerColor || '#1e3a8a'}; padding-bottom: 2pt;`
-      : 'padding-bottom: 1pt;';
+      : '';
 
     const sectionTitleColor = config.sectionHeaderColor || '#1e3a8a';
     const sectionTitleCase = config.sectionHeaderUppercase ? 'text-transform: uppercase;' : '';
     const sectionFontWeight = config.sectionHeaderBold ? 'font-weight: bold;' : 'font-weight: 600;';
-    const sectionStyle = `font-size: ${config.sectionHeaderSize}pt; ${sectionFontWeight} ${sectionTitleCase} letter-spacing: 0.5pt; color: ${sectionTitleColor}; ${sectionBorder} margin-top: 12pt; margin-bottom: 4pt;`;
 
+    // Section title style: uses <p> to prevent Google Docs <h2> default 12pt spaceBelow, eliminating empty line
+    const sectionHeadingStyle = `font-family: ${fontStack}; font-size: ${config.sectionHeaderSize}pt; ${sectionFontWeight} ${sectionTitleCase} letter-spacing: 0.5pt; color: ${sectionTitleColor}; ${sectionBorder} margin: 0; margin-top: 9pt; margin-bottom: 2pt; line-height: 1.2;`;
+
+    // Experiences: uses borderless 100% table + tight <ul> to eliminate blank line between company subtitle and bullets
     const experiencesHtml = data.experiences
       .map(exp => {
         const bulletsList = exp.bullets
-          .map(b => `<li style="margin-bottom: ${config.paragraphSpacing}pt; line-height: ${config.lineSpacing}; font-size: ${config.bodySize}pt; color: #1f2937;">${b.chosen_text}</li>`)
+          .map(b => `<li style="font-family: ${fontStack}; margin: 0; margin-bottom: ${config.paragraphSpacing || 3}pt; line-height: ${config.lineSpacing}; font-size: ${config.bodySize}pt; color: #1f2937;">${b.chosen_text}</li>`)
           .join('');
 
         return `
-          <div style="margin-top: 6pt; margin-bottom: 4pt;">
-            <div style="display: flex; justify-content: space-between; align-items: baseline; font-size: ${config.roleAndOrgSize}pt;">
-              <span style="font-weight: bold; color: #111827;">${exp.company} <span style="font-weight: normal; color: #4b5563;">— ${exp.role}</span></span>
-              <span style="font-size: ${Math.max(8.5, config.bodySize - 0.5)}pt; color: #6b7280; font-family: monospace;">${exp.date_range}</span>
-            </div>
-            <ul style="margin-top: 2pt; margin-bottom: 4pt; padding-left: 18pt;">
+          <div style="margin: 0; margin-top: 5pt; margin-bottom: 2pt;">
+            <table style="width: 100%; border: none; border-collapse: collapse; margin: 0; margin-bottom: 1pt; padding: 0;">
+              <tbody>
+                <tr>
+                  <td style="font-family: ${fontStack}; font-size: ${config.roleAndOrgSize}pt; font-weight: bold; color: #111827; border: none; padding: 0; margin: 0; text-align: left; vertical-align: bottom;">
+                    ${exp.company} <span style="font-weight: normal; color: #374151;">— ${exp.role}</span>
+                  </td>
+                  <td style="font-family: ${fontStack}; font-size: ${Math.max(8.5, config.bodySize - 0.5)}pt; color: #4b5563; border: none; padding: 0; margin: 0; text-align: right; vertical-align: bottom; white-space: nowrap;">
+                    ${exp.date_range}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <ul style="margin: 0; margin-top: 1pt; margin-bottom: 2pt; padding-left: 14pt;">
               ${bulletsList}
             </ul>
           </div>
@@ -152,45 +174,46 @@ export const googleDocsService = {
       })
       .join('');
 
+    // Skills: compact <p> elements with 0 margin to prevent empty lines
     const skillsHtml = data.skillsCategories
       .map(
         sc => `
-          <div style="margin-bottom: 2.5pt; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing};">
+          <p style="font-family: ${fontStack}; margin: 0; margin-bottom: 2pt; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing};">
             <strong style="color: #111827;">${sc.category}:</strong>
             <span style="color: #374151;"> ${sc.skills}</span>
-          </div>
+          </p>
         `
       )
       .join('');
 
     const sideProjectsSection = (is2Page && data.sideProjects) ? `
-      <div style="margin-top: 8pt;">
-        <h2 style="${sectionStyle}">
+      <div style="margin: 0; margin-top: 7pt;">
+        <p style="${sectionHeadingStyle}">
           Recent Technical Side Projects
-        </h2>
-        <p style="font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin-top: 2pt;">
+        </p>
+        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0;">
           ${data.sideProjects}
         </p>
       </div>
     ` : '';
 
     const keynotesSection = data.keynotesTalks ? `
-      <div style="margin-top: 8pt;">
-        <h2 style="${sectionStyle}">
+      <div style="margin: 0; margin-top: 7pt;">
+        <p style="${sectionHeadingStyle}">
           Keynotes & Technical Thought Leadership
-        </h2>
-        <p style="font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin-top: 2pt;">
+        </p>
+        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0;">
           ${data.keynotesTalks}
         </p>
       </div>
     ` : '';
 
     const educationSection = data.education ? `
-      <div style="margin-top: 8pt;">
-        <h2 style="${sectionStyle}">
+      <div style="margin: 0; margin-top: 7pt;">
+        <p style="${sectionHeadingStyle}">
           Education
-        </h2>
-        <p style="font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin-top: 2pt;">
+        </p>
+        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0;">
           ${data.education}
         </p>
       </div>
@@ -205,37 +228,77 @@ export const googleDocsService = {
       <head>
         <meta charset="utf-8">
         <title>${data.candidateName} - Resume - ${data.targetCompany}</title>
+        <style>
+          * {
+            box-sizing: border-box;
+            font-family: ${fontStack} !important;
+          }
+          body, p, div, span, strong, td, th, li, ul, ol, h1, h2, h3 {
+            font-family: ${fontStack} !important;
+          }
+          body {
+            margin: 0;
+            padding: 0;
+            color: #111827;
+          }
+          p {
+            margin: 0;
+            padding: 0;
+          }
+          table {
+            border-collapse: collapse;
+            border: none;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+          }
+          td {
+            border: none;
+            padding: 0;
+            margin: 0;
+          }
+          ul {
+            margin: 0;
+            margin-top: 1pt;
+            margin-bottom: 2pt;
+            padding-left: 14pt;
+          }
+          li {
+            margin: 0;
+            margin-bottom: ${config.paragraphSpacing || 3}pt;
+          }
+        </style>
       </head>
       <body style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #111827; max-width: 780px; margin: 0 auto; padding: ${paddingPt}pt;">
         <!-- Header -->
-        <div style="text-align: ${candidateAlign}; ${headerBorder} margin-bottom: 6pt;">
-          <h1 style="font-size: ${config.candidateNameSize}pt; font-weight: ${candidateBold}; margin: 0 0 3pt 0; color: #111827;">${data.candidateName}</h1>
-          <p style="font-size: ${Math.max(8.5, config.bodySize - 0.5)}pt; color: #4b5563; margin: 0;">${data.contactInfo}</p>
+        <div style="text-align: ${candidateAlign}; ${headerBorder} margin: 0; margin-bottom: 5pt;">
+          <p style="font-family: ${fontStack}; font-size: ${config.candidateNameSize}pt; font-weight: ${candidateBold}; margin: 0; margin-bottom: 2pt; line-height: 1.15; color: #111827;">${data.candidateName}</p>
+          <p style="font-family: ${fontStack}; font-size: ${config.contactInfoSize || 9.5}pt; color: #4b5563; margin: 0; line-height: 1.2;">${data.contactInfo}</p>
         </div>
 
-        <!-- Executive Summary -->
-        <div style="margin-bottom: 6pt;">
-          <h2 style="${sectionStyle}">
+        <!-- Executive Summary (no gap between heading and text) -->
+        <div style="margin: 0; margin-bottom: 5pt;">
+          <p style="${sectionHeadingStyle}">
             Executive Summary
-          </h2>
-          <p style="font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #1f2937; margin: 0;">
+          </p>
+          <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #1f2937; margin: 0; padding: 0;">
             ${data.summary}
           </p>
         </div>
 
-        <!-- Core Competencies -->
-        <div style="margin-bottom: 6pt;">
-          <h2 style="${sectionStyle}">
+        <!-- Core Competencies (no gap between heading and list) -->
+        <div style="margin: 0; margin-bottom: 5pt;">
+          <p style="${sectionHeadingStyle}">
             Core Competencies & Domain Expertise
-          </h2>
+          </p>
           ${skillsHtml}
         </div>
 
-        <!-- Professional Experience -->
-        <div style="margin-bottom: 6pt;">
-          <h2 style="${sectionStyle}">
+        <!-- Professional Experience (no gap between heading and employers, nor between company and bullets) -->
+        <div style="margin: 0; margin-bottom: 5pt;">
+          <p style="${sectionHeadingStyle}">
             Professional Experience
-          </h2>
+          </p>
           ${experiencesHtml}
         </div>
 
@@ -248,12 +311,83 @@ export const googleDocsService = {
   },
 
   /**
+   * Post-processes an existing or newly created Google Doc via Documents API batchUpdate:
+   * 1. Forces the document-wide font family across all text content, ensuring Google Docs UI reflects it.
+   * 2. Sets exact page margins to match config.marginInches.
+   */
+  async postFormatGoogleDoc(accessToken: string, docId: string, config: GoogleDocsFormatConfig): Promise<void> {
+    try {
+      const docRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (!docRes.ok) return;
+
+      const docJson = await docRes.json();
+      const content = docJson.body?.content || [];
+      const lastElement = content[content.length - 1];
+      const maxEndIndex = lastElement?.endIndex ? lastElement.endIndex - 1 : 1;
+
+      const requests: any[] = [];
+      const normalizedFont = this.normalizeFontFamily(config.fontFamily);
+
+      // 1. Force the selected font family across the entire document
+      if (maxEndIndex > 1 && normalizedFont) {
+        requests.push({
+          updateTextStyle: {
+            range: {
+              startIndex: 1,
+              endIndex: maxEndIndex,
+            },
+            textStyle: {
+              weightedFontFamily: {
+                fontFamily: normalizedFont,
+              },
+            },
+            fields: 'weightedFontFamily',
+          },
+        });
+      }
+
+      // 2. Adjust document page margins
+      if (config.marginInches) {
+        const marginPt = config.marginInches * 72;
+        requests.push({
+          updateDocumentStyle: {
+            documentStyle: {
+              marginTop: { magnitude: marginPt, unit: 'PT' },
+              marginBottom: { magnitude: marginPt, unit: 'PT' },
+              marginLeft: { magnitude: marginPt, unit: 'PT' },
+              marginRight: { magnitude: marginPt, unit: 'PT' },
+            },
+            fields: 'marginTop,marginBottom,marginLeft,marginRight',
+          },
+        });
+      }
+
+      if (requests.length > 0) {
+        await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ requests }),
+        });
+      }
+    } catch (err) {
+      console.warn('Post-formatting Google Doc batchUpdate caught non-fatal error:', err);
+    }
+  },
+
+  /**
    * Exports the resume into user's personal Google Drive as a native Google Doc.
-   * Uses Drive multipart upload with conversion to application/vnd.google-apps.document.
+   * Uses Drive multipart upload with conversion to application/vnd.google-apps.document,
+   * followed by Documents API post-processing to guarantee exact font family and margin styling.
    */
   async createGoogleDoc(accessToken: string, data: ResumeExportData): Promise<{ docId: string; docUrl: string; title: string }> {
+    const config = data.formatConfig || docFormatService.getStoredConfig();
     const docTitle = `${data.candidateName} - Resume - ${data.targetCompany} (${data.targetJobTitle})`;
-    const htmlContent = this.buildResumeHtml(data);
+    const htmlContent = this.buildResumeHtml(data, config);
 
     // Try Drive upload conversion first (preserves headings, bold text, styles, and bullets natively)
     try {
@@ -263,17 +397,14 @@ export const googleDocsService = {
       };
 
       const boundary = '-------AutoJobHuntResumeBoundary' + Math.floor(Math.random() * 1000000);
-      const delimiter = `\r\n--${boundary}\r\n`;
-      const closeDelimiter = `\r\n--${boundary}--`;
-
       const multipartRequestBody =
-        delimiter +
+        `--${boundary}\r\n` +
         'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
         JSON.stringify(metadata) +
-        delimiter +
+        `\r\n--${boundary}\r\n` +
         'Content-Type: text/html; charset=UTF-8\r\n\r\n' +
         htmlContent +
-        closeDelimiter;
+        `\r\n--${boundary}--`;
 
       const driveRes = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
         method: 'POST',
@@ -287,11 +418,18 @@ export const googleDocsService = {
       if (driveRes.ok) {
         const driveData = await driveRes.json();
         const docId = driveData.id;
+
+        // Post-process to guarantee exact font-family and margins in Google Docs
+        await this.postFormatGoogleDoc(accessToken, docId, config);
+
         return {
           docId,
           docUrl: `https://docs.google.com/document/d/${docId}/edit`,
           title: docTitle,
         };
+      } else {
+        const errText = await driveRes.text().catch(() => '');
+        console.warn('Drive multipart upload returned non-OK status:', driveRes.status, errText);
       }
     } catch (driveErr) {
       console.warn('Drive multipart upload failed, attempting fallback to Docs API:', driveErr);
@@ -315,10 +453,10 @@ export const googleDocsService = {
     const docsData = await docsRes.json();
     const docId = docsData.documentId;
 
-    // Convert resume to structured text for Docs API
-    let plainText = `${data.candidateName}\n${data.contactInfo}\n\n`;
-    plainText += `EXECUTIVE SUMMARY\n${data.summary}\n\n`;
-    plainText += `CORE COMPETENCIES & DOMAIN EXPERTISE\n`;
+    // Convert resume to structured text for Docs API without empty lines between headings and body
+    let plainText = `${data.candidateName}\n${data.contactInfo}\n`;
+    plainText += `\nEXECUTIVE SUMMARY\n${data.summary}\n`;
+    plainText += `\nCORE COMPETENCIES & DOMAIN EXPERTISE\n`;
     data.skillsCategories.forEach(s => {
       plainText += `${s.category}: ${s.skills}\n`;
     });
@@ -328,16 +466,15 @@ export const googleDocsService = {
       exp.bullets.forEach(b => {
         plainText += `• ${b.chosen_text}\n`;
       });
-      plainText += `\n`;
     });
     if (data.pageLength === 2 && data.sideProjects) {
-      plainText += `RECENT TECHNICAL SIDE PROJECTS\n${data.sideProjects}\n\n`;
+      plainText += `\nRECENT TECHNICAL SIDE PROJECTS\n${data.sideProjects}\n`;
     }
     if (data.keynotesTalks) {
-      plainText += `KEYNOTES & TECHNICAL THOUGHT LEADERSHIP\n${data.keynotesTalks}\n\n`;
+      plainText += `\nKEYNOTES & TECHNICAL THOUGHT LEADERSHIP\n${data.keynotesTalks}\n`;
     }
     if (data.education) {
-      plainText += `EDUCATION\n${data.education}\n`;
+      plainText += `\nEDUCATION\n${data.education}\n`;
     }
 
     // Insert text into document
@@ -358,6 +495,9 @@ export const googleDocsService = {
         ],
       }),
     });
+
+    // Apply font family and styling to fallback document
+    await this.postFormatGoogleDoc(accessToken, docId, config);
 
     return {
       docId,

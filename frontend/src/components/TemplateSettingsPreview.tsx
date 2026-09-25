@@ -57,7 +57,11 @@ export const TemplateSettingsPreview: React.FC = () => {
 
   const handleChange = <K extends keyof GoogleDocsFormatConfig>(key: K, value: GoogleDocsFormatConfig[K]) => {
     setActivePreset(null);
-    setConfig(prev => ({ ...prev, [key]: value }));
+    setConfig(prev => {
+      const next = { ...prev, [key]: value };
+      docFormatService.saveStoredConfig(next);
+      return next;
+    });
   };
 
   const handleApplyPreset = (presetKey: string) => {
