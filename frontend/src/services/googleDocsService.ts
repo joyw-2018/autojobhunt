@@ -142,8 +142,8 @@ export const googleDocsService = {
     const sectionTitleCase = config.sectionHeaderUppercase ? 'text-transform: uppercase;' : '';
     const sectionFontWeight = config.sectionHeaderBold ? 'font-weight: bold;' : 'font-weight: 600;';
 
-    // Section title style: uses <p> to prevent Google Docs <h2> default 12pt spaceBelow, eliminating empty line
-    const sectionHeadingStyle = `font-family: ${fontStack}; font-size: ${config.sectionHeaderSize}pt; ${sectionFontWeight} ${sectionTitleCase} letter-spacing: 0.5pt; color: ${sectionTitleColor}; ${sectionBorder} margin: 0; margin-top: 9pt; margin-bottom: 2pt; line-height: 1.2;`;
+    // Section title style: explicit bold and uppercase with inline style
+    const sectionHeadingStyle = `font-family: ${fontStack}; font-size: ${config.sectionHeaderSize}pt; font-weight: bold; ${sectionTitleCase} letter-spacing: 0.5pt; color: ${sectionTitleColor}; ${sectionBorder} margin: 0; margin-top: 8pt; margin-bottom: 2pt; line-height: 1.2;`;
 
     // Experiences: uses borderless 100% table + tight <ul> to eliminate blank line between company subtitle and bullets
     const experiencesHtml = data.experiences
@@ -158,7 +158,7 @@ export const googleDocsService = {
               <tbody>
                 <tr>
                   <td style="font-family: ${fontStack}; font-size: ${config.roleAndOrgSize}pt; font-weight: bold; color: #111827; border: none; padding: 0; margin: 0; text-align: left; vertical-align: bottom;">
-                    ${exp.company} <span style="font-weight: normal; color: #374151;">— ${exp.role}</span>
+                    <b>${exp.company} — ${exp.role}</b>
                   </td>
                   <td style="font-family: ${fontStack}; font-size: ${Math.max(8.5, config.bodySize - 0.5)}pt; color: #4b5563; border: none; padding: 0; margin: 0; text-align: right; vertical-align: bottom; white-space: nowrap;">
                     ${exp.date_range}
@@ -179,7 +179,7 @@ export const googleDocsService = {
       .map(
         sc => `
           <p style="font-family: ${fontStack}; margin: 0; margin-bottom: 2pt; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing};">
-            <strong style="color: #111827;">${sc.category}:</strong>
+            <b style="color: #111827;">${sc.category}:</b>
             <span style="color: #374151;"> ${sc.skills}</span>
           </p>
         `
@@ -189,7 +189,7 @@ export const googleDocsService = {
     const sideProjectsSection = (is2Page && data.sideProjects) ? `
       <div style="margin: 0; margin-top: 7pt;">
         <p style="${sectionHeadingStyle}">
-          Recent Technical Side Projects
+          <b>RECENT TECHNICAL SIDE PROJECTS</b>
         </p>
         <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0;">
           ${data.sideProjects}
@@ -200,7 +200,7 @@ export const googleDocsService = {
     const keynotesSection = data.keynotesTalks ? `
       <div style="margin: 0; margin-top: 7pt;">
         <p style="${sectionHeadingStyle}">
-          Keynotes & Technical Thought Leadership
+          <b>KEYNOTES & TECHNICAL THOUGHT LEADERSHIP</b>
         </p>
         <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0;">
           ${data.keynotesTalks}
@@ -211,7 +211,7 @@ export const googleDocsService = {
     const educationSection = data.education ? `
       <div style="margin: 0; margin-top: 7pt;">
         <p style="${sectionHeadingStyle}">
-          Education
+          <b>EDUCATION</b>
         </p>
         <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0;">
           ${data.education}
@@ -272,14 +272,14 @@ export const googleDocsService = {
       <body style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #111827; max-width: 780px; margin: 0 auto; padding: ${paddingPt}pt;">
         <!-- Header -->
         <div style="text-align: ${candidateAlign}; ${headerBorder} margin: 0; margin-bottom: 5pt;">
-          <p style="font-family: ${fontStack}; font-size: ${config.candidateNameSize}pt; font-weight: ${candidateBold}; margin: 0; margin-bottom: 2pt; line-height: 1.15; color: #111827;">${data.candidateName}</p>
+          <p style="font-family: ${fontStack}; font-size: ${config.candidateNameSize}pt; font-weight: bold; margin: 0; margin-bottom: 2pt; line-height: 1.15; color: #111827;"><b>${data.candidateName}</b></p>
           <p style="font-family: ${fontStack}; font-size: ${config.contactInfoSize || 9.5}pt; color: #4b5563; margin: 0; line-height: 1.2;">${data.contactInfo}</p>
         </div>
 
         <!-- Executive Summary (no gap between heading and text) -->
         <div style="margin: 0; margin-bottom: 5pt;">
           <p style="${sectionHeadingStyle}">
-            Executive Summary
+            <b>EXECUTIVE SUMMARY</b>
           </p>
           <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #1f2937; margin: 0; padding: 0;">
             ${data.summary}
@@ -289,7 +289,7 @@ export const googleDocsService = {
         <!-- Core Competencies (no gap between heading and list) -->
         <div style="margin: 0; margin-bottom: 5pt;">
           <p style="${sectionHeadingStyle}">
-            Core Competencies & Domain Expertise
+            <b>CORE COMPETENCIES & DOMAIN EXPERTISE</b>
           </p>
           ${skillsHtml}
         </div>
@@ -297,7 +297,7 @@ export const googleDocsService = {
         <!-- Professional Experience (no gap between heading and employers, nor between company and bullets) -->
         <div style="margin: 0; margin-bottom: 5pt;">
           <p style="${sectionHeadingStyle}">
-            Professional Experience
+            <b>PROFESSIONAL EXPERIENCE</b>
           </p>
           ${experiencesHtml}
         </div>
@@ -453,50 +453,191 @@ export const googleDocsService = {
     const docsData = await docsRes.json();
     const docId = docsData.documentId;
 
-    // Convert resume to structured text for Docs API without empty lines between headings and body
-    let plainText = `${data.candidateName}\n${data.contactInfo}\n`;
-    plainText += `\nEXECUTIVE SUMMARY\n${data.summary}\n`;
-    plainText += `\nCORE COMPETENCIES & DOMAIN EXPERTISE\n`;
+    // Convert resume to structured text for Docs API and record ranges for precise styling
+    let text = '';
+    const styleRanges: Array<{
+      start: number;
+      end: number;
+      bold?: boolean;
+      fontSize?: number;
+      color?: { red: number; green: number; blue: number };
+      isHeader?: boolean;
+    }> = [];
+
+    // Helper to append text and optionally track formatting range
+    // Google Docs API is 1-indexed for the body content
+    const appendText = (str: string, opts?: { bold?: boolean; fontSize?: number; color?: { red: number; green: number; blue: number }; isHeader?: boolean }) => {
+      const startIndex = 1 + text.length;
+      text += str;
+      const endIndex = 1 + text.length;
+      if (opts) {
+        styleRanges.push({ start: startIndex, end: endIndex, ...opts });
+      }
+    };
+
+    // 1. Candidate Name (Bold, 22pt)
+    appendText(data.candidateName, { bold: true, fontSize: config.candidateNameSize || 22 });
+    appendText('\n');
+
+    // 2. Contact Info (9.5pt)
+    appendText(data.contactInfo, { fontSize: config.contactInfoSize || 9.5 });
+    appendText('\n');
+
+    // Helper to format hex color string to Google Docs API RGB (0..1)
+    const parseHexColor = (hex: string) => {
+      const cleanHex = hex.replace('#', '');
+      const num = parseInt(cleanHex, 16);
+      return {
+        red: ((num >> 16) & 255) / 255,
+        green: ((num >> 8) & 255) / 255,
+        blue: (num & 255) / 255,
+      };
+    };
+
+    const headerColor = parseHexColor(config.sectionHeaderColor || '#1e3a8a');
+    const headerFontSize = config.sectionHeaderSize || 11;
+    const bodyFontSize = config.bodySize || 10;
+    const roleFontSize = config.roleAndOrgSize || 10.5;
+
+    // Helper to append section heading (strictly without empty blank line before it!)
+    const appendSectionHeading = (title: string) => {
+      // Direct newline, NO extra blank line (\n\n) before section title
+      appendText(title, {
+        bold: true,
+        fontSize: headerFontSize,
+        color: headerColor,
+        isHeader: true,
+      });
+      appendText('\n');
+    };
+
+    // 3. EXECUTIVE SUMMARY
+    appendSectionHeading('EXECUTIVE SUMMARY');
+    appendText(`${data.summary}\n`, { fontSize: bodyFontSize });
+
+    // 4. CORE COMPETENCIES & DOMAIN EXPERTISE
+    appendSectionHeading('CORE COMPETENCIES & DOMAIN EXPERTISE');
     data.skillsCategories.forEach(s => {
-      plainText += `${s.category}: ${s.skills}\n`;
+      appendText(`${s.category}: `, { bold: true, fontSize: bodyFontSize });
+      appendText(`${s.skills}\n`, { fontSize: bodyFontSize });
     });
-    plainText += `\nPROFESSIONAL EXPERIENCE\n`;
+
+    // 5. PROFESSIONAL EXPERIENCE
+    appendSectionHeading('PROFESSIONAL EXPERIENCE');
     data.experiences.forEach(exp => {
-      plainText += `${exp.company} — ${exp.role} (${exp.date_range})\n`;
+      // Company and Role are BOTH bold
+      appendText(`${exp.company} — ${exp.role}`, { bold: true, fontSize: roleFontSize });
+      appendText(` (${exp.date_range})\n`, { fontSize: Math.max(8.5, bodyFontSize - 0.5) });
       exp.bullets.forEach(b => {
-        plainText += `• ${b.chosen_text}\n`;
+        appendText(`• ${b.chosen_text}\n`, { fontSize: bodyFontSize });
       });
     });
+
+    // 6. Optional Sections
     if (data.pageLength === 2 && data.sideProjects) {
-      plainText += `\nRECENT TECHNICAL SIDE PROJECTS\n${data.sideProjects}\n`;
+      appendSectionHeading('RECENT TECHNICAL SIDE PROJECTS');
+      appendText(`${data.sideProjects}\n`, { fontSize: bodyFontSize });
     }
     if (data.keynotesTalks) {
-      plainText += `\nKEYNOTES & TECHNICAL THOUGHT LEADERSHIP\n${data.keynotesTalks}\n`;
+      appendSectionHeading('KEYNOTES & TECHNICAL THOUGHT LEADERSHIP');
+      appendText(`${data.keynotesTalks}\n`, { fontSize: bodyFontSize });
     }
     if (data.education) {
-      plainText += `\nEDUCATION\n${data.education}\n`;
+      appendSectionHeading('EDUCATION');
+      appendText(`${data.education}\n`, { fontSize: bodyFontSize });
     }
 
-    // Insert text into document
-    await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`, {
+    // Build batchUpdate requests for Docs API
+    const requests: any[] = [
+      {
+        insertText: {
+          location: { index: 1 },
+          text: text,
+        },
+      },
+      // Set compact paragraph spacing document-wide (removes default blank line gaps)
+      {
+        updateParagraphStyle: {
+          range: {
+            startIndex: 1,
+            endIndex: 1 + text.length,
+          },
+          paragraphStyle: {
+            spaceAbove: { magnitude: 0, unit: 'PT' },
+            spaceBelow: { magnitude: 2, unit: 'PT' },
+            lineSpacing: Math.round((config.lineSpacing || 1.28) * 100),
+          },
+          fields: 'spaceAbove,spaceBelow,lineSpacing',
+        },
+      },
+    ];
+
+    // Candidate name alignment (Center or Left)
+    requests.push({
+      updateParagraphStyle: {
+        range: {
+          startIndex: 1,
+          endIndex: 1 + data.candidateName.length,
+        },
+        paragraphStyle: {
+          alignment: (config.candidateNameAlign || 'center') === 'center' ? 'CENTER' : 'START',
+        },
+        fields: 'alignment',
+      },
+    });
+
+    // Apply specific text formatting for bolding, font sizes, and colors
+    styleRanges.forEach(range => {
+      const textStyle: any = {};
+      const fields: string[] = [];
+
+      if (range.bold !== undefined) {
+        textStyle.bold = range.bold;
+        fields.push('bold');
+      }
+      if (range.fontSize !== undefined) {
+        textStyle.fontSize = { magnitude: range.fontSize, unit: 'PT' };
+        fields.push('fontSize');
+      }
+      if (range.color !== undefined) {
+        textStyle.foregroundColor = {
+          color: {
+            rgbColor: range.color,
+          },
+        };
+        fields.push('foregroundColor');
+      }
+
+      if (fields.length > 0) {
+        requests.push({
+          updateTextStyle: {
+            range: {
+              startIndex: range.start,
+              endIndex: range.end,
+            },
+            textStyle,
+            fields: fields.join(','),
+          },
+        });
+      }
+    });
+
+    // Execute the complete structured text and styling batchUpdate
+    const batchRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        requests: [
-          {
-            insertText: {
-              location: { index: 1 },
-              text: plainText,
-            },
-          },
-        ],
-      }),
+      body: JSON.stringify({ requests }),
     });
 
-    // Apply font family and styling to fallback document
+    if (!batchRes.ok) {
+      const batchErr = await batchRes.json().catch(() => ({}));
+      console.warn('BatchUpdate failed:', batchErr);
+    }
+
+    // Apply font family and margins across entire document
     await this.postFormatGoogleDoc(accessToken, docId, config);
 
     return {
