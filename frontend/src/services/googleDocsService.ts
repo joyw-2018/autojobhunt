@@ -401,7 +401,7 @@ export const googleDocsService = {
     const skillCategoryColor = this.parseHexColor('#0f172a');
     const skillTextColor = this.parseHexColor('#334155');
     const dividerColor = this.parseHexColor(config.dividerColor || '#0f172a');
-    const lineSpacingPct = Math.round((config.lineSpacing || 1.28) * 100);
+    const lineSpacingPct = Math.round((config.lineSpacing || 1.15) * 100);
 
     // Candidate Name
     paragraphs.push({

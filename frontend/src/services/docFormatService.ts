@@ -56,7 +56,7 @@ export const DEFAULT_DOC_FORMAT: GoogleDocsFormatConfig = {
   sectionHeaderUppercase: true,
   roleAndOrgSize: 10.5,
   bodySize: 10,
-  lineSpacing: 1.28,
+  lineSpacing: 1.15,
   paragraphSpacing: 4,
   showSectionDividers: false,    // 小节标题绝无多余横线干扰
   showHeaderDivider: true,       // 顶部姓名与联系方式下方一条干净实线 (对齐PDF)
@@ -82,7 +82,7 @@ export const FORMAT_PRESETS: Record<string, { name: string; description: string;
       sectionHeaderUppercase: true,
       roleAndOrgSize: 10.5,
       bodySize: 10,
-      lineSpacing: 1.28,
+      lineSpacing: 1.15,
       paragraphSpacing: 4,
       showSectionDividers: false,
       showHeaderDivider: true,

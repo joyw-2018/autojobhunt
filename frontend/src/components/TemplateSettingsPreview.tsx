@@ -186,10 +186,10 @@ export const TemplateSettingsPreview: React.FC = () => {
   ];
 
   const lineSpacings = [
-    { label: '1.15 倍 (超紧凑)', value: 1.15 },
+    { label: '1.15 倍 (1.15x · 官方默认)', value: 1.15 },
     { label: '1.20 倍 (大厂紧凑)', value: 1.20 },
     { label: '1.25 倍 (经典比例)', value: 1.25 },
-    { label: '1.28 倍 (1.28x · 官方默认)', value: 1.28 },
+    { label: '1.28 倍 (适中)', value: 1.28 },
     { label: '1.35 倍 (舒适易读)', value: 1.35 },
     { label: '1.50 倍 (宽松版面)', value: 1.50 },
   ];
