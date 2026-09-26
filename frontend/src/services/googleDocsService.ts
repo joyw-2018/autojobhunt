@@ -128,12 +128,12 @@ export const googleDocsService = {
     const fontStack = `'${fontFamily}', Arial, sans-serif`;
     const paddingPt = Math.round(config.marginInches * 72);
 
-    // Header divider: only present if showHeaderDivider is true (default true - matches PDF header line)
-    const headerBorder = config.showHeaderDivider
-      ? `border-bottom: ${config.dividerThickness || 1.5}pt solid ${config.dividerColor || '#0f172a'}; padding-bottom: 4pt;`
-      : 'padding-bottom: 2pt;';
+    // Header divider: only present if showHeaderDivider is true
+    const headerDividerHr = config.showHeaderDivider
+      ? `<hr style="border: 0; border-top: ${config.dividerThickness || 1.5}pt solid ${config.dividerColor || '#0f172a'}; margin: 6pt 0 10pt 0;" />`
+      : '';
 
-    // Section header divider: only present if showSectionDividers is true (default false - no horizontal lines!)
+    // Section header divider: only present if showSectionDividers is true
     const sectionBorder = config.showSectionDividers
       ? `border-bottom: ${config.dividerThickness || 1}pt solid ${config.dividerColor || '#1e3a8a'}; padding-bottom: 2pt;`
       : '';
@@ -143,7 +143,7 @@ export const googleDocsService = {
     const sectionFontWeight = config.sectionHeaderBold ? 'font-weight: bold;' : 'font-weight: 600;';
 
     // Section title style: explicit bold and uppercase with inline style
-    const sectionHeadingStyle = `font-family: ${fontStack}; font-size: ${config.sectionHeaderSize}pt; font-weight: bold; ${sectionTitleCase} letter-spacing: 0.5pt; color: ${sectionTitleColor}; ${sectionBorder} margin: 0; margin-top: 8pt; margin-bottom: 2pt; line-height: 1.2;`;
+    const sectionHeadingStyle = `font-family: ${fontStack}; font-size: ${config.sectionHeaderSize}pt; font-weight: bold; ${sectionTitleCase} letter-spacing: 0.5pt; color: ${sectionTitleColor}; ${sectionBorder} margin: 0; margin-top: 10pt; margin-bottom: 3pt; line-height: 1.2;`;
 
     // Experiences: uses borderless 100% table + tight <ul> to eliminate blank line between company subtitle and bullets
     const experiencesHtml = data.experiences
@@ -153,20 +153,20 @@ export const googleDocsService = {
           .join('');
 
         return `
-          <div style="margin: 0; margin-top: 5pt; margin-bottom: 2pt;">
-            <table style="width: 100%; border: none; border-collapse: collapse; margin: 0; margin-bottom: 1pt; padding: 0;">
+          <div style="margin: 0; margin-top: 6pt; margin-bottom: 3pt;">
+            <table style="width: 100%; border: none; border-collapse: collapse; margin: 0; margin-bottom: 2pt; padding: 0;">
               <tbody>
                 <tr>
-                  <td style="font-family: ${fontStack}; font-size: ${config.roleAndOrgSize}pt; font-weight: bold; color: #111827; border: none; padding: 0; margin: 0; text-align: left; vertical-align: bottom;">
-                    <b>${exp.company} — ${exp.role}</b>
+                  <td style="width: 75%; font-family: ${fontStack}; font-size: ${config.roleAndOrgSize}pt; font-weight: bold; color: #111827; border: none; padding: 0; margin: 0; text-align: left; vertical-align: bottom;">
+                    <b>${exp.company}</b><span style="font-weight: normal; color: #475569;"> — ${exp.role}</span>
                   </td>
-                  <td style="font-family: ${fontStack}; font-size: ${Math.max(8.5, config.bodySize - 0.5)}pt; color: #4b5563; border: none; padding: 0; margin: 0; text-align: right; vertical-align: bottom; white-space: nowrap;">
+                  <td style="width: 25%; font-family: ${fontStack}; font-size: ${Math.max(8.5, config.bodySize - 0.5)}pt; color: #64748b; border: none; padding: 0; margin: 0; text-align: right; vertical-align: bottom; white-space: nowrap;">
                     ${exp.date_range}
                   </td>
                 </tr>
               </tbody>
             </table>
-            <ul style="margin: 0; margin-top: 1pt; margin-bottom: 2pt; padding-left: 14pt;">
+            <ul style="margin: 0; margin-top: 2pt; margin-bottom: 3pt; padding-left: 16pt;">
               ${bulletsList}
             </ul>
           </div>
@@ -179,18 +179,18 @@ export const googleDocsService = {
       .map(
         sc => `
           <p style="font-family: ${fontStack}; margin: 0; margin-bottom: 2pt; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing};">
-            <b style="color: #111827;">${sc.category}:</b>
-            <span style="color: #374151;"> ${sc.skills}</span>
+            <b style="color: #0f172a;">${sc.category}:</b>
+            <span style="color: #334155;"> ${sc.skills}</span>
           </p>
         `
       )
       .join('');
 
     const sideProjectsSection = (is2Page && data.sideProjects) ? `
-      <div style="margin: 0; margin-top: 7pt;">
-        <p style="${sectionHeadingStyle}">
+      <div style="margin: 0; margin-top: 8pt; margin-bottom: 6pt;">
+        <h2 style="${sectionHeadingStyle}">
           <b>RECENT TECHNICAL SIDE PROJECTS</b>
-        </p>
+        </h2>
         <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0;">
           ${data.sideProjects}
         </p>
@@ -198,10 +198,10 @@ export const googleDocsService = {
     ` : '';
 
     const keynotesSection = data.keynotesTalks ? `
-      <div style="margin: 0; margin-top: 7pt;">
-        <p style="${sectionHeadingStyle}">
+      <div style="margin: 0; margin-top: 8pt; margin-bottom: 6pt;">
+        <h2 style="${sectionHeadingStyle}">
           <b>KEYNOTES & TECHNICAL THOUGHT LEADERSHIP</b>
-        </p>
+        </h2>
         <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0;">
           ${data.keynotesTalks}
         </p>
@@ -209,10 +209,10 @@ export const googleDocsService = {
     ` : '';
 
     const educationSection = data.education ? `
-      <div style="margin: 0; margin-top: 7pt;">
-        <p style="${sectionHeadingStyle}">
+      <div style="margin: 0; margin-top: 8pt; margin-bottom: 6pt;">
+        <h2 style="${sectionHeadingStyle}">
           <b>EDUCATION</b>
-        </p>
+        </h2>
         <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0;">
           ${data.education}
         </p>
@@ -259,46 +259,51 @@ export const googleDocsService = {
           }
           ul {
             margin: 0;
-            margin-top: 1pt;
-            margin-bottom: 2pt;
-            padding-left: 14pt;
+            margin-top: 2pt;
+            margin-bottom: 3pt;
+            padding-left: 16pt;
           }
           li {
             margin: 0;
             margin-bottom: ${config.paragraphSpacing || 3}pt;
           }
+          h2 {
+            margin: 0;
+            padding: 0;
+          }
         </style>
       </head>
       <body style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #111827; max-width: 780px; margin: 0 auto; padding: ${paddingPt}pt;">
         <!-- Header -->
-        <div style="text-align: ${candidateAlign}; ${headerBorder} margin: 0; margin-bottom: 5pt;">
-          <p style="font-family: ${fontStack}; font-size: ${config.candidateNameSize}pt; font-weight: bold; margin: 0; margin-bottom: 2pt; line-height: 1.15; color: #111827;"><b>${data.candidateName}</b></p>
-          <p style="font-family: ${fontStack}; font-size: ${config.contactInfoSize || 9.5}pt; color: #4b5563; margin: 0; line-height: 1.2;">${data.contactInfo}</p>
+        <div style="text-align: ${candidateAlign}; margin: 0; margin-bottom: 4pt;">
+          <h1 style="font-family: ${fontStack}; font-size: ${config.candidateNameSize}pt; font-weight: bold; margin: 0; margin-bottom: 2pt; line-height: 1.15; color: #111827;"><b>${data.candidateName}</b></h1>
+          <p style="font-family: ${fontStack}; font-size: ${config.contactInfoSize || 9.5}pt; color: #1e293b; margin: 0; line-height: 1.2;">${data.contactInfo}</p>
         </div>
+        ${headerDividerHr}
 
         <!-- Executive Summary (no gap between heading and text) -->
-        <div style="margin: 0; margin-bottom: 5pt;">
-          <p style="${sectionHeadingStyle}">
+        <div style="margin: 0; margin-bottom: 6pt;">
+          <h2 style="${sectionHeadingStyle}">
             <b>EXECUTIVE SUMMARY</b>
-          </p>
+          </h2>
           <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #1f2937; margin: 0; padding: 0;">
             ${data.summary}
           </p>
         </div>
 
         <!-- Core Competencies (no gap between heading and list) -->
-        <div style="margin: 0; margin-bottom: 5pt;">
-          <p style="${sectionHeadingStyle}">
+        <div style="margin: 0; margin-bottom: 6pt;">
+          <h2 style="${sectionHeadingStyle}">
             <b>CORE COMPETENCIES & DOMAIN EXPERTISE</b>
-          </p>
+          </h2>
           ${skillsHtml}
         </div>
 
-        <!-- Professional Experience (no gap between heading and employers, nor between company and bullets) -->
-        <div style="margin: 0; margin-bottom: 5pt;">
-          <p style="${sectionHeadingStyle}">
-            <b>PROFESSIONAL EXPERIENCE</b>
-          </p>
+        <!-- WORK HISTORY (aligned with preview title and layout) -->
+        <div style="margin: 0; margin-bottom: 6pt;">
+          <h2 style="${sectionHeadingStyle}">
+            <b>WORK HISTORY</b>
+          </h2>
           ${experiencesHtml}
         </div>
 
@@ -522,8 +527,8 @@ export const googleDocsService = {
       appendText(`${s.skills}\n`, { fontSize: bodyFontSize });
     });
 
-    // 5. PROFESSIONAL EXPERIENCE
-    appendSectionHeading('PROFESSIONAL EXPERIENCE');
+    // 5. WORK HISTORY (aligned with preview title)
+    appendSectionHeading('WORK HISTORY');
     data.experiences.forEach(exp => {
       // Company and Role are BOTH bold
       appendText(`${exp.company} — ${exp.role}`, { bold: true, fontSize: roleFontSize });
