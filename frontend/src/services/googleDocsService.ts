@@ -128,6 +128,11 @@ export const googleDocsService = {
     const fontStack = `'${fontFamily}', Arial, sans-serif`;
     const paddingPt = Math.round(config.marginInches * 72);
 
+    // Dynamic 2-page fit: compute effective line spacing and paragraph spacing
+    const spacingInfo = this.calculateEffectiveSpacing(data, config);
+    const effectiveLineSpacing = spacingInfo.lineSpacing;
+    const effectiveParagraphSpacing = spacingInfo.paragraphSpacing;
+
     // Header divider: only present if showHeaderDivider is true
     const headerDividerHr = config.showHeaderDivider
       ? `<hr style="border: 0; border-top: ${config.dividerThickness || 1.5}pt solid ${config.dividerColor || '#0f172a'}; margin: 6pt 0 10pt 0;" />`
@@ -149,7 +154,7 @@ export const googleDocsService = {
     const experiencesHtml = data.experiences
       .map(exp => {
         const bulletsList = exp.bullets
-          .map(b => `<li style="font-family: ${fontStack}; margin: 0; margin-bottom: ${config.paragraphSpacing || 3}pt; line-height: ${config.lineSpacing}; font-size: ${config.bodySize}pt; color: #1f2937; text-align: justify;">${b.chosen_text}</li>`)
+          .map(b => `<li style="font-family: ${fontStack}; margin: 0; margin-bottom: ${effectiveParagraphSpacing}pt; line-height: ${effectiveLineSpacing}; font-size: ${config.bodySize}pt; color: #1f2937; text-align: justify;">${b.chosen_text}</li>`)
           .join('');
 
         return `
@@ -178,7 +183,7 @@ export const googleDocsService = {
     const skillsHtml = data.skillsCategories
       .map(
         sc => `
-          <p style="font-family: ${fontStack}; margin: 0; margin-bottom: 2pt; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; text-align: justify;">
+          <p style="font-family: ${fontStack}; margin: 0; margin-bottom: 2pt; font-size: ${config.bodySize}pt; line-height: ${effectiveLineSpacing}; text-align: justify;">
             <b style="color: #0f172a;">${sc.category}:</b>
             <span style="color: #334155;"> ${sc.skills}</span>
           </p>
@@ -191,7 +196,7 @@ export const googleDocsService = {
         <h2 style="${sectionHeadingStyle}">
           <b>RECENT TECHNICAL SIDE PROJECTS</b>
         </h2>
-        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0; text-align: justify;">
+        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${effectiveLineSpacing}; color: #374151; margin: 0; padding: 0; text-align: justify;">
           ${data.sideProjects}
         </p>
       </div>
@@ -202,7 +207,7 @@ export const googleDocsService = {
         <h2 style="${sectionHeadingStyle}">
           <b>KEYNOTES & TECHNICAL THOUGHT LEADERSHIP</b>
         </h2>
-        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0; text-align: justify;">
+        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${effectiveLineSpacing}; color: #374151; margin: 0; padding: 0; text-align: justify;">
           ${data.keynotesTalks}
         </p>
       </div>
@@ -213,7 +218,7 @@ export const googleDocsService = {
         <h2 style="${sectionHeadingStyle}">
           <b>EDUCATION</b>
         </h2>
-        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0; text-align: justify;">
+        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${effectiveLineSpacing}; color: #374151; margin: 0; padding: 0; text-align: justify;">
           ${data.education}
         </p>
       </div>
@@ -227,7 +232,7 @@ export const googleDocsService = {
       <html>
       <head>
         <meta charset="utf-8">
-        <title>${data.candidateName} - Resume - ${data.targetCompany}</title>
+        <title>AutoResume - ${data.candidateName} - Resume - ${data.targetCompany}</title>
         <style>
           * {
             box-sizing: border-box;
@@ -273,7 +278,7 @@ export const googleDocsService = {
           }
         </style>
       </head>
-      <body style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #111827; max-width: 780px; margin: 0 auto; padding: ${paddingPt}pt;">
+      <body style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${effectiveLineSpacing}; color: #111827; max-width: 780px; margin: 0 auto; padding: ${paddingPt}pt;">
         <!-- Header -->
         <div style="text-align: ${candidateAlign}; margin: 0; margin-bottom: 4pt;">
           <h1 style="font-family: ${fontStack}; font-size: ${config.candidateNameSize}pt; font-weight: bold; margin: 0; margin-bottom: 2pt; line-height: 1.15; color: ${sectionTitleColor};"><b>${data.candidateName}</b></h1>
@@ -286,7 +291,7 @@ export const googleDocsService = {
           <h2 style="${sectionHeadingStyle}">
             <b>EXECUTIVE SUMMARY</b>
           </h2>
-          <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #1f2937; margin: 0; padding: 0; text-align: justify;">
+          <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${effectiveLineSpacing}; color: #1f2937; margin: 0; padding: 0; text-align: justify;">
             ${data.summary}
           </p>
         </div>
@@ -330,16 +335,168 @@ export const googleDocsService = {
   },
 
   /**
+   * Calculates the estimated vertical height of the document and dynamically shrinks
+   * lineSpacing (and paragraphSpacing if needed) if a 2-page resume would exceed 2 pages.
+   * If it fits within 2 pages, it keeps the default lineSpacing (1.15).
+   */
+  calculateEffectiveSpacing(data: ResumeExportData, config: GoogleDocsFormatConfig): {
+    lineSpacing: number;
+    paragraphSpacing: number;
+    wasShrunk: boolean;
+  } {
+    const defaultLineSpacing = config.lineSpacing || 1.15;
+    const defaultParagraphSpacing = config.paragraphSpacing || 3;
+
+    // Only auto-shrink for 2-page documents
+    if (data.pageLength !== 2) {
+      return {
+        lineSpacing: defaultLineSpacing,
+        paragraphSpacing: defaultParagraphSpacing,
+        wasShrunk: false,
+      };
+    }
+
+    const marginPt = (config.marginInches || 0.75) * 72;
+    // Letter page height is 11in = 792pt. Printable height per page = 792 - 2 * marginPt
+    const printableHeightPerPage = 792 - (marginPt * 2);
+    const maxTwoPageHeight = printableHeightPerPage * 2; // e.g. 1368pt for 0.75" margins
+
+    // Estimate document height given specific lineSpacing and paragraphSpacing
+    const estimateHeight = (ls: number, ps: number): number => {
+      let h = 0;
+
+      // Candidate Name & Contact Info
+      const nameSize = config.candidateNameSize || 22;
+      const contactSize = config.contactInfoSize || 9.5;
+      h += nameSize * 1.2 + 2; // Name line + spaceBelow 2pt
+      h += contactSize * 1.2 + 6; // Contact line + spaceBelow 6pt
+      if (config.showHeaderDivider) {
+        h += (config.dividerThickness || 1.5) + 6;
+      }
+
+      // Section Headings: 11pt, spaceAbove 9pt, spaceBelow 2.5pt
+      const headerSize = config.sectionHeaderSize || 11;
+      const headerHeight = headerSize * 1.2 + 9 + 2.5;
+
+      const bodySize = config.bodySize || 10;
+      const lineHeight = bodySize * ls;
+
+      // 1. Executive Summary
+      if (data.summary && data.summary.trim()) {
+        h += headerHeight;
+        const chars = data.summary.trim().length;
+        const lines = Math.max(1, Math.ceil(chars / 95));
+        h += lines * lineHeight + 5; // spaceBelow 5pt
+      }
+
+      // 2. Core Competencies & Skills
+      if (data.skillsCategories && data.skillsCategories.length > 0) {
+        h += headerHeight;
+        data.skillsCategories.forEach(sc => {
+          const chars = (sc.category + ': ' + sc.skills).length;
+          const lines = Math.max(1, Math.ceil(chars / 95));
+          h += lines * lineHeight + 2; // spaceBelow 2pt
+        });
+      }
+
+      // 3. Work History
+      if (data.experiences && data.experiences.length > 0) {
+        h += headerHeight;
+        const roleSize = config.roleAndOrgSize || 10.5;
+        data.experiences.forEach(exp => {
+          // Company / Role line
+          h += roleSize * 1.2 + 5 + 2; // spaceAbove 5pt, spaceBelow 2pt
+          if (exp.bullets && exp.bullets.length > 0) {
+            exp.bullets.forEach(b => {
+              const text = b.chosen_text.trim().replace(/^[\s•\-\*]+\s*/, '');
+              // Bullets have bullet indentation, avg chars per line ~ 85
+              const bulletLines = Math.max(1, Math.ceil(text.length / 85));
+              h += bulletLines * lineHeight + ps;
+            });
+          }
+        });
+      }
+
+      // 4. Optional Sections
+      if (data.sideProjects?.trim()) {
+        h += headerHeight;
+        const lines = Math.max(1, Math.ceil(data.sideProjects.trim().length / 95));
+        h += lines * lineHeight + 4;
+      }
+
+      if (data.keynotesTalks?.trim()) {
+        h += headerHeight;
+        const lines = Math.max(1, Math.ceil(data.keynotesTalks.trim().length / 95));
+        h += lines * lineHeight + 4;
+      }
+
+      if (data.education?.trim()) {
+        h += headerHeight;
+        const lines = Math.max(1, Math.ceil(data.education.trim().length / 95));
+        h += lines * lineHeight + 4;
+      }
+
+      return h;
+    };
+
+    const initialHeight = estimateHeight(defaultLineSpacing, defaultParagraphSpacing);
+
+    // If within 2 pages, keep default 1.15 line spacing
+    if (initialHeight <= maxTwoPageHeight) {
+      return {
+        lineSpacing: defaultLineSpacing,
+        paragraphSpacing: defaultParagraphSpacing,
+        wasShrunk: false,
+      };
+    }
+
+    // Progressively test smaller line spacing values down to 1.02
+    // If still tight, gradually reduce paragraph spacing from default down to 1.5pt
+    const candidateLineSpacings = [1.13, 1.11, 1.10, 1.08, 1.06, 1.05, 1.04, 1.02];
+    for (const ls of candidateLineSpacings) {
+      if (estimateHeight(ls, defaultParagraphSpacing) <= maxTwoPageHeight) {
+        return {
+          lineSpacing: ls,
+          paragraphSpacing: defaultParagraphSpacing,
+          wasShrunk: true,
+        };
+      }
+    }
+
+    // Also progressively tighten bullet paragraph spacing if needed
+    for (let ps = defaultParagraphSpacing - 0.5; ps >= 1.5; ps -= 0.5) {
+      for (const ls of candidateLineSpacings) {
+        if (estimateHeight(ls, ps) <= maxTwoPageHeight) {
+          return {
+            lineSpacing: ls,
+            paragraphSpacing: ps,
+            wasShrunk: true,
+          };
+        }
+      }
+    }
+
+    // Fallback: minimal acceptable line spacing of 1.02 and paragraph spacing of 1.5
+    return {
+      lineSpacing: 1.02,
+      paragraphSpacing: 1.5,
+      wasShrunk: true,
+    };
+  },
+
+  /**
    * Exports the tailored resume directly into user's personal Google Drive as a native Google Doc.
    * Uses direct Google Docs REST API (documents.create + batchUpdate) to guarantee:
    * 1. 100% exact bold styling on Candidate Name, Headings, Categories, and Companies (never stripped).
    * 2. Zero unwanted blank lines between sections, subtitles, and text.
    * 3. Native bullet points and exact paragraph spacing matching the web preview 1:1.
    * 4. User-customized font family and page margins across all elements.
+   * 5. Title always prefixed with "AutoResume - ".
+   * 6. Automatically shrinks line spacing if 2-page document exceeds 2 pages.
    */
   async createGoogleDoc(accessToken: string, data: ResumeExportData): Promise<{ docId: string; docUrl: string; title: string }> {
     const config = data.formatConfig || docFormatService.getStoredConfig();
-    const docTitle = `${data.candidateName} - Resume - ${data.targetCompany} (${data.targetJobTitle})`;
+    const docTitle = `AutoResume - ${data.candidateName} - Resume - ${data.targetCompany} (${data.targetJobTitle})`;
     const normalizedFont = this.normalizeFontFamily(config.fontFamily || 'Arial');
 
     // 1. Create a blank Google Doc via Docs API
@@ -401,7 +558,16 @@ export const googleDocsService = {
     const skillCategoryColor = this.parseHexColor('#0f172a');
     const skillTextColor = this.parseHexColor('#334155');
     const dividerColor = this.parseHexColor(config.dividerColor || '#0f172a');
-    const lineSpacingPct = Math.round((config.lineSpacing || 1.15) * 100);
+
+    // Dynamic 2-page fit: compute effective line spacing and paragraph spacing
+    const spacingInfo = this.calculateEffectiveSpacing(data, config);
+    const effectiveLineSpacing = spacingInfo.lineSpacing;
+    const effectiveParagraphSpacing = spacingInfo.paragraphSpacing;
+    const lineSpacingPct = Math.round(effectiveLineSpacing * 100);
+
+    if (spacingInfo.wasShrunk) {
+      console.log(`[AutoResume] 2-Page auto-shrink applied: lineSpacing=${effectiveLineSpacing}, paragraphSpacing=${effectiveParagraphSpacing}pt`);
+    }
 
     // Candidate Name
     paragraphs.push({
@@ -546,7 +712,7 @@ export const googleDocsService = {
               alignment: 'JUSTIFIED',
               isBullet: true,
               spaceAbovePt: 0,
-              spaceBelowPt: config.paragraphSpacing || 3,
+              spaceBelowPt: effectiveParagraphSpacing,
               lineSpacingMultiplier: lineSpacingPct,
             });
           });
