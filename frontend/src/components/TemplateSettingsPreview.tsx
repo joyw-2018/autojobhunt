@@ -712,7 +712,7 @@ export const TemplateSettingsPreview: React.FC = () => {
               >
                 EXECUTIVE SUMMARY
               </h2>
-              <p style={{ fontSize: `${config.bodySize * 1.1}px`, color: '#1e293b', margin: 0 }}>
+              <p style={{ fontSize: `${config.bodySize * 1.1}px`, color: '#1e293b', margin: 0, textAlign: 'justify' }}>
                 {currentResumeData.summary}
               </p>
             </div>
@@ -735,7 +735,7 @@ export const TemplateSettingsPreview: React.FC = () => {
               </h2>
               <div style={{ fontSize: `${config.bodySize * 1.1}px`, color: '#1e293b', display: 'flex', flexDirection: 'column', gap: '3px' }}>
                 {currentResumeData.skillsCategories.map((sc, i) => (
-                  <div key={i}>
+                  <div key={i} style={{ textAlign: 'justify' }}>
                     <strong style={{ color: '#0f172a' }}>{sc.category}:</strong>
                     <span style={{ color: '#334155' }}> {sc.skills}</span>
                   </div>
@@ -771,7 +771,7 @@ export const TemplateSettingsPreview: React.FC = () => {
                   </div>
                   <ul style={{ margin: '4px 0 0 0', paddingLeft: '20px', fontSize: `${config.bodySize * 1.1}px`, color: '#1e293b', listStyleType: 'disc' }}>
                     {exp.bullets.map((b, bIdx) => (
-                      <li key={bIdx} style={{ marginBottom: `${config.paragraphSpacing}px` }}>
+                      <li key={bIdx} style={{ marginBottom: `${config.paragraphSpacing}px`, textAlign: 'justify' }}>
                         {b.chosen_text}
                       </li>
                     ))}
@@ -797,7 +797,7 @@ export const TemplateSettingsPreview: React.FC = () => {
                 >
                   KEYNOTES & TECHNICAL THOUGHT LEADERSHIP
                 </h2>
-                <p style={{ fontSize: `${config.bodySize * 1.1}px`, color: '#1e293b', margin: 0 }}>
+                <p style={{ fontSize: `${config.bodySize * 1.1}px`, color: '#1e293b', margin: 0, textAlign: 'justify' }}>
                   {currentResumeData.keynotesTalks}
                 </p>
               </div>
@@ -820,7 +820,7 @@ export const TemplateSettingsPreview: React.FC = () => {
                 >
                   RECENT TECHNICAL SIDE PROJECTS
                 </h2>
-                <p style={{ fontSize: `${config.bodySize * 1.1}px`, color: '#1e293b', margin: 0 }}>
+                <p style={{ fontSize: `${config.bodySize * 1.1}px`, color: '#1e293b', margin: 0, textAlign: 'justify' }}>
                   {currentResumeData.sideProjects}
                 </p>
               </div>
@@ -843,7 +843,7 @@ export const TemplateSettingsPreview: React.FC = () => {
                 >
                   EDUCATION
                 </h2>
-                <p style={{ fontSize: `${config.bodySize * 1.1}px`, color: '#1e293b', margin: 0 }}>
+                <p style={{ fontSize: `${config.bodySize * 1.1}px`, color: '#1e293b', margin: 0, textAlign: 'justify' }}>
                   {currentResumeData.education}
                 </p>
               </div>

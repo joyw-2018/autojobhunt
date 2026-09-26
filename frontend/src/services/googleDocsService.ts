@@ -149,7 +149,7 @@ export const googleDocsService = {
     const experiencesHtml = data.experiences
       .map(exp => {
         const bulletsList = exp.bullets
-          .map(b => `<li style="font-family: ${fontStack}; margin: 0; margin-bottom: ${config.paragraphSpacing || 3}pt; line-height: ${config.lineSpacing}; font-size: ${config.bodySize}pt; color: #1f2937;">${b.chosen_text}</li>`)
+          .map(b => `<li style="font-family: ${fontStack}; margin: 0; margin-bottom: ${config.paragraphSpacing || 3}pt; line-height: ${config.lineSpacing}; font-size: ${config.bodySize}pt; color: #1f2937; text-align: justify;">${b.chosen_text}</li>`)
           .join('');
 
         return `
@@ -178,7 +178,7 @@ export const googleDocsService = {
     const skillsHtml = data.skillsCategories
       .map(
         sc => `
-          <p style="font-family: ${fontStack}; margin: 0; margin-bottom: 2pt; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing};">
+          <p style="font-family: ${fontStack}; margin: 0; margin-bottom: 2pt; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; text-align: justify;">
             <b style="color: #0f172a;">${sc.category}:</b>
             <span style="color: #334155;"> ${sc.skills}</span>
           </p>
@@ -191,7 +191,7 @@ export const googleDocsService = {
         <h2 style="${sectionHeadingStyle}">
           <b>RECENT TECHNICAL SIDE PROJECTS</b>
         </h2>
-        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0;">
+        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0; text-align: justify;">
           ${data.sideProjects}
         </p>
       </div>
@@ -202,7 +202,7 @@ export const googleDocsService = {
         <h2 style="${sectionHeadingStyle}">
           <b>KEYNOTES & TECHNICAL THOUGHT LEADERSHIP</b>
         </h2>
-        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0;">
+        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0; text-align: justify;">
           ${data.keynotesTalks}
         </p>
       </div>
@@ -213,7 +213,7 @@ export const googleDocsService = {
         <h2 style="${sectionHeadingStyle}">
           <b>EDUCATION</b>
         </h2>
-        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0;">
+        <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #374151; margin: 0; padding: 0; text-align: justify;">
           ${data.education}
         </p>
       </div>
@@ -286,7 +286,7 @@ export const googleDocsService = {
           <h2 style="${sectionHeadingStyle}">
             <b>EXECUTIVE SUMMARY</b>
           </h2>
-          <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #1f2937; margin: 0; padding: 0;">
+          <p style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #1f2937; margin: 0; padding: 0; text-align: justify;">
             ${data.summary}
           </p>
         </div>
@@ -370,7 +370,7 @@ export const googleDocsService = {
 
     interface DocParagraph {
       spans: TextSpan[];
-      alignment?: 'START' | 'CENTER' | 'END';
+      alignment?: 'START' | 'CENTER' | 'END' | 'JUSTIFIED';
       spaceAbovePt?: number;
       spaceBelowPt?: number;
       lineSpacingMultiplier?: number;
@@ -453,7 +453,7 @@ export const googleDocsService = {
       });
     };
 
-    // 1. EXECUTIVE SUMMARY
+    // 1. EXECUTIVE SUMMARY (Justified左右对齐)
     addSectionHeading('EXECUTIVE SUMMARY');
     if (data.summary && data.summary.trim()) {
       paragraphs.push({
@@ -465,14 +465,14 @@ export const googleDocsService = {
             color: bodyColor,
           },
         ],
-        alignment: 'START',
+        alignment: 'JUSTIFIED',
         spaceAbovePt: 0,
         spaceBelowPt: 5, // Clean, tight spacing without any blank lines
         lineSpacingMultiplier: lineSpacingPct,
       });
     }
 
-    // 2. CORE COMPETENCIES & DOMAIN EXPERTISE
+    // 2. CORE COMPETENCIES & DOMAIN EXPERTISE (Justified左右对齐)
     addSectionHeading('CORE COMPETENCIES & DOMAIN EXPERTISE');
     if (data.skillsCategories && data.skillsCategories.length > 0) {
       data.skillsCategories.forEach(sc => {
@@ -491,7 +491,7 @@ export const googleDocsService = {
               color: skillTextColor,
             },
           ],
-          alignment: 'START',
+          alignment: 'JUSTIFIED',
           spaceAbovePt: 0,
           spaceBelowPt: 2,
           lineSpacingMultiplier: lineSpacingPct,
@@ -530,6 +530,7 @@ export const googleDocsService = {
           lineSpacingMultiplier: 115,
         });
 
+        // Bullets (Justified左右对齐)
         if (exp.bullets && exp.bullets.length > 0) {
           exp.bullets.forEach(b => {
             const cleanText = b.chosen_text.trim().replace(/^[\s•\-\*]+\s*/, '');
@@ -542,7 +543,7 @@ export const googleDocsService = {
                   color: bodyColor,
                 },
               ],
-              alignment: 'START',
+              alignment: 'JUSTIFIED',
               isBullet: true,
               spaceAbovePt: 0,
               spaceBelowPt: config.paragraphSpacing || 3,
@@ -553,7 +554,7 @@ export const googleDocsService = {
       });
     }
 
-    // 4. Optional Sections
+    // 4. Optional Sections (Justified左右对齐)
     if (data.pageLength === 2 && data.sideProjects?.trim()) {
       addSectionHeading('RECENT TECHNICAL SIDE PROJECTS');
       paragraphs.push({
@@ -565,7 +566,7 @@ export const googleDocsService = {
             color: this.parseHexColor('#374151'),
           },
         ],
-        alignment: 'START',
+        alignment: 'JUSTIFIED',
         spaceAbovePt: 0,
         spaceBelowPt: 4,
         lineSpacingMultiplier: lineSpacingPct,
@@ -583,7 +584,7 @@ export const googleDocsService = {
             color: this.parseHexColor('#374151'),
           },
         ],
-        alignment: 'START',
+        alignment: 'JUSTIFIED',
         spaceAbovePt: 0,
         spaceBelowPt: 4,
         lineSpacingMultiplier: lineSpacingPct,
@@ -601,7 +602,7 @@ export const googleDocsService = {
             color: this.parseHexColor('#374151'),
           },
         ],
-        alignment: 'START',
+        alignment: 'JUSTIFIED',
         spaceAbovePt: 0,
         spaceBelowPt: 4,
         lineSpacingMultiplier: lineSpacingPct,
@@ -621,7 +622,7 @@ export const googleDocsService = {
     const paragraphRanges: Array<{
       startIndex: number;
       endIndex: number;
-      alignment: 'START' | 'CENTER' | 'END';
+      alignment: 'START' | 'CENTER' | 'END' | 'JUSTIFIED';
       spaceAbovePt: number;
       spaceBelowPt: number;
       lineSpacingMultiplier: number;
