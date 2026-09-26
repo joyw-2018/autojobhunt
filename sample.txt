@@ -1,0 +1,70 @@
+﻿Joy Wang
+Phone: 617.230.9777 | Email: joy.jiayiwang@gmail.com | Status: US Permanent Resident
+________________
+
+
+Executive Summary
+Senior Product Management Leader with 10+ years of product leadership, including 8+ years architecting enterprise-scale cloud platforms and agentic workflow orchestration, Model Context Protocol (MCP), and AI observability infrastructure at Google Cloud. Proven track record driving 0-to-1 platform standardization (Google Cloud Tech Impact Award), zero-downtime platform migrations (Google Feats of Engineering Award), and high-throughput query performance (cutting zero-state latency by 70%). Passionate about leveraging deep enterprise telemetry and systems architecture acumen to accelerate product innovation and developer velocity for Google's Senior Product Manager, AI Enablement and Infrastructure role.
+
+
+Core Competencies & Domain Expertise
+AI & Agent Platforms:  Model Context Protocol (MCP), Agentic Workflows & Trajectories, LLM APIs, AI Observability, BigQuery Data Plane
+Cloud Infrastructure & Platforms:  Google Cloud Platform (Pantheon Console), Distributed Query Systems, Caching & Sampling, Platform-as-a-Product, Golden Paths
+Governance, FinOps & Performance:  GKE Cost Insights, Workload Unit Economics, IAM Governance, Zero-Downtime Migration, Latency Optimization (SLOs)
+Product Leadership & Strategy:  0-to-1 Platform Standardization, Product Intake Frameworks, CUJ Mapping, Influence Without Authority, Cross-Functional Alignment
+
+
+Professional Experience
+
+
+Google Cloud Platform — Senior Product Manager
+	2018.02 - Present
+	* Unblocked $100M+ in enterprise sales pipeline and adoption by productizing AI-ready telemetry, natural-language query analytics, and Model Context Protocol (MCP) integrations across core cloud infrastructure.
+* Dramatically accelerated developer Mean Time to Resolution (MTTR) by architecting automated diagnostic workflows, root-cause evaluation frameworks, and standardized task completion benchmarks.
+* Slashed partner onboarding support tickets by 50% in Month 1 and scaled to 20+ core GCP engineering organizations within 12 months, earning the Google Cloud Tech Impact Award.
+* Slashed zero-state query latency by 70% across distributed platform services by diagnosing an 8x bottleneck and executing structured A/B performance experiments.
+* Expanded active enterprise user adoption by 20% while achieving 100% zero-downtime deprecation of legacy Stackdriver infrastructure, winning the Google Feats of Engineering Award.
+* Drove multi-million-dollar efficiency gains for enterprise customers by launching GKE Cost Insights, enabling granular AI and compute spend attribution, capacity alignment, and automated storage tiering.
+* Increased engineering execution efficiency by 30% and shipped 10+ core platform capabilities in 1 year by establishing structured product intake frameworks and CUJ mapping.
+
+
+Scotiabank — Product Manager
+	2017.02 - 2018.02
+	* Resolved 5x production latency bottleneck in highly regulated financial environments and established strategic API roadmaps for regional banking integrations.
+* Accelerated internal partner integration timelines by modernizing core banking infrastructure and establishing self-service API access policies.
+
+
+Net Credit Group (NCF - Fintech Startup) — Head of Product
+	2016.04 - 2017.02
+	* Scaled platform adoption to 200,000+ active transacting users within 90 days of launching an end-to-end financial ecosystem in 5 months.
+* Embedded automated risk evaluation engines and compliance verification directly into high-volume transaction funnels, reducing credit evaluation turnaround to seconds.
+
+
+eBay Inc. — Product Manager
+	2012.10 - 2016.04
+	* Delivered 20%+ YoY organic traffic growth for 3 consecutive years by optimizing query conversion paths and running continuous A/B testing across millions of consumer queries.
+* Optimized consumer query funnels and conversion paths through continuous multivariate testing, maximizing search relevance and session retention.
+
+
+Rogers Communications — Product Manager
+	2010.05 - 2012.10
+	* Improved search retrieval accuracy by 30% and expanded search keyword coverage by 50% across Canada's largest telecom portal.
+* Reduced zero-result search queries by 25% by standardizing telecom taxonomy and automating catalog data ingestion pipelines.
+
+
+Google Inc — Senior Account Manager
+	2005.12 - 2008.11
+	* Achieved 40%+ YoY growth for 3 consecutive years and accelerated new client onboarding by 5x in Year 1 through data-led campaign optimization and operational scaling.
+* Reduced enterprise client ramp-up time by 40% across a 50-person organization through data-driven operational playbooks.
+
+
+Recent Technical Side Projects
+Side Project: Designed and built interactive learning website for youth financial literacy (invest-in-future.onrender.com)
+
+
+Keynotes & Technical Thought Leadership
+Featured Speaker at Google Cloud Next (MLB Observability Analytics, 4.7/5 rating) & GrafanaCon (2019); Authored 15+ official Google Cloud technical whitepapers and blogs on Query Telemetry with SQL for AI Observability.
+
+
+Education
+MBA – Rotman School of Management, University of Toronto | BS – Computer Science, Fudan University

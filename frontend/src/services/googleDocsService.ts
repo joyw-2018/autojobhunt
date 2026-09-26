@@ -316,131 +316,33 @@ export const googleDocsService = {
   },
 
   /**
-   * Post-processes an existing or newly created Google Doc via Documents API batchUpdate:
-   * 1. Forces the document-wide font family across all text content, ensuring Google Docs UI reflects it.
-   * 2. Sets exact page margins to match config.marginInches.
+   * Helper to parse hex color string to Google Docs API RGB (0..1)
    */
-  async postFormatGoogleDoc(accessToken: string, docId: string, config: GoogleDocsFormatConfig): Promise<void> {
-    try {
-      const docRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      if (!docRes.ok) return;
-
-      const docJson = await docRes.json();
-      const content = docJson.body?.content || [];
-      const lastElement = content[content.length - 1];
-      const maxEndIndex = lastElement?.endIndex ? lastElement.endIndex - 1 : 1;
-
-      const requests: any[] = [];
-      const normalizedFont = this.normalizeFontFamily(config.fontFamily);
-
-      // 1. Force the selected font family across the entire document
-      if (maxEndIndex > 1 && normalizedFont) {
-        requests.push({
-          updateTextStyle: {
-            range: {
-              startIndex: 1,
-              endIndex: maxEndIndex,
-            },
-            textStyle: {
-              weightedFontFamily: {
-                fontFamily: normalizedFont,
-              },
-            },
-            fields: 'weightedFontFamily',
-          },
-        });
-      }
-
-      // 2. Adjust document page margins
-      if (config.marginInches) {
-        const marginPt = config.marginInches * 72;
-        requests.push({
-          updateDocumentStyle: {
-            documentStyle: {
-              marginTop: { magnitude: marginPt, unit: 'PT' },
-              marginBottom: { magnitude: marginPt, unit: 'PT' },
-              marginLeft: { magnitude: marginPt, unit: 'PT' },
-              marginRight: { magnitude: marginPt, unit: 'PT' },
-            },
-            fields: 'marginTop,marginBottom,marginLeft,marginRight',
-          },
-        });
-      }
-
-      if (requests.length > 0) {
-        await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ requests }),
-        });
-      }
-    } catch (err) {
-      console.warn('Post-formatting Google Doc batchUpdate caught non-fatal error:', err);
-    }
+  parseHexColor(hex: string): { red: number; green: number; blue: number } {
+    const cleanHex = (hex || '#000000').replace('#', '').trim();
+    const num = parseInt(cleanHex, 16);
+    if (isNaN(num)) return { red: 0.1, green: 0.15, blue: 0.25 };
+    return {
+      red: ((num >> 16) & 255) / 255,
+      green: ((num >> 8) & 255) / 255,
+      blue: (num & 255) / 255,
+    };
   },
 
   /**
-   * Exports the resume into user's personal Google Drive as a native Google Doc.
-   * Uses Drive multipart upload with conversion to application/vnd.google-apps.document,
-   * followed by Documents API post-processing to guarantee exact font family and margin styling.
+   * Exports the tailored resume directly into user's personal Google Drive as a native Google Doc.
+   * Uses direct Google Docs REST API (documents.create + batchUpdate) to guarantee:
+   * 1. 100% exact bold styling on Candidate Name, Headings, Categories, and Companies (never stripped).
+   * 2. Zero unwanted blank lines between sections, subtitles, and text.
+   * 3. Native bullet points and exact paragraph spacing matching the web preview 1:1.
+   * 4. User-customized font family and page margins across all elements.
    */
   async createGoogleDoc(accessToken: string, data: ResumeExportData): Promise<{ docId: string; docUrl: string; title: string }> {
     const config = data.formatConfig || docFormatService.getStoredConfig();
     const docTitle = `${data.candidateName} - Resume - ${data.targetCompany} (${data.targetJobTitle})`;
-    const htmlContent = this.buildResumeHtml(data, config);
+    const normalizedFont = this.normalizeFontFamily(config.fontFamily || 'Arial');
 
-    // Try Drive upload conversion first (preserves headings, bold text, styles, and bullets natively)
-    try {
-      const metadata = {
-        name: docTitle,
-        mimeType: 'application/vnd.google-apps.document',
-      };
-
-      const boundary = '-------AutoJobHuntResumeBoundary' + Math.floor(Math.random() * 1000000);
-      const multipartRequestBody =
-        `--${boundary}\r\n` +
-        'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
-        JSON.stringify(metadata) +
-        `\r\n--${boundary}\r\n` +
-        'Content-Type: text/html; charset=UTF-8\r\n\r\n' +
-        htmlContent +
-        `\r\n--${boundary}--`;
-
-      const driveRes = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': `multipart/related; boundary=${boundary}`,
-        },
-        body: multipartRequestBody,
-      });
-
-      if (driveRes.ok) {
-        const driveData = await driveRes.json();
-        const docId = driveData.id;
-
-        // Post-process to guarantee exact font-family and margins in Google Docs
-        await this.postFormatGoogleDoc(accessToken, docId, config);
-
-        return {
-          docId,
-          docUrl: `https://docs.google.com/document/d/${docId}/edit`,
-          title: docTitle,
-        };
-      } else {
-        const errText = await driveRes.text().catch(() => '');
-        console.warn('Drive multipart upload returned non-OK status:', driveRes.status, errText);
-      }
-    } catch (driveErr) {
-      console.warn('Drive multipart upload failed, attempting fallback to Docs API:', driveErr);
-    }
-
-    // Fallback: Use direct Google Docs API
+    // 1. Create a blank Google Doc via Docs API
     const docsRes = await fetch('https://docs.googleapis.com/v1/documents', {
       method: 'POST',
       headers: {
@@ -458,176 +360,444 @@ export const googleDocsService = {
     const docsData = await docsRes.json();
     const docId = docsData.documentId;
 
-    // Convert resume to structured text for Docs API and record ranges for precise styling
-    let text = '';
-    const styleRanges: Array<{
-      start: number;
-      end: number;
+    // 2. Data model for structured document generation
+    interface TextSpan {
+      text: string;
       bold?: boolean;
       fontSize?: number;
       color?: { red: number; green: number; blue: number };
-      isHeader?: boolean;
+    }
+
+    interface DocParagraph {
+      spans: TextSpan[];
+      alignment?: 'START' | 'CENTER' | 'END';
+      spaceAbovePt?: number;
+      spaceBelowPt?: number;
+      lineSpacingMultiplier?: number;
+      isBullet?: boolean;
+      borderBottom?: {
+        color: { red: number; green: number; blue: number };
+        widthPt: number;
+        dashStyle?: string;
+      };
+    }
+
+    const paragraphs: DocParagraph[] = [];
+
+    const nameSize = config.candidateNameSize || 22;
+    const contactSize = config.contactInfoSize || 9.5;
+    const headerSize = config.sectionHeaderSize || 11;
+    const roleSize = config.roleAndOrgSize || 10.5;
+    const bodySize = config.bodySize || 10;
+    const dateSize = Math.max(8.5, bodySize - 0.5);
+
+    const headerColor = this.parseHexColor(config.sectionHeaderColor || '#1e3a8a');
+    const nameColor = this.parseHexColor('#111827');
+    const contactColor = this.parseHexColor('#1e293b');
+    const companyColor = this.parseHexColor('#0f172a');
+    const roleColor = this.parseHexColor('#475569');
+    const dateColor = this.parseHexColor('#64748b');
+    const bodyColor = this.parseHexColor('#1f2937');
+    const skillCategoryColor = this.parseHexColor('#0f172a');
+    const skillTextColor = this.parseHexColor('#334155');
+    const dividerColor = this.parseHexColor(config.dividerColor || '#0f172a');
+    const lineSpacingPct = Math.round((config.lineSpacing || 1.28) * 100);
+
+    // Candidate Name
+    paragraphs.push({
+      spans: [
+        {
+          text: `${data.candidateName.trim()}\n`,
+          bold: true,
+          fontSize: nameSize,
+          color: nameColor,
+        },
+      ],
+      alignment: (config.candidateNameAlign || 'center') === 'center' ? 'CENTER' : 'START',
+      spaceAbovePt: 0,
+      spaceBelowPt: 2,
+      lineSpacingMultiplier: 115,
+    });
+
+    // Contact Info
+    paragraphs.push({
+      spans: [
+        {
+          text: `${data.contactInfo.trim()}\n`,
+          bold: false,
+          fontSize: contactSize,
+          color: contactColor,
+        },
+      ],
+      alignment: (config.candidateNameAlign || 'center') === 'center' ? 'CENTER' : 'START',
+      spaceAbovePt: 0,
+      spaceBelowPt: 6,
+      lineSpacingMultiplier: 115,
+      borderBottom: config.showHeaderDivider
+        ? {
+            color: dividerColor,
+            widthPt: config.dividerThickness || 1.5,
+            dashStyle: 'SOLID',
+          }
+        : undefined,
+    });
+
+    // Helper for Section Heading (Strictly 0 blank lines before or after)
+    const addSectionHeading = (title: string) => {
+      paragraphs.push({
+        spans: [
+          {
+            text: `${title}\n`,
+            bold: true,
+            fontSize: headerSize,
+            color: headerColor,
+          },
+        ],
+        alignment: 'START',
+        spaceAbovePt: 9,
+        spaceBelowPt: 2.5,
+        lineSpacingMultiplier: 115,
+        borderBottom: config.showSectionDividers
+          ? {
+              color: headerColor,
+              widthPt: config.dividerThickness || 1,
+              dashStyle: 'SOLID',
+            }
+          : undefined,
+      });
+    };
+
+    // 1. EXECUTIVE SUMMARY
+    addSectionHeading('EXECUTIVE SUMMARY');
+    if (data.summary && data.summary.trim()) {
+      paragraphs.push({
+        spans: [
+          {
+            text: `${data.summary.trim()}\n`,
+            bold: false,
+            fontSize: bodySize,
+            color: bodyColor,
+          },
+        ],
+        alignment: 'START',
+        spaceAbovePt: 0,
+        spaceBelowPt: 5, // Clean, tight spacing without any blank lines
+        lineSpacingMultiplier: lineSpacingPct,
+      });
+    }
+
+    // 2. CORE COMPETENCIES & DOMAIN EXPERTISE
+    addSectionHeading('CORE COMPETENCIES & DOMAIN EXPERTISE');
+    if (data.skillsCategories && data.skillsCategories.length > 0) {
+      data.skillsCategories.forEach(sc => {
+        paragraphs.push({
+          spans: [
+            {
+              text: `${sc.category.trim()}: `,
+              bold: true,
+              fontSize: bodySize,
+              color: skillCategoryColor,
+            },
+            {
+              text: `${sc.skills.trim()}\n`,
+              bold: false,
+              fontSize: bodySize,
+              color: skillTextColor,
+            },
+          ],
+          alignment: 'START',
+          spaceAbovePt: 0,
+          spaceBelowPt: 2,
+          lineSpacingMultiplier: lineSpacingPct,
+        });
+      });
+    }
+
+    // 3. WORK HISTORY
+    addSectionHeading('WORK HISTORY');
+    if (data.experiences && data.experiences.length > 0) {
+      data.experiences.forEach(exp => {
+        paragraphs.push({
+          spans: [
+            {
+              text: exp.company.trim(),
+              bold: true,
+              fontSize: roleSize,
+              color: companyColor,
+            },
+            {
+              text: ` — ${exp.role.trim()}`,
+              bold: false,
+              fontSize: roleSize,
+              color: roleColor,
+            },
+            {
+              text: ` (${exp.date_range.trim()})\n`,
+              bold: false,
+              fontSize: dateSize,
+              color: dateColor,
+            },
+          ],
+          alignment: 'START',
+          spaceAbovePt: 5,
+          spaceBelowPt: 2,
+          lineSpacingMultiplier: 115,
+        });
+
+        if (exp.bullets && exp.bullets.length > 0) {
+          exp.bullets.forEach(b => {
+            const cleanText = b.chosen_text.trim().replace(/^[\s•\-\*]+\s*/, '');
+            paragraphs.push({
+              spans: [
+                {
+                  text: `${cleanText}\n`,
+                  bold: false,
+                  fontSize: bodySize,
+                  color: bodyColor,
+                },
+              ],
+              alignment: 'START',
+              isBullet: true,
+              spaceAbovePt: 0,
+              spaceBelowPt: config.paragraphSpacing || 3,
+              lineSpacingMultiplier: lineSpacingPct,
+            });
+          });
+        }
+      });
+    }
+
+    // 4. Optional Sections
+    if (data.pageLength === 2 && data.sideProjects?.trim()) {
+      addSectionHeading('RECENT TECHNICAL SIDE PROJECTS');
+      paragraphs.push({
+        spans: [
+          {
+            text: `${data.sideProjects.trim()}\n`,
+            bold: false,
+            fontSize: bodySize,
+            color: this.parseHexColor('#374151'),
+          },
+        ],
+        alignment: 'START',
+        spaceAbovePt: 0,
+        spaceBelowPt: 4,
+        lineSpacingMultiplier: lineSpacingPct,
+      });
+    }
+
+    if (data.keynotesTalks?.trim()) {
+      addSectionHeading('KEYNOTES & TECHNICAL THOUGHT LEADERSHIP');
+      paragraphs.push({
+        spans: [
+          {
+            text: `${data.keynotesTalks.trim()}\n`,
+            bold: false,
+            fontSize: bodySize,
+            color: this.parseHexColor('#374151'),
+          },
+        ],
+        alignment: 'START',
+        spaceAbovePt: 0,
+        spaceBelowPt: 4,
+        lineSpacingMultiplier: lineSpacingPct,
+      });
+    }
+
+    if (data.education?.trim()) {
+      addSectionHeading('EDUCATION');
+      paragraphs.push({
+        spans: [
+          {
+            text: `${data.education.trim()}\n`,
+            bold: false,
+            fontSize: bodySize,
+            color: this.parseHexColor('#374151'),
+          },
+        ],
+        alignment: 'START',
+        spaceAbovePt: 0,
+        spaceBelowPt: 4,
+        lineSpacingMultiplier: lineSpacingPct,
+      });
+    }
+
+    // 3. Flatten and calculate precise index ranges for Google Docs API
+    let fullText = '';
+    const textRanges: Array<{
+      startIndex: number;
+      endIndex: number;
+      bold: boolean;
+      fontSize: number;
+      color?: { red: number; green: number; blue: number };
     }> = [];
 
-    // Helper to append text and optionally track formatting range
-    // Google Docs API is 1-indexed for the body content
-    const appendText = (str: string, opts?: { bold?: boolean; fontSize?: number; color?: { red: number; green: number; blue: number }; isHeader?: boolean }) => {
-      const startIndex = 1 + text.length;
-      text += str;
-      const endIndex = 1 + text.length;
-      if (opts) {
-        styleRanges.push({ start: startIndex, end: endIndex, ...opts });
-      }
-    };
-
-    // 1. Candidate Name (Bold, 22pt)
-    appendText(data.candidateName, { bold: true, fontSize: config.candidateNameSize || 22 });
-    appendText('\n');
-
-    // 2. Contact Info (9.5pt)
-    appendText(data.contactInfo, { fontSize: config.contactInfoSize || 9.5 });
-    appendText('\n');
-
-    // Helper to format hex color string to Google Docs API RGB (0..1)
-    const parseHexColor = (hex: string) => {
-      const cleanHex = hex.replace('#', '');
-      const num = parseInt(cleanHex, 16);
-      return {
-        red: ((num >> 16) & 255) / 255,
-        green: ((num >> 8) & 255) / 255,
-        blue: (num & 255) / 255,
+    const paragraphRanges: Array<{
+      startIndex: number;
+      endIndex: number;
+      alignment: 'START' | 'CENTER' | 'END';
+      spaceAbovePt: number;
+      spaceBelowPt: number;
+      lineSpacingMultiplier: number;
+      borderBottom?: {
+        color: { red: number; green: number; blue: number };
+        widthPt: number;
+        dashStyle?: string;
       };
-    };
+    }> = [];
 
-    const headerColor = parseHexColor(config.sectionHeaderColor || '#1e3a8a');
-    const headerFontSize = config.sectionHeaderSize || 11;
-    const bodyFontSize = config.bodySize || 10;
-    const roleFontSize = config.roleAndOrgSize || 10.5;
+    const bulletRanges: Array<{
+      startIndex: number;
+      endIndex: number;
+    }> = [];
 
-    // Helper to append section heading (strictly without empty blank line before it!)
-    const appendSectionHeading = (title: string) => {
-      // Direct newline, NO extra blank line (\n\n) before section title
-      appendText(title, {
-        bold: true,
-        fontSize: headerFontSize,
-        color: headerColor,
-        isHeader: true,
-      });
-      appendText('\n');
-    };
-
-    // 3. EXECUTIVE SUMMARY
-    appendSectionHeading('EXECUTIVE SUMMARY');
-    appendText(`${data.summary}\n`, { fontSize: bodyFontSize });
-
-    // 4. CORE COMPETENCIES & DOMAIN EXPERTISE
-    appendSectionHeading('CORE COMPETENCIES & DOMAIN EXPERTISE');
-    data.skillsCategories.forEach(s => {
-      appendText(`${s.category}: `, { bold: true, fontSize: bodyFontSize });
-      appendText(`${s.skills}\n`, { fontSize: bodyFontSize });
-    });
-
-    // 5. WORK HISTORY (aligned with preview title)
-    appendSectionHeading('WORK HISTORY');
-    data.experiences.forEach(exp => {
-      // Company and Role are BOTH bold
-      appendText(`${exp.company} — ${exp.role}`, { bold: true, fontSize: roleFontSize });
-      appendText(` (${exp.date_range})\n`, { fontSize: Math.max(8.5, bodyFontSize - 0.5) });
-      exp.bullets.forEach(b => {
-        appendText(`• ${b.chosen_text}\n`, { fontSize: bodyFontSize });
-      });
-    });
-
-    // 6. Optional Sections
-    if (data.pageLength === 2 && data.sideProjects) {
-      appendSectionHeading('RECENT TECHNICAL SIDE PROJECTS');
-      appendText(`${data.sideProjects}\n`, { fontSize: bodyFontSize });
-    }
-    if (data.keynotesTalks) {
-      appendSectionHeading('KEYNOTES & TECHNICAL THOUGHT LEADERSHIP');
-      appendText(`${data.keynotesTalks}\n`, { fontSize: bodyFontSize });
-    }
-    if (data.education) {
-      appendSectionHeading('EDUCATION');
-      appendText(`${data.education}\n`, { fontSize: bodyFontSize });
-    }
-
-    // Build batchUpdate requests for Docs API
-    const requests: any[] = [
-      {
-        insertText: {
-          location: { index: 1 },
-          text: text,
-        },
-      },
-      // Set compact paragraph spacing document-wide (removes default blank line gaps)
-      {
-        updateParagraphStyle: {
-          range: {
-            startIndex: 1,
-            endIndex: 1 + text.length,
-          },
-          paragraphStyle: {
-            spaceAbove: { magnitude: 0, unit: 'PT' },
-            spaceBelow: { magnitude: 2, unit: 'PT' },
-            lineSpacing: Math.round((config.lineSpacing || 1.28) * 100),
-          },
-          fields: 'spaceAbove,spaceBelow,lineSpacing',
-        },
-      },
-    ];
-
-    // Candidate name alignment (Center or Left)
-    requests.push({
-      updateParagraphStyle: {
-        range: {
-          startIndex: 1,
-          endIndex: 1 + data.candidateName.length,
-        },
-        paragraphStyle: {
-          alignment: (config.candidateNameAlign || 'center') === 'center' ? 'CENTER' : 'START',
-        },
-        fields: 'alignment',
-      },
-    });
-
-    // Apply specific text formatting for bolding, font sizes, and colors
-    styleRanges.forEach(range => {
-      const textStyle: any = {};
-      const fields: string[] = [];
-
-      if (range.bold !== undefined) {
-        textStyle.bold = range.bold;
-        fields.push('bold');
-      }
-      if (range.fontSize !== undefined) {
-        textStyle.fontSize = { magnitude: range.fontSize, unit: 'PT' };
-        fields.push('fontSize');
-      }
-      if (range.color !== undefined) {
-        textStyle.foregroundColor = {
-          color: {
-            rgbColor: range.color,
-          },
-        };
-        fields.push('foregroundColor');
-      }
-
-      if (fields.length > 0) {
-        requests.push({
-          updateTextStyle: {
-            range: {
-              startIndex: range.start,
-              endIndex: range.end,
-            },
-            textStyle,
-            fields: fields.join(','),
-          },
+    for (const p of paragraphs) {
+      const pStart = 1 + fullText.length;
+      for (const span of p.spans) {
+        const sStart = 1 + fullText.length;
+        fullText += span.text;
+        const sEnd = 1 + fullText.length;
+        textRanges.push({
+          startIndex: sStart,
+          endIndex: sEnd,
+          bold: span.bold === true,
+          fontSize: span.fontSize || bodySize,
+          color: span.color,
         });
       }
+      const pEnd = 1 + fullText.length;
+      paragraphRanges.push({
+        startIndex: pStart,
+        endIndex: pEnd,
+        alignment: p.alignment || 'START',
+        spaceAbovePt: p.spaceAbovePt || 0,
+        spaceBelowPt: p.spaceBelowPt || 2,
+        lineSpacingMultiplier: p.lineSpacingMultiplier || 115,
+        borderBottom: p.borderBottom,
+      });
+
+      if (p.isBullet) {
+        bulletRanges.push({
+          startIndex: pStart,
+          endIndex: pEnd,
+        });
+      }
+    }
+
+    // Merge consecutive bullet ranges into list blocks
+    const mergedBulletRanges: Array<{ startIndex: number; endIndex: number }> = [];
+    for (const br of bulletRanges) {
+      const last = mergedBulletRanges[mergedBulletRanges.length - 1];
+      if (last && last.endIndex === br.startIndex) {
+        last.endIndex = br.endIndex;
+      } else {
+        mergedBulletRanges.push({ ...br });
+      }
+    }
+
+    // 4. Build batchUpdate requests
+    const requests: any[] = [];
+
+    // Insert full text at index 1
+    requests.push({
+      insertText: {
+        location: { index: 1 },
+        text: fullText,
+      },
     });
 
-    // Execute the complete structured text and styling batchUpdate
+    // Page margins
+    const marginPt = (config.marginInches || 0.75) * 72;
+    requests.push({
+      updateDocumentStyle: {
+        documentStyle: {
+          marginTop: { magnitude: marginPt, unit: 'PT' },
+          marginBottom: { magnitude: marginPt, unit: 'PT' },
+          marginLeft: { magnitude: marginPt, unit: 'PT' },
+          marginRight: { magnitude: marginPt, unit: 'PT' },
+        },
+        fields: 'marginTop,marginBottom,marginLeft,marginRight',
+      },
+    });
+
+    // Paragraph styles (alignment, spacing, border)
+    for (const pr of paragraphRanges) {
+      const pStyle: any = {
+        alignment: pr.alignment,
+        spaceAbove: { magnitude: pr.spaceAbovePt, unit: 'PT' },
+        spaceBelow: { magnitude: pr.spaceBelowPt, unit: 'PT' },
+        lineSpacing: pr.lineSpacingMultiplier,
+      };
+      let pFields = 'alignment,spaceAbove,spaceBelow,lineSpacing';
+
+      if (pr.borderBottom) {
+        pStyle.borderBottom = {
+          color: {
+            color: { rgbColor: pr.borderBottom.color },
+          },
+          width: { magnitude: pr.borderBottom.widthPt, unit: 'PT' },
+          dashStyle: pr.borderBottom.dashStyle || 'SOLID',
+        };
+        pFields += ',borderBottom';
+      }
+
+      requests.push({
+        updateParagraphStyle: {
+          range: {
+            startIndex: pr.startIndex,
+            endIndex: pr.endIndex,
+          },
+          paragraphStyle: pStyle,
+          fields: pFields,
+        },
+      });
+    }
+
+    // Text styles (explicit bold, font sizes, weighted font family, colors)
+    for (const tr of textRanges) {
+      const tStyle: any = {
+        bold: tr.bold,
+        fontSize: { magnitude: tr.fontSize, unit: 'PT' },
+        weightedFontFamily: {
+          fontFamily: normalizedFont,
+          weight: tr.bold ? 700 : 400,
+        },
+      };
+      let tFields = 'bold,fontSize,weightedFontFamily';
+
+      if (tr.color) {
+        tStyle.foregroundColor = {
+          color: { rgbColor: tr.color },
+        };
+        tFields += ',foregroundColor';
+      }
+
+      requests.push({
+        updateTextStyle: {
+          range: {
+            startIndex: tr.startIndex,
+            endIndex: tr.endIndex,
+          },
+          textStyle: tStyle,
+          fields: tFields,
+        },
+      });
+    }
+
+    // Bullets
+    for (const mbr of mergedBulletRanges) {
+      requests.push({
+        createParagraphBullets: {
+          range: {
+            startIndex: mbr.startIndex,
+            endIndex: mbr.endIndex,
+          },
+          bulletPreset: 'BULLET_DISC_CIRCLE_SQUARE',
+        },
+      });
+    }
+
+    // 5. Execute atomic batchUpdate
     const batchRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`, {
       method: 'POST',
       headers: {
@@ -639,11 +809,66 @@ export const googleDocsService = {
 
     if (!batchRes.ok) {
       const batchErr = await batchRes.json().catch(() => ({}));
-      console.warn('BatchUpdate failed:', batchErr);
-    }
+      console.warn('Primary batchUpdate failed, attempting resilient fallback:', batchErr);
 
-    // Apply font family and margins across entire document
-    await this.postFormatGoogleDoc(accessToken, docId, config);
+      // Resilient fallback: in case borderBottom or createParagraphBullets is rejected,
+      // retry with core styles (text, exact bold, font size, margins, spacing)
+      const safeRequests: any[] = [];
+      safeRequests.push(requests[0]); // insertText
+      safeRequests.push(requests[1]); // updateDocumentStyle
+
+      for (const pr of paragraphRanges) {
+        safeRequests.push({
+          updateParagraphStyle: {
+            range: { startIndex: pr.startIndex, endIndex: pr.endIndex },
+            paragraphStyle: {
+              alignment: pr.alignment,
+              spaceAbove: { magnitude: pr.spaceAbovePt, unit: 'PT' },
+              spaceBelow: { magnitude: pr.spaceBelowPt, unit: 'PT' },
+              lineSpacing: pr.lineSpacingMultiplier,
+            },
+            fields: 'alignment,spaceAbove,spaceBelow,lineSpacing',
+          },
+        });
+      }
+
+      for (const tr of textRanges) {
+        const tStyle: any = {
+          bold: tr.bold,
+          fontSize: { magnitude: tr.fontSize, unit: 'PT' },
+          weightedFontFamily: {
+            fontFamily: normalizedFont,
+            weight: tr.bold ? 700 : 400,
+          },
+        };
+        let tFields = 'bold,fontSize,weightedFontFamily';
+        if (tr.color) {
+          tStyle.foregroundColor = { color: { rgbColor: tr.color } };
+          tFields += ',foregroundColor';
+        }
+        safeRequests.push({
+          updateTextStyle: {
+            range: { startIndex: tr.startIndex, endIndex: tr.endIndex },
+            textStyle: tStyle,
+            fields: tFields,
+          },
+        });
+      }
+
+      const retryRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ requests: safeRequests }),
+      });
+
+      if (!retryRes.ok) {
+        const retryErr = await retryRes.json().catch(() => ({}));
+        throw new Error(retryErr.error?.message || `Google Docs 排版设置失败 (HTTP ${retryRes.status})`);
+      }
+    }
 
     return {
       docId,
