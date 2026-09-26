@@ -276,7 +276,7 @@ export const googleDocsService = {
       <body style="font-family: ${fontStack}; font-size: ${config.bodySize}pt; line-height: ${config.lineSpacing}; color: #111827; max-width: 780px; margin: 0 auto; padding: ${paddingPt}pt;">
         <!-- Header -->
         <div style="text-align: ${candidateAlign}; margin: 0; margin-bottom: 4pt;">
-          <h1 style="font-family: ${fontStack}; font-size: ${config.candidateNameSize}pt; font-weight: bold; margin: 0; margin-bottom: 2pt; line-height: 1.15; color: #111827;"><b>${data.candidateName}</b></h1>
+          <h1 style="font-family: ${fontStack}; font-size: ${config.candidateNameSize}pt; font-weight: bold; margin: 0; margin-bottom: 2pt; line-height: 1.15; color: ${sectionTitleColor};"><b>${data.candidateName}</b></h1>
           <p style="font-family: ${fontStack}; font-size: ${config.contactInfoSize || 9.5}pt; color: #1e293b; margin: 0; line-height: 1.2;">${data.contactInfo}</p>
         </div>
         ${headerDividerHr}
@@ -392,7 +392,7 @@ export const googleDocsService = {
     const dateSize = Math.max(8.5, bodySize - 0.5);
 
     const headerColor = this.parseHexColor(config.sectionHeaderColor || '#1e3a8a');
-    const nameColor = this.parseHexColor('#111827');
+    const nameColor = headerColor; // Exactly matches EXECUTIVE SUMMARY color!
     const contactColor = this.parseHexColor('#1e293b');
     const companyColor = this.parseHexColor('#0f172a');
     const roleColor = this.parseHexColor('#475569');
@@ -433,13 +433,6 @@ export const googleDocsService = {
       spaceAbovePt: 0,
       spaceBelowPt: 6,
       lineSpacingMultiplier: 115,
-      borderBottom: config.showHeaderDivider
-        ? {
-            color: dividerColor,
-            widthPt: config.dividerThickness || 1.5,
-            dashStyle: 'SOLID',
-          }
-        : undefined,
     });
 
     // Helper for Section Heading (Strictly 0 blank lines before or after)
@@ -457,13 +450,6 @@ export const googleDocsService = {
         spaceAbovePt: 9,
         spaceBelowPt: 2.5,
         lineSpacingMultiplier: 115,
-        borderBottom: config.showSectionDividers
-          ? {
-              color: headerColor,
-              widthPt: config.dividerThickness || 1,
-              dashStyle: 'SOLID',
-            }
-          : undefined,
       });
     };
 
@@ -550,7 +536,7 @@ export const googleDocsService = {
             paragraphs.push({
               spans: [
                 {
-                  text: `${cleanText}\n`,
+                  text: `•  ${cleanText}\n`,
                   bold: false,
                   fontSize: bodySize,
                   color: bodyColor,
@@ -639,19 +625,11 @@ export const googleDocsService = {
       spaceAbovePt: number;
       spaceBelowPt: number;
       lineSpacingMultiplier: number;
-      borderBottom?: {
-        color: { red: number; green: number; blue: number };
-        widthPt: number;
-        dashStyle?: string;
-      };
     }> = [];
 
-    const bulletRanges: Array<{
-      startIndex: number;
-      endIndex: number;
-    }> = [];
+    let contactInfoRange: { startIndex: number; endIndex: number } | null = null;
 
-    for (const p of paragraphs) {
+    paragraphs.forEach((p, idx) => {
       const pStart = 1 + fullText.length;
       for (const span of p.spans) {
         const sStart = 1 + fullText.length;
@@ -673,29 +651,15 @@ export const googleDocsService = {
         spaceAbovePt: p.spaceAbovePt || 0,
         spaceBelowPt: p.spaceBelowPt || 2,
         lineSpacingMultiplier: p.lineSpacingMultiplier || 115,
-        borderBottom: p.borderBottom,
       });
 
-      if (p.isBullet) {
-        bulletRanges.push({
-          startIndex: pStart,
-          endIndex: pEnd,
-        });
+      // Track Contact Info range (paragraph at index 1)
+      if (idx === 1) {
+        contactInfoRange = { startIndex: pStart, endIndex: pEnd };
       }
-    }
+    });
 
-    // Merge consecutive bullet ranges into list blocks
-    const mergedBulletRanges: Array<{ startIndex: number; endIndex: number }> = [];
-    for (const br of bulletRanges) {
-      const last = mergedBulletRanges[mergedBulletRanges.length - 1];
-      if (last && last.endIndex === br.startIndex) {
-        last.endIndex = br.endIndex;
-      } else {
-        mergedBulletRanges.push({ ...br });
-      }
-    }
-
-    // 4. Build batchUpdate requests
+    // 4. Build core batchUpdate requests
     const requests: any[] = [];
 
     // Insert full text at index 1
@@ -720,35 +684,21 @@ export const googleDocsService = {
       },
     });
 
-    // Paragraph styles (alignment, spacing, border)
+    // Paragraph styles (alignment, spacing)
     for (const pr of paragraphRanges) {
-      const pStyle: any = {
-        alignment: pr.alignment,
-        spaceAbove: { magnitude: pr.spaceAbovePt, unit: 'PT' },
-        spaceBelow: { magnitude: pr.spaceBelowPt, unit: 'PT' },
-        lineSpacing: pr.lineSpacingMultiplier,
-      };
-      let pFields = 'alignment,spaceAbove,spaceBelow,lineSpacing';
-
-      if (pr.borderBottom) {
-        pStyle.borderBottom = {
-          color: {
-            color: { rgbColor: pr.borderBottom.color },
-          },
-          width: { magnitude: pr.borderBottom.widthPt, unit: 'PT' },
-          dashStyle: pr.borderBottom.dashStyle || 'SOLID',
-        };
-        pFields += ',borderBottom';
-      }
-
       requests.push({
         updateParagraphStyle: {
           range: {
             startIndex: pr.startIndex,
             endIndex: pr.endIndex,
           },
-          paragraphStyle: pStyle,
-          fields: pFields,
+          paragraphStyle: {
+            alignment: pr.alignment,
+            spaceAbove: { magnitude: pr.spaceAbovePt, unit: 'PT' },
+            spaceBelow: { magnitude: pr.spaceBelowPt, unit: 'PT' },
+            lineSpacing: pr.lineSpacingMultiplier,
+          },
+          fields: 'alignment,spaceAbove,spaceBelow,lineSpacing',
         },
       });
     }
@@ -784,20 +734,7 @@ export const googleDocsService = {
       });
     }
 
-    // Bullets
-    for (const mbr of mergedBulletRanges) {
-      requests.push({
-        createParagraphBullets: {
-          range: {
-            startIndex: mbr.startIndex,
-            endIndex: mbr.endIndex,
-          },
-          bulletPreset: 'BULLET_DISC_CIRCLE_SQUARE',
-        },
-      });
-    }
-
-    // 5. Execute atomic batchUpdate
+    // 5. Execute core batchUpdate
     const batchRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`, {
       method: 'POST',
       headers: {
@@ -809,64 +746,44 @@ export const googleDocsService = {
 
     if (!batchRes.ok) {
       const batchErr = await batchRes.json().catch(() => ({}));
-      console.warn('Primary batchUpdate failed, attempting resilient fallback:', batchErr);
+      throw new Error(batchErr.error?.message || `Google Docs 排版设置失败 (HTTP ${batchRes.status})`);
+    }
 
-      // Resilient fallback: in case borderBottom or createParagraphBullets is rejected,
-      // retry with core styles (text, exact bold, font size, margins, spacing)
-      const safeRequests: any[] = [];
-      safeRequests.push(requests[0]); // insertText
-      safeRequests.push(requests[1]); // updateDocumentStyle
-
-      for (const pr of paragraphRanges) {
-        safeRequests.push({
-          updateParagraphStyle: {
-            range: { startIndex: pr.startIndex, endIndex: pr.endIndex },
-            paragraphStyle: {
-              alignment: pr.alignment,
-              spaceAbove: { magnitude: pr.spaceAbovePt, unit: 'PT' },
-              spaceBelow: { magnitude: pr.spaceBelowPt, unit: 'PT' },
-              lineSpacing: pr.lineSpacingMultiplier,
-            },
-            fields: 'alignment,spaceAbove,spaceBelow,lineSpacing',
+    // 6. Optional: apply clean divider line under contact info
+    if (config.showHeaderDivider && contactInfoRange) {
+      try {
+        await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
           },
+          body: JSON.stringify({
+            requests: [
+              {
+                updateParagraphStyle: {
+                  range: {
+                    startIndex: (contactInfoRange as any).startIndex,
+                    endIndex: (contactInfoRange as any).endIndex,
+                  },
+                  paragraphStyle: {
+                    borderBottom: {
+                      color: {
+                        color: { rgbColor: dividerColor },
+                      },
+                      width: { magnitude: config.dividerThickness || 1.5, unit: 'PT' },
+                      padding: { magnitude: 3.0, unit: 'PT' },
+                      dashStyle: 'SOLID',
+                    },
+                  },
+                  fields: 'borderBottom',
+                },
+              },
+            ],
+          }),
         });
-      }
-
-      for (const tr of textRanges) {
-        const tStyle: any = {
-          bold: tr.bold,
-          fontSize: { magnitude: tr.fontSize, unit: 'PT' },
-          weightedFontFamily: {
-            fontFamily: normalizedFont,
-            weight: tr.bold ? 700 : 400,
-          },
-        };
-        let tFields = 'bold,fontSize,weightedFontFamily';
-        if (tr.color) {
-          tStyle.foregroundColor = { color: { rgbColor: tr.color } };
-          tFields += ',foregroundColor';
-        }
-        safeRequests.push({
-          updateTextStyle: {
-            range: { startIndex: tr.startIndex, endIndex: tr.endIndex },
-            textStyle: tStyle,
-            fields: tFields,
-          },
-        });
-      }
-
-      const retryRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ requests: safeRequests }),
-      });
-
-      if (!retryRes.ok) {
-        const retryErr = await retryRes.json().catch(() => ({}));
-        throw new Error(retryErr.error?.message || `Google Docs 排版设置失败 (HTTP ${retryRes.status})`);
+      } catch (borderErr) {
+        console.warn('Divider line update non-fatal error:', borderErr);
       }
     }
 

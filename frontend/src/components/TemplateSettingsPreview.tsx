@@ -685,7 +685,7 @@ export const TemplateSettingsPreview: React.FC = () => {
                 style={{
                   fontSize: `${config.candidateNameSize * 1.15}px`,
                   fontWeight: config.candidateNameBold ? 'bold' : '600',
-                  color: '#0f172a',
+                  color: config.sectionHeaderColor || '#1e3a8a',
                   margin: '0 0 6px 0',
                 }}
               >
