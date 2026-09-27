@@ -342,16 +342,19 @@ export const googleDocsService = {
   calculateEffectiveSpacing(data: ResumeExportData, config: GoogleDocsFormatConfig): {
     lineSpacing: number;
     paragraphSpacing: number;
+    headerSpaceAbove: number;
     wasShrunk: boolean;
   } {
     const defaultLineSpacing = config.lineSpacing || 1.15;
     const defaultParagraphSpacing = config.paragraphSpacing || 3;
+    const defaultHeaderSpaceAbove = 9;
 
     // Only auto-shrink for 2-page documents
     if (data.pageLength !== 2) {
       return {
         lineSpacing: defaultLineSpacing,
         paragraphSpacing: defaultParagraphSpacing,
+        headerSpaceAbove: defaultHeaderSpaceAbove,
         wasShrunk: false,
       };
     }
@@ -359,34 +362,36 @@ export const googleDocsService = {
     const marginPt = (config.marginInches || 0.75) * 72;
     // Letter page height is 11in = 792pt. Printable height per page = 792 - 2 * marginPt
     const printableHeightPerPage = 792 - (marginPt * 2);
-    const maxTwoPageHeight = printableHeightPerPage * 2; // e.g. 1368pt for 0.75" margins
+    const maxTwoPageHeight = printableHeightPerPage * 2; // 1368pt for 0.75" margins
 
-    // Estimate document height given specific lineSpacing and paragraphSpacing
-    const estimateHeight = (ls: number, ps: number): number => {
+    // In Google Docs:
+    // Page printable width = 8.5 * 72 - 2 * marginPt (504pt at 0.75" margins)
+    // Arial 10pt averages ~80 chars per line in justified body text, and ~72 chars per line for bullets (due to bullet indent).
+    // The Docs engine renders line height as approximately fontSize * ls * 1.15.
+    const estimateHeight = (ls: number, ps: number, hAbove: number): number => {
       let h = 0;
 
       // Candidate Name & Contact Info
       const nameSize = config.candidateNameSize || 22;
       const contactSize = config.contactInfoSize || 9.5;
-      h += nameSize * 1.2 + 2; // Name line + spaceBelow 2pt
-      h += contactSize * 1.2 + 6; // Contact line + spaceBelow 6pt
+      h += nameSize * 1.15 + 2; // Name line + spaceBelow 2pt
+      h += contactSize * 1.15 + 5; // Contact line + spaceBelow 5pt
       if (config.showHeaderDivider) {
-        h += (config.dividerThickness || 1.5) + 6;
+        h += (config.dividerThickness || 1.5) + 4;
       }
 
-      // Section Headings: 11pt, spaceAbove 9pt, spaceBelow 2.5pt
+      // Section Headings: 11pt
       const headerSize = config.sectionHeaderSize || 11;
-      const headerHeight = headerSize * 1.2 + 9 + 2.5;
+      const headerHeight = headerSize * 1.15 + hAbove + 2;
 
       const bodySize = config.bodySize || 10;
-      const lineHeight = bodySize * ls;
+      const lineHeight = bodySize * ls * 1.15;
 
       // 1. Executive Summary
       if (data.summary && data.summary.trim()) {
         h += headerHeight;
-        const chars = data.summary.trim().length;
-        const lines = Math.max(1, Math.ceil(chars / 95));
-        h += lines * lineHeight + 5; // spaceBelow 5pt
+        const lines = Math.max(1, Math.ceil(data.summary.trim().length / 80));
+        h += lines * lineHeight + 4;
       }
 
       // 2. Core Competencies & Skills
@@ -394,8 +399,8 @@ export const googleDocsService = {
         h += headerHeight;
         data.skillsCategories.forEach(sc => {
           const chars = (sc.category + ': ' + sc.skills).length;
-          const lines = Math.max(1, Math.ceil(chars / 95));
-          h += lines * lineHeight + 2; // spaceBelow 2pt
+          const lines = Math.max(1, Math.ceil(chars / 80));
+          h += lines * lineHeight + 1.5;
         });
       }
 
@@ -405,12 +410,11 @@ export const googleDocsService = {
         const roleSize = config.roleAndOrgSize || 10.5;
         data.experiences.forEach(exp => {
           // Company / Role line
-          h += roleSize * 1.2 + 5 + 2; // spaceAbove 5pt, spaceBelow 2pt
+          h += roleSize * 1.15 + 4 + 1.5;
           if (exp.bullets && exp.bullets.length > 0) {
             exp.bullets.forEach(b => {
               const text = b.chosen_text.trim().replace(/^[\s•\-\*]+\s*/, '');
-              // Bullets have bullet indentation, avg chars per line ~ 85
-              const bulletLines = Math.max(1, Math.ceil(text.length / 85));
+              const bulletLines = Math.max(1, Math.ceil(text.length / 72));
               h += bulletLines * lineHeight + ps;
             });
           }
@@ -420,66 +424,63 @@ export const googleDocsService = {
       // 4. Optional Sections
       if (data.sideProjects?.trim()) {
         h += headerHeight;
-        const lines = Math.max(1, Math.ceil(data.sideProjects.trim().length / 95));
-        h += lines * lineHeight + 4;
+        const lines = Math.max(1, Math.ceil(data.sideProjects.trim().length / 80));
+        h += lines * lineHeight + 3;
       }
 
       if (data.keynotesTalks?.trim()) {
         h += headerHeight;
-        const lines = Math.max(1, Math.ceil(data.keynotesTalks.trim().length / 95));
-        h += lines * lineHeight + 4;
+        const lines = Math.max(1, Math.ceil(data.keynotesTalks.trim().length / 80));
+        h += lines * lineHeight + 3;
       }
 
       if (data.education?.trim()) {
         h += headerHeight;
-        const lines = Math.max(1, Math.ceil(data.education.trim().length / 95));
-        h += lines * lineHeight + 4;
+        const lines = Math.max(1, Math.ceil(data.education.trim().length / 80));
+        h += lines * lineHeight + 3;
       }
 
       return h;
     };
 
-    const initialHeight = estimateHeight(defaultLineSpacing, defaultParagraphSpacing);
+    const initialHeight = estimateHeight(defaultLineSpacing, defaultParagraphSpacing, defaultHeaderSpaceAbove);
 
-    // If within 2 pages, keep default 1.15 line spacing
+    // If already fits within 2 pages, keep default 1.15 line spacing
     if (initialHeight <= maxTwoPageHeight) {
       return {
         lineSpacing: defaultLineSpacing,
         paragraphSpacing: defaultParagraphSpacing,
+        headerSpaceAbove: defaultHeaderSpaceAbove,
         wasShrunk: false,
       };
     }
 
-    // Progressively test smaller line spacing values down to 1.02
-    // If still tight, gradually reduce paragraph spacing from default down to 1.5pt
-    const candidateLineSpacings = [1.13, 1.11, 1.10, 1.08, 1.06, 1.05, 1.04, 1.02];
-    for (const ls of candidateLineSpacings) {
-      if (estimateHeight(ls, defaultParagraphSpacing) <= maxTwoPageHeight) {
-        return {
-          lineSpacing: ls,
-          paragraphSpacing: defaultParagraphSpacing,
-          wasShrunk: true,
-        };
-      }
-    }
+    // Progressively test smaller line spacing values down to 0.95
+    // and gradually reduce bullet paragraph spacing from default down to 1.5pt
+    const candidateLineSpacings = [1.12, 1.10, 1.08, 1.05, 1.02, 1.00, 0.98, 0.95];
+    const candidateParagraphSpacings = [defaultParagraphSpacing, 2.5, 2.0, 1.5];
+    const candidateHeaderGaps = [defaultHeaderSpaceAbove, 7, 5];
 
-    // Also progressively tighten bullet paragraph spacing if needed
-    for (let ps = defaultParagraphSpacing - 0.5; ps >= 1.5; ps -= 0.5) {
-      for (const ls of candidateLineSpacings) {
-        if (estimateHeight(ls, ps) <= maxTwoPageHeight) {
-          return {
-            lineSpacing: ls,
-            paragraphSpacing: ps,
-            wasShrunk: true,
-          };
+    for (const hGap of candidateHeaderGaps) {
+      for (const ps of candidateParagraphSpacings) {
+        for (const ls of candidateLineSpacings) {
+          if (estimateHeight(ls, ps, hGap) <= maxTwoPageHeight) {
+            return {
+              lineSpacing: ls,
+              paragraphSpacing: ps,
+              headerSpaceAbove: hGap,
+              wasShrunk: true,
+            };
+          }
         }
       }
     }
 
-    // Fallback: minimal acceptable line spacing of 1.02 and paragraph spacing of 1.5
+    // Ultimate compact fallback to guarantee 2-page fit
     return {
-      lineSpacing: 1.02,
+      lineSpacing: 0.95,
       paragraphSpacing: 1.5,
+      headerSpaceAbove: 5,
       wasShrunk: true,
     };
   },
@@ -563,10 +564,11 @@ export const googleDocsService = {
     const spacingInfo = this.calculateEffectiveSpacing(data, config);
     const effectiveLineSpacing = spacingInfo.lineSpacing;
     const effectiveParagraphSpacing = spacingInfo.paragraphSpacing;
+    const effectiveHeaderSpaceAbove = spacingInfo.headerSpaceAbove;
     const lineSpacingPct = Math.round(effectiveLineSpacing * 100);
 
     if (spacingInfo.wasShrunk) {
-      console.log(`[AutoResume] 2-Page auto-shrink applied: lineSpacing=${effectiveLineSpacing}, paragraphSpacing=${effectiveParagraphSpacing}pt`);
+      console.log(`[AutoResume] 2-Page auto-shrink applied: lineSpacing=${effectiveLineSpacing}, paragraphSpacing=${effectiveParagraphSpacing}pt, headerSpaceAbove=${effectiveHeaderSpaceAbove}pt`);
     }
 
     // Candidate Name
@@ -613,7 +615,7 @@ export const googleDocsService = {
           },
         ],
         alignment: 'START',
-        spaceAbovePt: 9,
+        spaceAbovePt: effectiveHeaderSpaceAbove,
         spaceBelowPt: 2.5,
         lineSpacingMultiplier: 115,
       });

@@ -141,9 +141,15 @@ export const docFormatService = {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
+        // If lineSpacing was stored as an older default (like 1.2 or 1.28), default to 1.15
+        const lineSpacing = (parsed.lineSpacing === 1.2 || parsed.lineSpacing === 1.28) 
+          ? 1.15 
+          : (parsed.lineSpacing || 1.15);
+
         return {
           ...DEFAULT_DOC_FORMAT,
           ...parsed,
+          lineSpacing,
           sectionHeaderColor: parsed.sectionHeaderColor || DEFAULT_DOC_FORMAT.sectionHeaderColor,
           contactInfoSize: parsed.contactInfoSize || DEFAULT_DOC_FORMAT.contactInfoSize,
         };
