@@ -198,6 +198,28 @@ export const api = {
     return res.json();
   },
 
+  async deleteResume(resumeId: string): Promise<{ success: boolean; id: string }> {
+    const res = await fetch(`${BASE_URL}/resumes/${resumeId}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || '删除简历失败');
+    }
+    return res.json();
+  },
+
+  async regenerateFactBase(): Promise<FactBlock[]> {
+    const res = await fetch(`${BASE_URL}/resumes/regenerate-facts`, {
+      method: 'POST',
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || '重新生成事实库失败');
+    }
+    return res.json();
+  },
+
   // Facts
   async getFacts(params?: { category?: string; company?: string; is_locked?: boolean; search?: string }): Promise<FactBlock[]> {
     const searchParams = new URLSearchParams();

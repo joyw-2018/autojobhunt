@@ -82,4 +82,22 @@ class StorageService:
             items.append(meta)
         self.save_resumes_meta(items)
 
+    def delete_resume(self, resume_id: str) -> bool:
+        items = self.load_resumes_meta()
+        target = next((m for m in items if m.id == resume_id), None)
+        if not target:
+            return False
+        
+        # Delete file from disk if present
+        try:
+            target_path = settings.RESUMES_DIR / target.filename
+            if target_path.exists():
+                target_path.unlink()
+        except Exception as e:
+            print(f"Error removing resume file {target.filename}: {e}")
+
+        new_items = [m for m in items if m.id != resume_id]
+        self.save_resumes_meta(new_items)
+        return True
+
 storage = StorageService()

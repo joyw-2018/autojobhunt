@@ -31,6 +31,7 @@ class FactBlock(BaseModel):
     # Control flags
     is_locked: bool = False
     is_verified: bool = False
+    is_new: bool = False
     personal_notes: Optional[str] = None
     
     # Source traceability

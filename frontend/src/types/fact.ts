@@ -19,6 +19,7 @@ export interface FactBlock {
   metrics: string[];
   is_locked: boolean;
   is_verified: boolean;
+  is_new?: boolean;
   personal_notes?: string | null;
   source_resume_ids: string[];
   raw_source_snippets: string[];

@@ -16,12 +16,28 @@ def list_resumes():
     """List all uploaded resumes with metadata."""
     return storage.load_resumes_meta()
 
+@router.delete("/{resume_id}")
+def delete_resume(resume_id: str):
+    """Delete an uploaded resume and its file from disk."""
+    success = storage.delete_resume(resume_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Resume not found")
+    return {"success": True, "id": resume_id}
+
 @router.post("/upload", response_model=List[ResumeMetadata])
 async def upload_resumes(files: List[UploadFile] = File(...)):
     """
     Upload one or multiple past resumes (PDF, DOCX, TXT, MD).
     Saves files to data/resumes/ and returns initial metadata.
+    Enforces a maximum of 10 resumes total.
     """
+    current_items = storage.load_resumes_meta()
+    if len(current_items) + len(files) > 10:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"最多支持上传 10 份简历。当前已有 {len(current_items)} 份，本次尝试上传 {len(files)} 份，已超过上限。"
+        )
+
     saved_metadata = []
     for file in files:
         file_ext = Path(file.filename).suffix.lower()
@@ -44,6 +60,79 @@ async def upload_resumes(files: List[UploadFile] = File(...)):
         saved_metadata.append(meta)
         
     return saved_metadata
+
+@router.post("/regenerate-facts", response_model=List[FactBlock])
+def regenerate_facts():
+    """
+    Regenerates the Fact Base based on all currently uploaded resumes.
+    - Preserves locked facts (is_locked=True) so user edits and locked facts are protected.
+    - Keeps track of existing fact text signatures so previously existing facts have is_new=False.
+    - Any newly discovered/generated facts from the uploaded resumes are tagged with is_new=True.
+    - Updates resume statuses and counts accordingly.
+    """
+    current_resumes = storage.load_resumes_meta()
+    existing_facts = storage.load_facts()
+    
+    # Existing locked facts must be preserved completely
+    locked_facts = [f for f in existing_facts if f.is_locked]
+    # Set of existing fact texts (cleaned) to determine if a fact is brand new
+    existing_texts = {f.refined_text.lower().strip() for f in existing_facts}
+
+    # All non-locked facts from previous run will be rebuilt from the active resumes
+    # However, to preserve previously existing facts without wiping them if not extracted,
+    # or to regenerate fresh facts from active resumes:
+    # We re-extract across all existing resumes.
+    all_extracted: List[FactBlock] = []
+    
+    for meta in current_resumes:
+        file_path = settings.RESUMES_DIR / meta.filename
+        if not file_path.exists():
+            continue
+        try:
+            raw_text, _ = ResumeParser.extract_text(file_path)
+            meta.character_count = len(raw_text)
+            facts = FactExtractor.extract_facts_from_text(meta.id, meta.filename, raw_text)
+            meta.extracted_fact_count = len(facts)
+            meta.status = "EXTRACTED"
+            meta.error_message = None
+            storage.upsert_resume_meta(meta)
+            all_extracted.extend(facts)
+        except Exception as e:
+            meta.status = "ERROR"
+            meta.error_message = str(e)
+            storage.upsert_resume_meta(meta)
+
+    # Now assemble the new fact list:
+    # 1. Start with all locked facts (is_new=False)
+    merged_facts: List[FactBlock] = []
+    seen_texts = set()
+
+    for lf in locked_facts:
+        lf.is_new = False
+        merged_facts.append(lf)
+        seen_texts.add(lf.refined_text.lower().strip())
+
+    # 2. Add extracted facts from active resumes
+    for fact in all_extracted:
+        norm_text = fact.refined_text.lower().strip()
+        if norm_text not in seen_texts:
+            # If this fact did NOT exist in previous fact base, mark it as is_new = True
+            if norm_text not in existing_texts:
+                fact.is_new = True
+            else:
+                fact.is_new = False
+            merged_facts.append(fact)
+            seen_texts.add(norm_text)
+        else:
+            # Already have this fact, merge source_resume_ids if needed
+            existing_match = next((f for f in merged_facts if f.refined_text.lower().strip() == norm_text), None)
+            if existing_match and fact.source_resume_ids:
+                for rid in fact.source_resume_ids:
+                    if rid not in existing_match.source_resume_ids:
+                        existing_match.source_resume_ids.append(rid)
+
+    storage.save_facts(merged_facts)
+    return merged_facts
 
 @router.post("/{resume_id}/extract", response_model=List[FactBlock])
 def extract_facts(resume_id: str):

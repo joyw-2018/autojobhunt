@@ -106,6 +106,12 @@ export const FactCard: React.FC<FactCardProps> = ({ fact, onUpdate, onDelete }) 
               {fact.sub_category}
             </span>
           )}
+          {fact.is_new && (
+            <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300 animate-pulse">
+              <Sparkles className="w-3 h-3 text-emerald-600" />
+              <span>新事实</span>
+            </span>
+          )}
           {fact.is_locked && (
             <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-300">
               <Lock className="w-3 h-3" />

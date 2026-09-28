@@ -39,6 +39,7 @@ export const FactStudio: React.FC<FactStudioProps> = ({ facts, onRefresh }) => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [lockedOnly, setLockedOnly] = useState(false);
+  const [newOnly, setNewOnly] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // New fact modal form state
@@ -55,6 +56,9 @@ export const FactStudio: React.FC<FactStudioProps> = ({ facts, onRefresh }) => {
       return false;
     }
     if (lockedOnly && !f.is_locked) {
+      return false;
+    }
+    if (newOnly && !f.is_new) {
       return false;
     }
     if (search.trim()) {
@@ -132,8 +136,22 @@ export const FactStudio: React.FC<FactStudioProps> = ({ facts, onRefresh }) => {
             />
           </div>
 
-          {/* Action buttons: Lock filter & Add new */}
+          {/* Action buttons: Lock filter, New facts filter & Add new */}
           <div className="flex items-center space-x-2">
+            {facts.some(f => f.is_new) && (
+              <button
+                onClick={() => setNewOnly(!newOnly)}
+                className={`inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all ${
+                  newOnly
+                    ? 'bg-emerald-100 text-emerald-900 border-emerald-300 shadow-xs'
+                    : 'bg-white text-emerald-700 border-emerald-200 hover:bg-emerald-50'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                <span>仅看新事实 ({facts.filter((f) => f.is_new).length})</span>
+              </button>
+            )}
+
             <button
               onClick={() => setLockedOnly(!lockedOnly)}
               className={`inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all ${
